@@ -54,7 +54,6 @@ public class RoundedButton extends JButton{
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // 绘制背景
         g2d.setColor(getBackground());
         g2d.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
 
@@ -74,8 +73,4 @@ public class RoundedButton extends JButton{
         repaint();
     }
 
-//    public void setBorderWidth(int width) {
-//        this.borderWidth = width;
-//        repaint();
-//    }
 }

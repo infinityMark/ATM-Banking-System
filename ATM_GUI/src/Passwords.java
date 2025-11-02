@@ -19,7 +19,7 @@ public class Passwords extends JPasswordField{
         setborderColor(bordercolor);
 
 //        setPreferredSize(new Dimension(widths, heights));
-        setOpaque(false); // 允许自定义绘制背景
+        setOpaque(false);
         setForeground(Color.BLACK);
         setFont(new Font("Sans Serif", Font.PLAIN, 14));
         setPreferredSize(new Dimension(widths, heights));

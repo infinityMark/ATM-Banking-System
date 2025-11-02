@@ -1,12 +1,17 @@
 // ATM.java
 // Represents an automated teller machine
+import javax.swing.*;
+import java.awt.*;
 
-public class ATM {
+public class ATM extends JFrame {
    private boolean userAuthenticated; // whether user is authenticated
    private int currentAccountNumber; // current user's account number
    private Screen screen; // ATM's screen
    private Keypad keypad; // ATM's keypad
    private CashDispenser cashDispenser; // ATM's cash dispenser
+   private JFrame mainFrame;
+   private JPanel functionPanel;
+   private JPanel keypadPanel;
 
    // private DepositSlot depositSlot; // ATM's deposit slot
    private BankDatabase bankDatabase; // account information database
@@ -28,7 +33,49 @@ public class ATM {
       cashDispenser = new CashDispenser(); // create cash dispenser
       // depositSlot = new DepositSlot(); // create deposit slot
       bankDatabase = new BankDatabase(); // create acct info database
+
+
+      // ATM GUI implements to initial the mainFrame setting.
+      initializeGUI();
    } // end no-argument ATM constructor
+
+   private void initializeGUI(){
+      JFrame mainFrame = new JFrame("ATM GUI implement");
+      mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      //setting icon for window
+      ImageIcon icon = new ImageIcon(interfaces.class.getResource("/atm-machine.png"));
+      mainFrame.setIconImage(icon.getImage());
+
+      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+      final double rate = 0.9;
+      int screenWidth = (int) (screenSize.width * rate);
+      int screenHeight = (int) (screenSize.height * rate);
+
+      setSize(screenWidth, screenHeight);
+      setLocationRelativeTo(null);
+
+      setLayout(new BorderLayout());
+
+      functionPanel = createFunctionPanel((int)(screenWidth*0.7),screenHeight);
+
+      add(functionPanel, BorderLayout.CENTER);
+//      add(keypadPanel, BorderLayout.EAST);
+
+      setVisible(true);
+   }
+
+   private JPanel createFunctionPanel(int width, int height) {
+      JPanel panel = new JPanel();
+      panel.setBackground(Color.PINK);
+      panel.setPreferredSize(new Dimension(width, height));
+
+      JLabel label = new JLabel("功能区域 - 显示余额、菜单等");
+      label.setFont(new Font("微软雅黑", Font.BOLD, 16));
+      panel.add(label);
+
+      return panel;
+   }
 
    // start ATM
    public void run() {

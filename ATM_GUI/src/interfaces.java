@@ -9,8 +9,8 @@ public class interfaces {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //setting icon for window
-        ImageIcon icon = new ImageIcon(interfaces.class.getResource("/coaching.png"));
-        frame.setIconImage(icon.getImage());
+//        ImageIcon icon = new ImageIcon(interfaces.class.getResource("/coaching.png"));
+//        frame.setIconImage(icon.getImage());
 
         //get screen size,after then set window size to 80% of screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -30,10 +30,10 @@ public class interfaces {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setPreferredSize(new Dimension(0, 40));
         menuBar.setBackground(StandardColor.Blue.getColor(1));
-        ImageIcon lightMode = new ImageIcon(interfaces.class.getResource("/light_37dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.png"));
-        ImageIcon darkMode = new ImageIcon(interfaces.class.getResource("/light_off_100dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg"));
-        JLabel modeSwitchIcon = new JLabel(lightMode);
-        modeSwitchIcon.setBorder(new EmptyBorder(0,10,0,10));
+//        ImageIcon lightMode = new ImageIcon(interfaces.class.getResource("/light_37dp_1F1F1F_FILL0_wght400_GRAD0_opsz40.png"));
+//        ImageIcon darkMode = new ImageIcon(interfaces.class.getResource("/light_off_100dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.svg"));
+//        JLabel modeSwitchIcon = new JLabel(lightMode);
+//        modeSwitchIcon.setBorder(new EmptyBorder(0,10,0,10));
 
         // 创建"文件"菜单
         JMenu fileMenu = new JMenu("File(F)");
@@ -79,7 +79,7 @@ public class interfaces {
         menuBar.add(fileMenu);
         menuBar.add(Box.createHorizontalGlue());
 //        menuBar.add(editMenu);
-        menuBar.add(modeSwitchIcon);
+//        menuBar.add(modeSwitchIcon);
 
         // 设置菜单栏到窗口
         frame.setJMenuBar(menuBar);
@@ -95,25 +95,25 @@ public class interfaces {
         fileMenu.setForeground(StandardColor.GreyHighest.getColor(0));
 
         //JLabel modeSwitchIcon = new JLabel(icon);
-        modeSwitchIcon.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                StandardColor.setIsLightMode( !(StandardColor.getIsLightMode()) );//it will automatically change isLightMode's value to opposite
-                frame.getContentPane().setBackground(StandardColor.GreyMiddle.getColorMode());
-//                frame.setVisible(true);
-                menuBar.setBackground(StandardColor.Blue.getColorMode());
-//                menuBar.setForeground(ColorStandard.GreyHighest.getOppositeColorMode());
-                editMenu.setForeground(StandardColor.GreyHighest.getColor(0));
-                fileMenu.setForeground(StandardColor.GreyHighest.getColor(0));
-                fileMenu.setBackground(StandardColor.Indigo.getColorMode());
-//                button3.setBackground(ColorStandard.GreyLower.getColorMode());
-
-                if(StandardColor.getIsLightMode())
-                    modeSwitchIcon.setIcon(darkMode);
-                else
-                    modeSwitchIcon.setIcon(lightMode);
-            }
-        });
+//        modeSwitchIcon.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                StandardColor.setIsLightMode( !(StandardColor.getIsLightMode()) );//it will automatically change isLightMode's value to opposite
+//                frame.getContentPane().setBackground(StandardColor.GreyMiddle.getColorMode());
+////                frame.setVisible(true);
+//                menuBar.setBackground(StandardColor.Blue.getColorMode());
+////                menuBar.setForeground(ColorStandard.GreyHighest.getOppositeColorMode());
+//                editMenu.setForeground(StandardColor.GreyHighest.getColor(0));
+//                fileMenu.setForeground(StandardColor.GreyHighest.getColor(0));
+//                fileMenu.setBackground(StandardColor.Indigo.getColorMode());
+////                button3.setBackground(ColorStandard.GreyLower.getColorMode());
+//
+//                if(StandardColor.getIsLightMode())
+//                    modeSwitchIcon.setIcon(darkMode);
+//                else
+//                    modeSwitchIcon.setIcon(lightMode);
+//            }
+//        });
 
 
 //        button3.addActionListener(new ActionListener() {

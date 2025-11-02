@@ -1,14 +1,19 @@
-
 // Transfer.java
 // Represents a transfer ATM transaction
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
+import javax.swing.*;
+import java.awt.*;
 
 public class Transfer extends Transaction {
     private double amount; // amount to transfer
     private Keypad keypad; // reference to keypad
     private int receiverAccount;
     private final static int CANCELED = 2;
+
+    private JFrame mainFrame;
+    private JPanel functionPanel;
+    private JPanel keypadPanel;
 
     public Transfer(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
             Keypad atmKeypad, CashDispenser atmCashDispenser) {
