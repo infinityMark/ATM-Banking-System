@@ -1,12 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 
-abstract public class functionPanelStructure extends JPanel {
+abstract public class FunctionPanelStructure extends JPanel {
     JPanel mainPanel = new JPanel(new GridBagLayout());
     JPanel contentPanel = new JPanel();
     JLabel taskTitle = new JLabel();
 
-    public functionPanelStructure(String methodName){
+    public FunctionPanelStructure(String methodName){
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
         GridBagConstraints gbc = new GridBagConstraints();
