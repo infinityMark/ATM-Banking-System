@@ -144,7 +144,9 @@ public class TransferDetail extends JFrame {
         gbcAmountDisplay.gridx = 0;
         gbcAmountDisplay.weighty = 1.0;
         gbcAmountDisplay.weightx = 0.001;
+
         gbcAmountDisplay.insets = new Insets(0,5,0,5);
+
         gbcAmountDisplay.fill = GridBagConstraints.BOTH;
         amountDisplay.add(amountSy,gbcAmountDisplay);
         gbcAmountDisplay.weightx = 0.9;
@@ -164,7 +166,6 @@ public class TransferDetail extends JFrame {
         gbc.gridy = 2;
         gbc.weighty = 0.01;
         gbc.insets = new Insets(0,10,10,10);
-//        panel.add(amountDisplay,gbc);
         panel.add(receiverAccountTextField,gbc);
 
         gbc.gridy = 3;
@@ -291,7 +292,6 @@ public class TransferDetail extends JFrame {
                 new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 true, 200, 10);
         selectionTwoBtn.setHorizontalAlignment(SwingConstants.LEFT);
-//        selectionTwoBtn.setEnabled(false);
 
         selectionTwoBtn.addActionListener(new ActionListener() {
             @Override

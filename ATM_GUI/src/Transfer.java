@@ -26,15 +26,15 @@ public class Transfer extends Transaction {
 
     @Override
     public void createPanelUI(){
-        textPanel.removeAll();
+        contentPanel.removeAll();
 
         JLabel titleLabel = new JLabel("<html><center>Transfer Menu:<br>1 - Input receiver account number<br>2 - Exit<br>Choose a function:</center></html>", SwingConstants.CENTER);
         titleLabel.setFont(new Font("微软雅黑", Font.BOLD, 16)); // 减小字体大小
 
-        textPanel.add(titleLabel, BorderLayout.NORTH);
+        contentPanel.add(titleLabel, BorderLayout.NORTH);
 
-        textPanel.revalidate();
-        textPanel.repaint();
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 
     @Override

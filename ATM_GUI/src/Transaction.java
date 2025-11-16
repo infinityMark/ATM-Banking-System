@@ -1,9 +1,7 @@
 // Transaction.java
 // Abstract superclass Transaction represents an ATM transaction
 
-import javax.swing.*;
-
-public abstract class Transaction extends functionPanelStructure {
+public abstract class Transaction extends FunctionPanelStructure {
    private int accountNumber; // indicates account involved
    private Screen screen; // ATM's screen
    private BankDatabase bankDatabase; // account info database

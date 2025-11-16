@@ -1,30 +1,31 @@
 import javax.swing.*;
 import java.awt.*;
 
-abstract public class functionPanelStructure extends JPanel {
-    JPanel mainPanel = new JPanel();
-    JPanel textPanel = new JPanel();
-    JLabel inTextLabel = new JLabel();
-    JLabel backButton = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/main-menu.png")));
+abstract public class FunctionPanelStructure extends JPanel {
+    JPanel mainPanel = new JPanel(new GridBagLayout());
+    JPanel contentPanel = new JPanel();
+    JLabel taskTitle = new JLabel();
 
-    public functionPanelStructure(String methodName){
-        mainPanel.setLayout(new BorderLayout());
+    public FunctionPanelStructure(String methodName){
+        mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
-        // 标题标签
-        JLabel label = new JLabel(methodName);
-        label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 32));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        mainPanel.add(label, BorderLayout.NORTH);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        textPanel.setLayout(new BorderLayout());
-        inTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        inTextLabel.setVerticalAlignment(SwingConstants.CENTER);
-        textPanel.add(inTextLabel, BorderLayout.CENTER);
+        taskTitle.setText(methodName);
+        taskTitle.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        taskTitle.setForeground(StandardColor.Blue.getColorMode());
+        taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
-        mainPanel.add(textPanel, BorderLayout.CENTER);
+        gbc.weighty = 0.1;
+        mainPanel.add(taskTitle, gbc);
 
-        setLayout(new BorderLayout());
-        add(mainPanel, BorderLayout.CENTER);
+        gbc.gridy = 1;
+        gbc.weighty = 0.9;
+        mainPanel.add(contentPanel, gbc);
     }
 
     @Override
@@ -37,8 +38,8 @@ abstract public class functionPanelStructure extends JPanel {
     }
 
     public void passInformation(String information){
-        inTextLabel.setText(information);
-        inTextLabel.revalidate();
-        inTextLabel.repaint();
+        taskTitle.setText(information);
+        taskTitle.revalidate();
+        taskTitle.repaint();
     }
 }
