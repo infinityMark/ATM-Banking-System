@@ -39,6 +39,23 @@ public class ATMUIController {
         ATMUI atmUI = new ATMUI();
         ATMUIController atm = new ATMUIController(atmUI);
         atm.switchToLoginPanel();
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        atm.switchToMainMenuPanel();
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        atm.switchToBalancePanel();
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        atm.switchToTransferPanel();
     }
-
 }
