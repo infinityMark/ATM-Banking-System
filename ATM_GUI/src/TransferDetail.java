@@ -291,6 +291,14 @@ public class TransferDetail extends JFrame {
                 new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 true, 200, 10);
         selectionTwoBtn.setHorizontalAlignment(SwingConstants.LEFT);
+//        selectionTwoBtn.setEnabled(false);
+
+        selectionTwoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("fowjfe");
+            }
+        });
 
         panel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
@@ -302,10 +310,10 @@ public class TransferDetail extends JFrame {
         panel.add(taskTitle, gbc);
         gbc.gridy = 1;
         gbc.weighty = 0.9;
-//        panel.add(getSelectionMenu("Menu","1 - Input receiver account number","2 - Exit",30), gbc);
-//        panel.add(receiveTransferInformation("Currently asset in your account HKD$1000.00"), gbc);
+//        panel.add(getSelectionMenu("Menu","1 - Input receiver account number","2 - Exit",30, new Font(Font.SANS_SERIF, Font.PLAIN,30)), gbc);
+        panel.add(receiveTransferInformation("Currently asset in your account HKD$1000.00"), gbc);
 //        panel.add(confirmationStep("The system is going to transfer 33.00 to account number: 21111","Transfer Confirmation Operation:","1- Confirm the transfer","2-Cancel the transfer",40, new Font(Font.SANS_SERIF, Font.PLAIN,30)), gbc);
-        panel.add(afterTransaction("Total HK$ 33.00 transfers to account 21111.", new Font(Font.SANS_SERIF, Font.PLAIN,30)), gbc);
+//        panel.add(afterTransaction("Total HK$ 33.00 transfers to account 21111.", new Font(Font.SANS_SERIF, Font.PLAIN,30)), gbc);
 
         mains.add(panel);
         mains.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
