@@ -63,30 +63,6 @@ public class ATMUI {
         leftPanel.add(createWithdrawPanel(), "withdraw");
         leftPanel.add(createTransferPanel(), "transfer");
 
-        /*
-         * // choosing which panel to show based on chosenFunction
-         * switch (chosenFunction) {
-         * case 0:
-         * leftCardLayout.show(leftPanel, "mainMenu");
-         * break;
-         * case 1:
-         * leftCardLayout.show(leftPanel, "login");
-         * break;
-         * case 2:
-         * leftCardLayout.show(leftPanel, "balance");
-         * break;
-         * case 3:
-         * leftCardLayout.show(leftPanel, "withdraw");
-         * break;
-         * case 4:
-         * leftCardLayout.show(leftPanel, "transfer");
-         * break;
-         * default:
-         * // Default to showing the login panel
-         * leftCardLayout.show(leftPanel, "login");
-         * break;
-         * }
-         */
     }
 
     private JPanel createLoginPanel() {
@@ -131,7 +107,7 @@ public class ATMUI {
     private JPanel createTransferPanel() {
         JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
         panel.setName("transfer");
-        panel.add(new JLabel("a："));
+        panel.add(new JLabel("terget account："));
         panel.add(new JTextField(15));
         panel.add(new JLabel("a："));
         panel.add(new JTextField(10));
@@ -157,6 +133,7 @@ public class ATMUI {
         panel.add(new JButton("Confirm"));
         return panel;
     }
+
 
     // get panel by name
     public JPanel getPanel(String name) {
