@@ -2,33 +2,39 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ATMUI {
-    private CardLayout leftCardLayout;
-    private JPanel leftPanel;
-    private JPanel rightPanel;
+    public static final String LOGIN_PANEL = "login";
+    public static final String MAIN_MENU_PANEL = "mainMenu";
+    public static final String BALANCE_PANEL = "balance";
+    public static final String WITHDRAW_PANEL = "withdraw";
+    public static final String TRANSFER_PANEL = "transfer";
+    public static final String KEYPAD_PANEL = "keypad";
+
+    private CardLayout centerCardLayout;
+    private JPanel mainUpperPanel;
+    private JPanel leftButtonPanel;
+    private JPanel centerPanel;
+    private JPanel rightButtonPanel;
+    private JPanel lowerPanel;// keypad panel
     private JFrame mainframe;
+
     public boolean isAutoSize = false;
 
     public ATMUI() {
-        initializeUI();
+        // initializeUI();
     }
 
-    private void initializeUI() {
-
+    public void initializeUI() {
         baseSetup();
-
         mainframe.setLocationRelativeTo(null);
 
-        JPanel mainContainer = new JPanel(new BorderLayout(10, 0));
-
-        createLeftAndRightPanel();
-
-        insertToLeftPanel();
+        JPanel mainContainer = new JPanel(new BorderLayout(0, 10));
+        createUpperAndLowerPanels();
+        addButtonsToSidePanels();
+        insertToCenterPanel();
 
         // Assemble the main container
-        mainContainer.add(leftPanel, BorderLayout.CENTER);
-        mainContainer.add(rightPanel, BorderLayout.EAST);
-
-        // Add main container to the frame
+        mainContainer.add(mainUpperPanel, BorderLayout.CENTER);
+        mainContainer.add(lowerPanel, BorderLayout.SOUTH);
         mainframe.add(mainContainer);
 
         mainframe.setVisible(true);
@@ -39,35 +45,84 @@ public class ATMUI {
         if (isAutoSize) {
             mainframe.pack();
         } else {
-            mainframe.setSize(800, 600);
+            mainframe.setSize(600, 800);
         }
         mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void createLeftAndRightPanel() {
-        // Left Panel
-        leftCardLayout = new CardLayout();
-        leftPanel = new JPanel(this.leftCardLayout);
-        leftPanel.setBorder(BorderFactory.createTitledBorder("Function Area"));
+    private void createUpperAndLowerPanels() {
+        // upper Panel with GridBagLayout
+        mainUpperPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        mainUpperPanel.setBorder(BorderFactory.createTitledBorder("Function Area"));
 
-        // Right Panel
-        rightPanel = createKeypadPanel();
-        rightPanel.setBorder(BorderFactory.createTitledBorder("Keypad"));
+        // left button panel (small proportion)
+        leftButtonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+        leftButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // center content panel (large proportion, using CardLayout)
+        centerCardLayout = new CardLayout();
+        centerPanel = new JPanel(centerCardLayout);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // right button panel (small proportion)
+        rightButtonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+        rightButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Set grid layout constraints
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weighty = 1.0;
+
+        // left panel occupies 20%
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.2;
+        mainUpperPanel.add(leftButtonPanel, gbc);
+
+        // center panel occupies 60%
+        gbc.gridx = 1;
+        gbc.weightx = 0.6;
+        mainUpperPanel.add(centerPanel, gbc);
+
+        // right panel occupies 20%
+        gbc.gridx = 2;
+        gbc.weightx = 0.2;
+        mainUpperPanel.add(rightButtonPanel, gbc);
+
+        // lower keypad panel
+        lowerPanel = createKeypadPanel();
+        lowerPanel.setBorder(BorderFactory.createTitledBorder("Keypad"));
+        lowerPanel.setPreferredSize(new Dimension(750, 200));
     }
 
-    private void insertToLeftPanel() {
-        // Adding different function panels to the left panel
-        leftPanel.add(createLoginPanel(), "login");
-        leftPanel.add(createMainMenuPanel(), "mainMenu");
-        leftPanel.add(createBalancePanel(), "balance");
-        leftPanel.add(createWithdrawPanel(), "withdraw");
-        leftPanel.add(createTransferPanel(), "transfer");
+    protected void addButtonsToSidePanels() {
+        // left buttons
+        leftButtonPanel.add(new JButton("Help"));
+        leftButtonPanel.add(new JButton("Language"));
+        leftButtonPanel.add(new JButton("Services"));
+        leftButtonPanel.add(new JButton("Info"));
 
+        // right buttons
+        rightButtonPanel.add(new JButton("History"));
+        rightButtonPanel.add(new JButton("Settings"));
+        rightButtonPanel.add(new JButton("Support"));
+        rightButtonPanel.add(new JButton("Logout"));
     }
 
-    private JPanel createLoginPanel() {
+    private void insertToCenterPanel() {
+        // 功能面板应添加到中间的centerPanel（使用CardLayout的面板）
+        centerPanel.add(createLoginPanel(), LOGIN_PANEL);
+        centerPanel.add(createMainMenuPanel(), MAIN_MENU_PANEL);
+        centerPanel.add(createBalancePanel(), BALANCE_PANEL);
+        centerPanel.add(createWithdrawPanel(), WITHDRAW_PANEL);
+        centerPanel.add(createTransferPanel(), TRANSFER_PANEL);
+    }
+
+    // -------------functional panels creation methods-------------
+
+    protected JPanel createLoginPanel() {
         JPanel panel = new JPanel(new FlowLayout());
-        panel.setName("login");
+        panel.setName(LOGIN_PANEL);
         panel.add(new JLabel("a"));
         panel.add(new JTextField(15));
         panel.add(new JPasswordField(15));
@@ -75,50 +130,50 @@ public class ATMUI {
         return panel;
     }
 
-    private JPanel createMainMenuPanel() {
+    protected JPanel createMainMenuPanel() {
         JPanel panel = new JPanel(new GridLayout(4, 1, 5, 5));
-        panel.setName("mainMenu");
-        panel.add(new JButton("a"));
-        panel.add(new JButton("a"));
-        panel.add(new JButton("a"));
-        panel.add(new JButton("a"));
+        panel.setName(MAIN_MENU_PANEL);
+        panel.add(new JButton("View Balance"));
+        panel.add(new JButton("Withdraw Cash"));
+        panel.add(new JButton("Transfer Funds"));
+        panel.add(new JButton("Exit"));
         return panel;
     }
 
-    private JPanel createBalancePanel() {
+    protected JPanel createBalancePanel() {
         JPanel panel = new JPanel(new FlowLayout());
-        panel.setName("balance");
-        panel.add(new JLabel("a"));
+        panel.setName(BALANCE_PANEL);
+        panel.add(new JLabel("Current Balance:"));
         panel.add(new JLabel("¥ 10000.00"));
-        panel.add(new JButton("a"));
+        panel.add(new JButton("Back to Menu"));
         return panel;
     }
 
-    private JPanel createWithdrawPanel() {
+    protected JPanel createWithdrawPanel() {
         JPanel panel = new JPanel(new FlowLayout());
-        panel.setName("withdraw");
-        panel.add(new JLabel("a："));
+        panel.setName(WITHDRAW_PANEL);
+        panel.add(new JLabel("Amount:"));
         panel.add(new JTextField(10));
-        panel.add(new JButton("a"));
-        panel.add(new JButton("a"));
+        panel.add(new JButton("Confirm"));
+        panel.add(new JButton("Cancel"));
         return panel;
     }
 
-    private JPanel createTransferPanel() {
+    protected JPanel createTransferPanel() {
         JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
-        panel.setName("transfer");
-        panel.add(new JLabel("terget account："));
+        panel.setName(TRANSFER_PANEL);
+        panel.add(new JLabel("Target Account:"));
         panel.add(new JTextField(15));
-        panel.add(new JLabel("a："));
+        panel.add(new JLabel("Amount:"));
         panel.add(new JTextField(10));
-        panel.add(new JButton("a"));
-        panel.add(new JButton("a"));
+        panel.add(new JButton("Confirm"));
+        panel.add(new JButton("Cancel"));
         return panel;
     }
 
-    private JPanel createKeypadPanel() {
+    protected JPanel createKeypadPanel() {
         JPanel panel = new JPanel(new GridLayout(4, 3, 5, 5)); // 4行3列网格
-        panel.setName("keypad");
+        panel.setName(KEYPAD_PANEL);
         panel.add(new JButton("1"));
         panel.add(new JButton("2"));
         panel.add(new JButton("3"));
@@ -134,10 +189,11 @@ public class ATMUI {
         return panel;
     }
 
+    // -------------Getter&Setter methods-------------
 
-    // get panel by name
+    // get panel by name（从中间面板查找）
     public JPanel getPanel(String name) {
-        for (Component comp : leftPanel.getComponents()) {
+        for (Component comp : centerPanel.getComponents()) {
             if (comp.getName() != null && comp.getName().equals(name)) {
                 return (JPanel) comp;
             }
@@ -145,9 +201,15 @@ public class ATMUI {
         return null;
     }
 
-    // switch left panel by name
+    // switch center panel by name（切换中间面板）
     public void switchPanel(String name) {
-        leftCardLayout.show(leftPanel, name);
+        JPanel targetPanel = getPanel(name);
+        if (targetPanel != null) {
+            centerCardLayout.show(centerPanel, name); // CardLayout作用于centerPanel
+        } else {
+            // Error handling: panel not found
+            System.err.println("Error: Panel with name '" + name + "' does not exist.");
+        }
     }
 
     // get main frame
@@ -155,26 +217,28 @@ public class ATMUI {
         return mainframe;
     }
 
-    // get right keypad panel
-    public JPanel getRightPanel() {
-        return rightPanel;
+    // get lower keypad panel
+    public JPanel getLowerPanel() {
+        return lowerPanel;
     }
 
-    // get current visible left panel
-    public JPanel getCurrentLeftPanel() {
-        for (Component comp : leftPanel.getComponents()) {
+    // Get left button panel
+    public JPanel getLeftButtonPanel() {
+        return leftButtonPanel;
+    }
+
+    // Get right button panel
+    public JPanel getRightButtonPanel() {
+        return rightButtonPanel;
+    }
+
+    // get current visible upper panel
+    public JPanel getCurrentUpperPanel() {
+        for (Component comp : centerPanel.getComponents()) {
             if (comp.isVisible()) {
                 return (JPanel) comp;
             }
         }
         return null;
     }
-
-    // For testing only
-    /*
-     * public static void main(String[] args) {
-     * // new ATMUI(2);
-     * }
-     */
-
 }
