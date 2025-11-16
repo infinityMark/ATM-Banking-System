@@ -9,7 +9,9 @@ public class ATM extends JFrame {
    private Screen screen; // ATM's screen
    private Keypad keypad; // ATM's keypad
    private CashDispenser cashDispenser; // ATM's cash dispenser
+
    private JFrame mainFrame;
+   private CardLayout cardLayout;
    private JPanel functionPanel;
    private JPanel keypadPanel;
 
@@ -34,18 +36,17 @@ public class ATM extends JFrame {
       // depositSlot = new DepositSlot(); // create deposit slot
       bankDatabase = new BankDatabase(); // create acct info database
 
-
+      mainFrame = new JFrame("ATM GUI implement");
       // ATM GUI implements to initial the mainFrame setting.
       initializeGUI();
    } // end no-argument ATM constructor
 
    private void initializeGUI(){
-      JFrame mainFrame = new JFrame("ATM GUI implement");
       mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       //setting icon for window
-      ImageIcon icon = new ImageIcon(interfaces.class.getResource("/atm-machine.png"));
-      mainFrame.setIconImage(icon.getImage());
+      ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
+      setIconImage(icon.getImage());
 
       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
       final double rate = 0.9;
@@ -57,21 +58,35 @@ public class ATM extends JFrame {
 
       setLayout(new BorderLayout());
 
-      functionPanel = createFunctionPanel((int)(screenWidth*0.7),screenHeight);
+      Transaction currentTransaction = createTransaction(3);
+
+      functionPanel = currentTransaction.getPanelUI();
+//      functionPanel = createFunctionPanel((int)(screenWidth*0.7),screenHeight,"keypad");
+      keypadPanel = createkeypadPanel((int)(screenWidth*0.3),screenHeight,"keypad");
 
       add(functionPanel, BorderLayout.CENTER);
-//      add(keypadPanel, BorderLayout.EAST);
+      add(keypadPanel, BorderLayout.EAST);
 
       setVisible(true);
    }
 
-   private JPanel createFunctionPanel(int width, int height) {
+   //Temporary for test
+   private JPanel createkeypadPanel(int width, int height, String methodName) {
+      JPanel panel = new JPanel();
+      panel.setBackground(StandardColor.Red.getColor(1));
+      panel.setPreferredSize(new Dimension(width, height));
+
+      return panel;
+   }
+
+   //Temporary for test
+   private JPanel createFunctionPanel(int width, int height, String methodName) {
       JPanel panel = new JPanel();
       panel.setBackground(Color.PINK);
       panel.setPreferredSize(new Dimension(width, height));
 
-      JLabel label = new JLabel("功能区域 - 显示余额、菜单等");
-      label.setFont(new Font("微软雅黑", Font.BOLD, 16));
+      JLabel label = new JLabel(methodName);
+      label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 32));
       panel.add(label);
 
       return panel;
@@ -132,7 +147,8 @@ public class ATM extends JFrame {
                // case DEPOSIT:
                // initialize as new object of chosen type
                currentTransaction = createTransaction(mainMenuSelection);
-               currentTransaction.execute(); // execute transaction
+               currentTransaction.execute();
+//               functionPanel = currentTransaction.getPanelUI(); // execute transaction
                break;
             case RECORD:
                TransactionHistory.checkHistory(currentAccountNumber);

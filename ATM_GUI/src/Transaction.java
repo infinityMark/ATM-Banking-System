@@ -1,13 +1,16 @@
 // Transaction.java
 // Abstract superclass Transaction represents an ATM transaction
 
-public abstract class Transaction {
+import javax.swing.*;
+
+public abstract class Transaction extends functionPanelStructure {
    private int accountNumber; // indicates account involved
    private Screen screen; // ATM's screen
    private BankDatabase bankDatabase; // account info database
 
    // Transaction constructor invoked by subclasses using super()
-   public Transaction(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase) {
+   public Transaction(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,String actionName) {
+      super(actionName);
       accountNumber = userAccountNumber;
       screen = atmScreen;
       bankDatabase = atmBankDatabase;
@@ -30,6 +33,8 @@ public abstract class Transaction {
 
    // perform the transaction (overridden by each subclass)
    abstract public void execute();
+
+   abstract public void createPanelUI();
 
    /**
     * Checks if the account meets the conditions for a limit-related notification

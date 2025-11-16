@@ -4,8 +4,13 @@
 public class BalanceInquiry extends Transaction {
    // BalanceInquiry constructor
    public BalanceInquiry(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase) {
-      super(userAccountNumber, atmScreen, atmBankDatabase);
+      super(userAccountNumber, atmScreen, atmBankDatabase,"Balance");
    } // end BalanceInquiry constructor
+
+   @Override
+   public void createPanelUI(){
+
+   }
 
    // performs the transaction
    public void execute() {

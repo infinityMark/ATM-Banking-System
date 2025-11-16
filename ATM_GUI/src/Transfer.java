@@ -11,17 +11,31 @@ public class Transfer extends Transaction {
     private int receiverAccount;
     private final static int CANCELED = 2;
 
-    private JFrame mainFrame;
-    private JPanel functionPanel;
-    private JPanel keypadPanel;
-
     public Transfer(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
             Keypad atmKeypad, CashDispenser atmCashDispenser) {
         // initialize superclass variables
-        super(userAccountNumber, atmScreen, atmBankDatabase);
+        super(userAccountNumber, atmScreen, atmBankDatabase,"Transfer");
         // initialize references to keypad and cash dispenser
         keypad = atmKeypad;
     } // end Transfer constructor
+
+
+    public JPanel getGUI(){
+        return mainPanel;
+    }
+
+    @Override
+    public void createPanelUI(){
+        textPanel.removeAll();
+
+        JLabel titleLabel = new JLabel("<html><center>Transfer Menu:<br>1 - Input receiver account number<br>2 - Exit<br>Choose a function:</center></html>", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("微软雅黑", Font.BOLD, 16)); // 减小字体大小
+
+        textPanel.add(titleLabel, BorderLayout.NORTH);
+
+        textPanel.revalidate();
+        textPanel.repaint();
+    }
 
     @Override
     public void execute() {
@@ -37,6 +51,10 @@ public class Transfer extends Transaction {
         // loop until cash is dispensed or the user cancels
         do {
             // obtain a chosen transfer function from the user
+            getGUI();
+            updateUI();
+            passInformation("Transfer Menu:");
+            updateUI();
             userSelection = displayMenu(
                     "\nTransfer Menu:", "1 - Input receiver account number", "2 - Exit",
                     "\nChoose a function: ", "\nInvalid selection. Try again.", "", "");

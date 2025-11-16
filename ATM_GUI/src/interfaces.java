@@ -135,7 +135,7 @@ public class interfaces {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 10, 10, 10);
 
-        TextFields a = new TextFields(500,40, StandardColor.Blue.getColorMode(), StandardColor.Green.getColorMode(), StandardColor.Indigo.getColorMode());
+        TextFields a = new TextFields(500,40, StandardColor.Blue.getColorMode(), StandardColor.Green.getColorMode(), StandardColor.Indigo.getColorMode(),new Font(Font.SANS_SERIF, Font.BOLD, 40));
 
         gbc.gridx=0;
         gbc.gridy=0;

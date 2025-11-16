@@ -10,21 +10,19 @@ public class TextFields extends JTextField {
     private int cornerRadius = 30;
     private boolean isHovered = false;
 
-    public TextFields(int widths, int heights, Color focus, Color hover, Color bordercolor) {
+    public TextFields(int widths, int heights, Color focus, Color hover, Color bordercolor, Font font) {
         super();
         setfocusBorderColor(focus);
         sethoverBorderColor(hover);
         setborderColor(bordercolor);
 
-//        setPreferredSize(new Dimension(widths, heights));
-        setOpaque(false); // 允许自定义绘制背景
+        setOpaque(false);
         setForeground(Color.BLACK);
-        setFont(new Font("Sans Serif", Font.PLAIN, 14));
         setPreferredSize(new Dimension(widths, heights));
+        setFont(font);
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // 添加鼠标监听器实现悬停效果
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -39,11 +37,11 @@ public class TextFields extends JTextField {
             }
         });
 
-        // 添加焦点监听器
         addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 repaint();
+                setBackground(focus);
             }
 
             @Override
@@ -51,7 +49,9 @@ public class TextFields extends JTextField {
                 repaint();
             }
         });
+
     }
+
 
     public TextFields(int widths, int heights, int cornerRadius) {
 //        this(widths, heights);
@@ -104,6 +104,8 @@ public class TextFields extends JTextField {
         repaint();
     }
 
+//    public Color getFocusBorderColor
+
     public void setBorderWidth(int width) {
         this.borderWidth = width;
         repaint();
@@ -128,5 +130,13 @@ public class TextFields extends JTextField {
         if (hasFocus()) return focusBorderColor;
         if (isHovered) return hoverBorderColor;
         return borderColor;
+    }
+
+    public Color getBorderColor(){
+        return borderColor;
+    }
+
+    public Color getHoverBorderColor(){
+        return hoverBorderColor;
     }
 }

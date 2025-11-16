@@ -34,6 +34,18 @@ public enum TransferRemark {
             System.out.println(i++ + "." + remark.name().replace('_', ' '));
     }
 
+    public static String[] transferRemarkFullOptions() {
+        int i = 1;
+        String[] getTransferRemarkFullOptions = new String[8];
+        // Iterate through all enum elements in TransferRemark, replace underscores with
+        // spaces in their names,
+        // and print each option with a sequential number
+        for (TransferRemark remark : TransferRemark.values()){
+            getTransferRemarkFullOptions[i] = i++ + "." + remark.name().replace('_', ' ');
+        }
+        return getTransferRemarkFullOptions;
+    }
+
     /**
      * Displays sub-options corresponding to a user-selected main TransferRemark
      * option.
@@ -49,6 +61,27 @@ public enum TransferRemark {
         // category only" option
         System.out.printf("1. %s\n2. %s\n3. %s\n4. %s\n", thirdRemark.optionOne, thirdRemark.optionTwo,
                 thirdRemark.optionThree, "keep major category only.");
+    }
+
+    /**
+     * Displays sub-options corresponding to a user-selected main TransferRemark
+     * option.
+     *
+     * @param option The index (1-based) of the main option selected by the user
+     */
+    public static String[] transferRemarkOptionDetails(int option) {
+        // Retrieve all TransferRemark enum elements and get the user-selected main
+        // option
+        String[] getTransferRemarkFullOptions = new String[2];
+        TransferRemark[] remark = TransferRemark.values();
+        TransferRemark thirdRemark = remark[option - 1];
+        // Print the sub-options for the selected main option, including a "keep major
+        // category only" option
+        getTransferRemarkFullOptions[0] = "0. "+thirdRemark.optionOne;
+        getTransferRemarkFullOptions[1] = "1. "+thirdRemark.optionTwo;
+        getTransferRemarkFullOptions[2] = "2. "+thirdRemark.optionThree;
+
+        return getTransferRemarkFullOptions;
     }
 
     /**

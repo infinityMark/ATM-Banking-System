@@ -11,12 +11,16 @@ public class Withdrawal extends Transaction {
    // constant corresponding to menu option to cancel
    private final static int CANCELED = 6;
 
+   @Override
+   public void createPanelUI(){
+
+   }
    // Withdrawal constructor
    public Withdrawal(int userAccountNumber, Screen atmScreen,
          BankDatabase atmBankDatabase, Keypad atmKeypad,
          CashDispenser atmCashDispenser) {
       // initialize superclass variables
-      super(userAccountNumber, atmScreen, atmBankDatabase);
+      super(userAccountNumber, atmScreen, atmBankDatabase,"Withdrawal");
 
       // initialize references to keypad and cash dispenser
       keypad = atmKeypad;

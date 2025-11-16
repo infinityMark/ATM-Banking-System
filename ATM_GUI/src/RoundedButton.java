@@ -12,7 +12,8 @@ public class RoundedButton extends JButton{
         isroundedStatus = roundedStatuss;
     }
 
-    public RoundedButton(String content,String changedContent,Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,Color changedFontColor,Font fontDefaultStyle,Font fontChangedSize,boolean roundedStatus,int widths,int heights) {
+    public RoundedButton(String content,String changedContent,Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,
+                         Color changedFontColor,Font fontDefaultStyle,Font fontChangedSize,boolean roundedStatus,int widths,int heights) {
 
         super(content);
         setOpaque(false);
