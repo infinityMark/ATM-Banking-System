@@ -71,9 +71,6 @@ public class Transfer extends Transaction {
         do {
             // obtain a chosen transfer function from the user
             getGUI();
-            updateUI();
-            passInformation("Transfer Menu:");
-            updateUI();
             userSelection = displayMenu(
                     "\nTransfer Menu:", "1 - Input receiver account number", "2 - Exit",
                     "\nChoose a function: ", "\nInvalid selection. Try again.", "", "");

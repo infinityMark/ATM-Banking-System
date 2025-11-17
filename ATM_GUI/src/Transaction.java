@@ -3,7 +3,7 @@
 
 import java.awt.*;
 
-public abstract class Transaction extends FunctionPanelStructure {
+public abstract class Transaction extends ATMUI {
    private int accountNumber; // indicates account involved
    private Screen screen; // ATM's screen
    private BankDatabase bankDatabase; // account info database
@@ -15,7 +15,6 @@ public abstract class Transaction extends FunctionPanelStructure {
       screen = atmScreen;
       bankDatabase = atmBankDatabase;
    } // end Transaction constructor
-
 
    // return account number
    public int getAccountNumber() {

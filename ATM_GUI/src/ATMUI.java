@@ -36,8 +36,38 @@ public class ATMUI {
 
     public boolean isAutoSize = false;
 
+    JPanel mainPanel = new JPanel(new GridBagLayout());
+    JPanel contentPanel = new JPanel();
+    JLabel taskTitle = new JLabel();
+
+    protected static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 40);
+    protected static final Font NORMAL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
+    protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+
     public ATMUI() {
         // initializeUI();
+    }
+
+    public ATMUI(String methodName){
+        mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+
+        taskTitle.setText(methodName);
+        taskTitle.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        taskTitle.setForeground(StandardColor.Blue.getColorMode());
+        taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
+
+        gbc.weighty = 0.1;
+        mainPanel.add(taskTitle, gbc);
+
+        gbc.gridy = 1;
+        gbc.weighty = 0.9;
+        mainPanel.add(contentPanel, gbc);
     }
 
     public void initializeUI() {
@@ -321,4 +351,44 @@ public class ATMUI {
                 return null;
         }
     }
+
+    public JPanel getPanelUI(){
+        return mainPanel;
+    }
+
+    public void passInformation(String information){
+        taskTitle.setText(information);
+        taskTitle.revalidate();
+        taskTitle.repaint();
+    }
+
+    public void goBackToMainPanel() {
+        Container parent = mainPanel.getParent();
+        if (parent != null) {
+            Container current = parent;
+            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+                current = current.getParent();
+            }
+
+            if (current != null) {
+                CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, "mainMenu");
+            }
+        }
+    }
+
+    protected RoundedButton createStyledButton(String content,String changedContent,Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,
+                                               Color changedFontColor,Font fontDefaultStyle,Font fontChangedSize, boolean roundedStatus,int widths,int heights) {
+        RoundedButton button = new RoundedButton(content, changedContent,
+                defaultBackgroundColor,
+                changedBackgroundColor,
+                defaultFontColor,
+                changedFontColor,
+                fontDefaultStyle,
+                fontChangedSize, roundedStatus, widths, heights);
+
+        button.setHorizontalAlignment(SwingConstants.LEFT);
+        return button;
+    }
+
 }
