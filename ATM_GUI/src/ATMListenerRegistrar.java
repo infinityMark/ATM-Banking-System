@@ -10,6 +10,7 @@ import javax.swing.JPanel;
  * 专门负责 ATM UI 组件的监听器注册
  * 
  * Done by AI, Will improve later, do not judge me :)
+ * change if needed
  * using AI because I don't want to spend too much time on designing listeners
  * it may cause we can't get the work done on time
  * 
@@ -132,6 +133,7 @@ public class ATMListenerRegistrar {
 }
 /*
  * Done by AI, Will improve later, do not judge me :)
+ * change if needed
  * using AI because I don't want to spend too much time on designing listeners
  * it may cause we can't get the work done on time
  */

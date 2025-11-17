@@ -2,12 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ATMUI {
+    // ------------- Panel name constants -------------
     public static final String LOGIN_PANEL = "login";
     public static final String MAIN_MENU_PANEL = "mainMenu";
     public static final String BALANCE_PANEL = "balance";
     public static final String WITHDRAW_PANEL = "withdraw";
     public static final String TRANSFER_PANEL = "transfer";
     public static final String KEYPAD_PANEL = "keypad";
+
+    // Main frame and panels
 
     private CardLayout centerCardLayout;
     private JPanel mainUpperPanel;
@@ -16,6 +19,20 @@ public class ATMUI {
     private JPanel rightButtonPanel;
     private JPanel lowerPanel;// keypad panel
     private JFrame mainframe;
+
+    // ------------- Side panel buttons -------------
+
+    // left side panel buttons
+    private JButton Button1;
+    private JButton Button2;
+    private JButton Button3;
+    private JButton Button4;
+
+    // Right side panel buttons
+    private JButton Button5;
+    private JButton Button6;
+    private JButton Button7;
+    private JButton Button8;
 
     public boolean isAutoSize = false;
 
@@ -46,7 +63,6 @@ public class ATMUI {
         int screenHeight = (int) (screenSize.height * rate);
         mainframe.setSize(screenWidth, screenHeight);
         mainframe.setLocationRelativeTo(null);
-        mainframe.setVisible(true);
 
         mainframe.setVisible(true);
     }
@@ -107,17 +123,29 @@ public class ATMUI {
     }
 
     protected void addButtonsToSidePanels() {
+        // initialize left buttons, change if needed
+        Button1 = new JButton("Left 1");
+        Button2 = new JButton("Left 2");
+        Button3 = new JButton("Left 3");
+        Button4 = new JButton("Left 4");
+
+        // initialize right buttons, change if needed
+        Button5 = new JButton("Right 1");
+        Button6 = new JButton("Right 2");
+        Button7 = new JButton("Right 3");
+        Button8 = new JButton("Right 4");
+
         // left buttons
-        leftButtonPanel.add(new JButton("Help"));
-        leftButtonPanel.add(new JButton("Language"));
-        leftButtonPanel.add(new JButton("Services"));
-        leftButtonPanel.add(new JButton("Info"));
+        leftButtonPanel.add(Button1);
+        leftButtonPanel.add(Button2);
+        leftButtonPanel.add(Button3);
+        leftButtonPanel.add(Button4);
 
         // right buttons
-        rightButtonPanel.add(new JButton("History"));
-        rightButtonPanel.add(new JButton("Settings"));
-        rightButtonPanel.add(new JButton("Support"));
-        rightButtonPanel.add(new JButton("Logout"));
+        rightButtonPanel.add(Button5);
+        rightButtonPanel.add(Button6);
+        rightButtonPanel.add(Button7);
+        rightButtonPanel.add(Button8);
     }
 
     private void insertToCenterPanel() {
@@ -267,5 +295,30 @@ public class ATMUI {
             }
         }
         return null;
+    }
+
+    // ------------- Side panel buttons getters -------------
+
+    public JButton getButton(int index) {
+        switch (index) {
+            case 1:
+                return Button1;
+            case 2:
+                return Button2;
+            case 3:
+                return Button3;
+            case 4:
+                return Button4;
+            case 5:
+                return Button5;
+            case 6:
+                return Button6;
+            case 7:
+                return Button7;
+            case 8:
+                return Button8;
+            default:
+                return null;
+        }
     }
 }

@@ -1,3 +1,4 @@
+
 // ATM.java
 // Represents an automated teller machine
 import javax.swing.*;
@@ -41,10 +42,10 @@ public class ATM extends JFrame {
       initializeGUI();
    } // end no-argument ATM constructor
 
-   private void initializeGUI(){
+   private void initializeGUI() {
       mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      //setting icon for window
+      // setting icon for window
       ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
       setIconImage(icon.getImage());
 
@@ -61,8 +62,9 @@ public class ATM extends JFrame {
       Transaction currentTransaction = createTransaction(3);
 
       functionPanel = currentTransaction.getPanelUI();
-//      functionPanel = createFunctionPanel((int)(screenWidth*0.7),screenHeight,"keypad");
-      keypadPanel = createkeypadPanel((int)(screenWidth*0.3),screenHeight,"keypad");
+      // functionPanel =
+      // createFunctionPanel((int)(screenWidth*0.7),screenHeight,"keypad");
+      keypadPanel = createkeypadPanel((int) (screenWidth * 0.3), screenHeight, "keypad");
 
       add(functionPanel, BorderLayout.CENTER);
       add(keypadPanel, BorderLayout.EAST);
@@ -70,7 +72,7 @@ public class ATM extends JFrame {
       setVisible(true);
    }
 
-   //Temporary for test
+   // Temporary for test
    private JPanel createkeypadPanel(int width, int height, String methodName) {
       JPanel panel = new JPanel();
       panel.setBackground(StandardColor.Red.getColor(1));
@@ -79,7 +81,7 @@ public class ATM extends JFrame {
       return panel;
    }
 
-   //Temporary for test
+   // Temporary for test
    private JPanel createFunctionPanel(int width, int height, String methodName) {
       JPanel panel = new JPanel();
       panel.setBackground(Color.PINK);
@@ -148,7 +150,7 @@ public class ATM extends JFrame {
                // initialize as new object of chosen type
                currentTransaction = createTransaction(mainMenuSelection);
                currentTransaction.execute();
-//               functionPanel = currentTransaction.getPanelUI(); // execute transaction
+               // functionPanel = currentTransaction.getPanelUI(); // execute transaction
                break;
             case RECORD:
                TransactionHistory.checkHistory(currentAccountNumber);
