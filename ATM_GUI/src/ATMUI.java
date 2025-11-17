@@ -37,6 +37,17 @@ public class ATMUI {
         mainContainer.add(lowerPanel, BorderLayout.SOUTH);
         mainframe.add(mainContainer);
 
+        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
+        mainframe.setIconImage(icon.getImage());
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        final double rate = 0.9;
+        int screenWidth = (int) (screenSize.width * rate);
+        int screenHeight = (int) (screenSize.height * rate);
+        mainframe.setSize(screenWidth, screenHeight);
+        mainframe.setLocationRelativeTo(null);
+        mainframe.setVisible(true);
+
         mainframe.setVisible(true);
     }
 
@@ -159,15 +170,14 @@ public class ATMUI {
         return panel;
     }
 
+    Screen screen = new Screen();
+    BankDatabase bankDatabase = new BankDatabase();
+    Keypad atmKeypad;
+    CashDispenser atmCashDispenser;
+
     protected JPanel createTransferPanel() {
-        JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
+        JPanel panel = new TransferUI(21111, screen, bankDatabase, atmKeypad, atmCashDispenser).transferLayout();
         panel.setName(TRANSFER_PANEL);
-        panel.add(new JLabel("Target Account:"));
-        panel.add(new JTextField(15));
-        panel.add(new JLabel("Amount:"));
-        panel.add(new JTextField(10));
-        panel.add(new JButton("Confirm"));
-        panel.add(new JButton("Cancel"));
         return panel;
     }
 

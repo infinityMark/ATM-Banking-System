@@ -58,6 +58,14 @@ public class TextFields extends JTextField {
         this.cornerRadius = cornerRadius;
     }
 
+    public void warning(){
+        setBackground(StandardColor.Red.getColorMode());
+    }
+
+    public String getContent(){
+        return getText().isEmpty()? "0": getText();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();

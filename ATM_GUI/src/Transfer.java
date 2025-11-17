@@ -23,6 +23,21 @@ public class Transfer extends Transaction {
         super(userAccountNumber, atmScreen, atmBankDatabase,"Transfer");
     }
 
+    protected double getAmount(){
+        return amount;
+    }
+
+    protected void setAmount(double amounts){
+        this.amount = amounts;
+    }
+
+    protected int getReceiverAccounts(){
+        return receiverAccount;
+    }
+
+    protected void setReceiverAccounts(int receiverAccount){
+        this.receiverAccount = receiverAccount;
+    }
 
     public JPanel getGUI(){
         return mainPanel;
@@ -178,7 +193,7 @@ public class Transfer extends Transaction {
 
     // Add
     // To check whether user input correct format of account.
-    private double varifyAmount(Screen screen) {
+    protected double varifyAmount(Screen screen) {
         // This try-catch function aim to obtain user's input of amount, to do verify
         // checking
         try {
@@ -191,7 +206,7 @@ public class Transfer extends Transaction {
     }
 
     // Add
-    private boolean isTwoDecimalOnly(double predictAmount) {
+    protected boolean isTwoDecimalOnly(double predictAmount) {
         // This try-catch function aim to cope when user do not input correct amount
         // format, like ...10
         try {
