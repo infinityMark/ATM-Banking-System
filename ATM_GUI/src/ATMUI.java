@@ -175,6 +175,23 @@ public class ATMUI {
     Keypad atmKeypad;
     CashDispenser atmCashDispenser;
 
+
+    public void switchPanels(String name) {
+        if (TRANSFER_PANEL.equals(name)) {
+            Component[] components = centerPanel.getComponents();
+            for (Component comp : components) {
+                if (TRANSFER_PANEL.equals(comp.getName())) {
+                    centerPanel.remove(comp);
+                }
+            }
+
+            JPanel transferPanel = createTransferPanel();
+            centerPanel.add(transferPanel, TRANSFER_PANEL);
+        }
+
+        centerCardLayout.show(centerPanel, name);
+    }
+
     protected JPanel createTransferPanel() {
         JPanel panel = new TransferUI(21111, screen, bankDatabase, atmKeypad, atmCashDispenser).transferLayout();
         panel.setName(TRANSFER_PANEL);

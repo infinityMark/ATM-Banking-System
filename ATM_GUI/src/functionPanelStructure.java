@@ -6,6 +6,11 @@ abstract public class FunctionPanelStructure extends JPanel {
     JPanel contentPanel = new JPanel();
     JLabel taskTitle = new JLabel();
 
+    protected static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 40);
+    protected static final Font NORMAL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
+    protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+
+
     public FunctionPanelStructure(String methodName){
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
@@ -41,5 +46,19 @@ abstract public class FunctionPanelStructure extends JPanel {
         taskTitle.setText(information);
         taskTitle.revalidate();
         taskTitle.repaint();
+    }
+
+    protected RoundedButton createStyledButton(String content,String changedContent,Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,
+                                               Color changedFontColor,Font fontDefaultStyle,Font fontChangedSize, boolean roundedStatus,int widths,int heights) {
+        RoundedButton button = new RoundedButton(content, changedContent,
+                defaultBackgroundColor,
+                changedBackgroundColor,
+                defaultFontColor,
+                changedFontColor,
+                fontDefaultStyle,
+                fontChangedSize, roundedStatus, widths, heights);
+
+        button.setHorizontalAlignment(SwingConstants.LEFT);
+        return button;
     }
 }

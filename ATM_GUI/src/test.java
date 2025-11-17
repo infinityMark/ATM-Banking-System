@@ -2,47 +2,50 @@
 //import java.awt.*;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
-//import java.math.BigDecimal;
-//import java.util.Scanner;
 //
-//public class test extends JFrame {
+//public class TransferUI extends Transfer {
 //    private static CardLayout cardLayout;
 //    private static JPanel cardPanel;
 //    private static JPanel mainPanel;
+//    private Boolean isReceiverValid = false;
+//    private Boolean isAmountValid = false;
 //
-//    private double amount; // amount to transfer
-//    private Keypad keypad; // reference to keypad
-//    private int receiverAccount;
-//    private Screen screen;
-//    BankDatabase bankDatabase = new BankDatabase();
-//    private CashDispenser cashDispenser;
+//    BankDatabase bankDatabase = getBankDatabase();
 //
-//    private class textFieldHandler implements ActionListener{
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
+//    public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
+//                      Keypad atmKeypad, CashDispenser atmCashDispenser){
+//        super(userAccountNumber,atmScreen,atmBankDatabase,
+//                atmKeypad,atmCashDispenser);
+//    }
 //
+//    public RoundedButton getButtonByName(JPanel panel, String buttonName) {
+//        for (Component comp : panel.getComponents()) {
+//            if (comp instanceof JPanel) {
+//                RoundedButton found = getButtonByName((JPanel) comp, buttonName);
+//                if (found != null) return found;
+//            } else if (comp instanceof RoundedButton && buttonName.equals(comp.getName())) {
+//                return (RoundedButton) comp;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public void goBackToMainPanel() {
+//        Container parent = mainPanel.getParent();
+//        if (parent != null) {
+//            Container current = parent;
+//            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+//                current = current.getParent();
+//            }
+//
+//            if (current != null) {
+//                CardLayout layout = (CardLayout) current.getLayout();
+//                layout.show(current, "mainMenu");
+//            }
 //        }
 //    }
 //
-//    static private boolean isTwoDecimalOnly(double predictAmount) {
-//        // This try-catch function aim to cope when user do not input correct amount
-//        // format, like ...10
-//        try {
-//            BigDecimal amount = BigDecimal.valueOf(predictAmount);
-//            String amountStr = amount.toPlainString();
-//            int decimalIndex = amountStr.indexOf('.');
-//
-//            if (decimalIndex == -1)
-//                return true;
-//
-//            int decimalPlaces = amountStr.length() - decimalIndex - 1;
-//            return decimalPlaces <= 2;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
-//
-//    static public JPanel getSelectionMenu(String title, String firstSelection, String secondSelection, int fontSize, Font font){
+//    public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection, int fontSize, Font font, String NextPage){
 //        JPanel panel = new JPanel(new GridBagLayout());
 //        GridBagConstraints gbc = new GridBagConstraints();
 //
@@ -71,9 +74,11 @@
 //                true, 200, 10);
 //        selectionTwoBtn.setHorizontalAlignment(SwingConstants.LEFT);
 //
-//        // 添加按钮监听器
-//        selectionOneBtn.addActionListener(e -> showCard("INFO"));
-//        selectionTwoBtn.addActionListener(e -> System.exit(0)); // 退出
+//        selectionOneBtn.setName("FIRST_BUTTON");
+//        selectionTwoBtn.setName("SECOND_BUTTON");
+//
+//        selectionOneBtn.addActionListener(e -> showCard(NextPage));
+//        selectionTwoBtn.addActionListener(e -> goBackToMainPanel());
 //
 //        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 //
@@ -99,7 +104,12 @@
 //        return panel;
 //    }
 //
-//    static public JPanel receiveTransferInformation(String remainAmount){
+//    private void clearInputFields(TextFields a, TextFields b) {
+//        if (a != null)  a.setText("");
+//        if (b != null)  b.setText("");
+//    }
+//
+//    public JPanel createReceiveTransferInformation(String remainAmount){
 //        JPanel panel = new JPanel(new GridBagLayout());
 //        GridBagConstraints gbc = new GridBagConstraints();
 //
@@ -112,6 +122,7 @@
 //        remainAmountTitle.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
 //        remainAmountTitle.setForeground(StandardColor.GreyHighest.getOppositeColorMode());
 //
+//        // delete later
 //        RoundedButton confirmationButton = new RoundedButton("Confirm", "Confirm",
 //                StandardColor.Green.getColorMode(),
 //                StandardColor.GreyHighest.getColorMode(),
@@ -144,11 +155,11 @@
 //
 //        String receiver = "Receiver account";
 //        JLabel receiverLabel = new JLabel(receiver);
-//        receiverLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+//        receiverLabel.setFont(NORMAL_FONT);
 //
 //        String amount = "Amount";
 //        JLabel amountLabel = new JLabel(amount);
-//        amountLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+//        amountLabel.setFont(NORMAL_FONT);
 //
 //        TextFields amountSy = new TextFields(200, 30,
 //                StandardColor.GreyHighest.getColor(0),
@@ -198,30 +209,70 @@
 //        buttonPanel.add(backButton);
 //        buttonPanel.add(confirmationButton);
 //
-//        BankDatabase bankDatabase = new BankDatabase();
 //        confirmationButton.addActionListener(e -> {
-//            int i = 0;
-//            i = Integer.parseInt(receiverAccountTextField.getText());
-//            if (bankDatabase.isAccountNumberExist(i)==-1){
+//            isReceiverValid = false;
+//            isAmountValid = false;
+//
+//            String accountText = receiverAccountTextField.getContent().trim();
+//            if (accountText.isEmpty()) {
 //                receiverAccountTextField.warning();
-//                receiverLabel.setText(receiver+" | The receiver account does not exist");
-//            } else if (21111 == i) {
-//                receiverAccountTextField.warning();
-//                receiverLabel.setText(receiver+" | The send account and receiver account can not be same.");
+//                receiverLabel.setText(receiver + " | Please enter account number");
+//                return;
 //            }
 //
-//            double x = Double.parseDouble(amountTextField.getText());
-//            if (!isTwoDecimalOnly(x)){
+//            try {
+//                int accountNumber = Integer.parseInt(accountText);
+//
+//                if (bankDatabase.isAccountNumberExist(accountNumber) == -1) {
+//                    receiverAccountTextField.warning();
+//                    receiverLabel.setText(receiver + " | The receiver account does not exist");
+//                    isReceiverValid = false;
+//                } else if (super.getAccountNumber() == accountNumber) {
+//                    receiverAccountTextField.warning();
+//                    receiverLabel.setText(receiver + " | The send account and receiver account can not be same.");
+//                    isReceiverValid = false;
+//                } else {
+//                    setReceiverAccounts(accountNumber);
+//                    isReceiverValid = true;
+//                    setReceiverAccounts(accountNumber);
+//                    receiverLabel.setText(receiver);
+//                }
+//            } catch (NumberFormatException ex) {
+//                receiverAccountTextField.warning();
+//                receiverLabel.setText(receiver + " | Please enter a valid account number");
+//                isReceiverValid = false;
+//            }
+//
+//            String amountText = amountTextField.getContent().trim();
+//            if (amountText.isEmpty()) {
 //                amountTextField.warning();
-//                amountLabel.setText(amount+" | Only two decimal amount is maximum allowed");
+//                amountLabel.setText(amount + " | Please enter amount");
+//                return;
+//            }
+//
+//            try {
+//                double amountValue = Double.parseDouble(amountText);
+//
+//                if (!isTwoDecimalOnly(amountValue)) {
+//                    amountTextField.warning();
+//                    amountLabel.setText(amount + " | Only two decimal amount is maximum allowed");
+//                    isAmountValid = false;
+//                } else {
+//                    setAmount(amountValue);
+//                    isAmountValid = true;
+//                    amountLabel.setText(amount);
+//                }
+//            } catch (NumberFormatException ex) {
+//                amountTextField.warning();
+//                amountLabel.setText(amount + " | Please enter a valid amount");
+//                isAmountValid = false;
+//            }
+//
+//            if (isReceiverValid && isAmountValid) {
+//                showCard("CONFIRMATION");
+//                clearInputFields(receiverAccountTextField,amountTextField);
 //            }
 //        });
-//
-////        receiverAccountTextField.addActionListener();
-////        if (receiverAccountTextField.getBackground()!=StandardColor.Red.getColorMode()){
-////            receiverLabel.setForeground(StandardColor.GreyHighest.getOppositeColorMode());
-////            receiverLabel.setText(receiver);
-////        }
 //
 //        backButton.addActionListener(e -> showCard("MENU"));
 //
@@ -234,14 +285,16 @@
 //        return panel;
 //    }
 //
-//    static public JPanel confirmationStep(String previous, String title, String firstSelection, String secondSelection, int fontSize, Font font){
+//    public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection, int fontSize, Font font){
 //        JPanel panel = new JPanel(new GridBagLayout());
 //        GridBagConstraints gbc = new GridBagConstraints();
 //
 //        gbc.gridx = 0;
 //        gbc.fill = GridBagConstraints.BOTH;
 //
-//        JLabel previousLabel = new JLabel(previous);
+//        String previous = "The system is going to transfer " + getAmount() + " to account number: " + getReceiverAccounts();
+//        JLabel previousLabel = new JLabel();
+//        previousLabel.setText(previous);
 //        previousLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
 //        previousLabel.setForeground(StandardColor.GreyHighest.getOppositeColorMode());
 //
@@ -254,14 +307,23 @@
 //        gbc.weighty = 0.4;
 //        gbc.gridy = 1;
 //        gbc.insets = new Insets(0, 0, 0, 0);
-//        JPanel selectionMenu = getSelectionMenu(title,firstSelection,secondSelection,fontSize,font);
+//        JPanel selectionMenu = createSelectionMenu(title,firstSelection,secondSelection,fontSize,font,"AFTER_TRANSACTION");
 //        selectionMenu.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 //        panel.add(selectionMenu, gbc);
+//
+//        RoundedButton firstButton = getButtonByName(selectionMenu, "FIRST_BUTTON");
+//        firstButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
+//                System.out.println(bankDatabase.getAvailableBalance(getAccountNumber()));
+//            }
+//        });
 //
 //        return panel;
 //    }
 //
-//    static public JPanel afterTransaction(String transactionInformation, Font font){
+//    public JPanel createAfterTransaction(String transactionInformation, Font font){
 //        JPanel panel = new JPanel(new GridBagLayout());
 //        GridBagConstraints gbc = new GridBagConstraints();
 //
@@ -281,7 +343,6 @@
 //
 //        panel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 //
-//        gbc.gridy = 0;
 //        gbc.weighty = 0.1;
 //        panel.add(transactionInformationLabel, gbc);
 //        gbc.gridy = 1;
@@ -289,15 +350,61 @@
 //        panel.add(endTransaction, gbc);
 //        gbc.gridy = 2;
 //        gbc.weighty = 0.8;
-//        panel.add(getSelectionMenu("Do you want transfer to another?","Yes, go back transfer","No, go back ATM menu", 30, font), gbc);
+//        panel.add(createSelectionMenu("Do you want transfer to another?","Yes, go back transfer","No, go back ATM menu", 30, font, "INFO"), gbc);
 //        return panel;
 //    }
 //
-//    private static void showCard(String cardName) {
+//    private void showCard(String cardName) {
+//        if ("INFO".equals(cardName)) {
+//            Component[] components = cardPanel.getComponents();
+//            for (Component comp : components) {
+//                if ("INFO".equals(((JPanel)comp).getName())) {
+//                    cardPanel.remove(comp);
+//                    break;
+//                }
+//            }
+//
+//            JPanel infoCard = createReceiveTransferInformation("Currently asset in your account HKD$"+bankDatabase.getAvailableBalance(getAccountNumber()));
+//            infoCard.setName("INFO");
+//            cardPanel.add(infoCard, "INFO");
+//        }
+//
+//        if ("CONFIRMATION".equals(cardName)) {
+//            Component[] components = cardPanel.getComponents();
+//            for (Component comp : components) {
+//                if ("CONFIRMATION".equals(((JPanel)comp).getName())) {
+//                    cardPanel.remove(comp);
+//                    break;
+//                }
+//            }
+//
+//            JPanel confirmationCard = createConfirmationStep(
+//                    "Transfer Confirmation Operation:", "1- Confirm the transfer", "2-Cancel the transfer", 40,
+//                    new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+//            confirmationCard.setName("CONFIRMATION");
+//            cardPanel.add(confirmationCard, "CONFIRMATION");
+//        }
+//
+//        if ("AFTER_TRANSACTION".equals(cardName)) {
+//            Component[] components = cardPanel.getComponents();
+//            for (Component comp : components) {
+//                if ("AFTER_TRANSACTION".equals(((JPanel)comp).getName())) {
+//                    cardPanel.remove(comp);
+//                    break;
+//                }
+//            }
+//
+//            String transactionInfo = "Total HK$ " + getAmount() + " transfers to account " + getReceiverAccounts() + ".";
+//            JPanel afterTransactionCard = createAfterTransaction(transactionInfo,
+//                    new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+//            afterTransactionCard.setName("AFTER_TRANSACTION");
+//            cardPanel.add(afterTransactionCard, "AFTER_TRANSACTION");
+//        }
+//
 //        cardLayout.show(cardPanel, cardName);
 //    }
 //
-//    static public JPanel transferLayout(){
+//    public JPanel transferLayout(){
 //        mainPanel = new JPanel(new GridBagLayout());
 //        mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 //
@@ -315,22 +422,10 @@
 //        cardLayout = new CardLayout();
 //        cardPanel = new JPanel(cardLayout);
 //
-//        JPanel menuCard = getSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
-//                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-//
-//        JPanel infoCard = receiveTransferInformation("Currently asset in your account HKD$1000.00");
-//
-//        JPanel confirmationCard = confirmationStep("The system is going to transfer 33.00 to account number: 21111",
-//                "Transfer Confirmation Operation:", "1- Confirm the transfer", "2-Cancel the transfer", 40,
-//                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-//
-//        JPanel afterTransactionCard = afterTransaction("Total HK$ 33.00 transfers to account 21111.",
-//                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+//        JPanel menuCard = createSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
+//                new Font(Font.SANS_SERIF, Font.PLAIN, 30), "INFO");
 //
 //        cardPanel.add(menuCard, "MENU");
-//        cardPanel.add(infoCard, "INFO");
-//        cardPanel.add(confirmationCard, "CONFIRMATION");
-//        cardPanel.add(afterTransactionCard, "AFTER_TRANSACTION");
 //
 //        gbc.gridy = 0;
 //        gbc.weightx = 1.0;
@@ -342,67 +437,5 @@
 //        mainPanel.add(cardPanel, gbc);
 //
 //        return mainPanel;
-//    }
-//
-//    public static void main(String[] args) {
-//        JFrame mains = new JFrame("Transfer System");
-//
-//        mainPanel = new JPanel(new GridBagLayout());
-//        mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
-//
-//        GridBagConstraints gbc = new GridBagConstraints();
-//        gbc.gridx = 0;
-//        gbc.fill = GridBagConstraints.BOTH;
-//
-//        JLabel taskTitle = new JLabel("Transfer");
-//        taskTitle.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-//        taskTitle.setForeground(StandardColor.Blue.getColorMode());
-//        taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
-//
-//        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
-//
-//        cardLayout = new CardLayout();
-//        cardPanel = new JPanel(cardLayout);
-//
-//        JPanel menuCard = getSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
-//                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-//
-//        JPanel infoCard = receiveTransferInformation("Currently asset in your account HKD$1000.00");
-//
-//        JPanel confirmationCard = confirmationStep("The system is going to transfer 33.00 to account number: 21111",
-//                "Transfer Confirmation Operation:", "1- Confirm the transfer", "2-Cancel the transfer", 40,
-//                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-//
-//        JPanel afterTransactionCard = afterTransaction("Total HK$ 33.00 transfers to account 21111.",
-//                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-//
-//        cardPanel.add(menuCard, "MENU");
-//        cardPanel.add(infoCard, "INFO");
-//        cardPanel.add(confirmationCard, "CONFIRMATION");
-//        cardPanel.add(afterTransactionCard, "AFTER_TRANSACTION");
-//
-//        gbc.gridy = 0;
-//        gbc.weightx = 1.0;
-//        gbc.weighty = 0.1;
-//        mainPanel.add(taskTitle, gbc);
-//
-//        gbc.gridy = 1;
-//        gbc.weighty = 0.9;
-//        mainPanel.add(cardPanel, gbc);
-//
-//        mains.add(mainPanel);
-//        mains.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        final double rate = 0.9;
-//        int screenWidth = (int) (screenSize.width * rate);
-//        int screenHeight = (int) (screenSize.height * rate);
-//        mains.setSize(screenWidth, screenHeight);
-//        mains.setLocationRelativeTo(null);
-//        mains.setVisible(true);
-//
-//        showCard("MENU");
-//
-//        Scanner scanner = new Scanner(System.in);
 //    }
 //}
