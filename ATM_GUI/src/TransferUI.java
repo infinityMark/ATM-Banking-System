@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.util.Scanner;
 
 public class TransferUI extends Transfer {
     private static CardLayout cardLayout;
@@ -11,8 +9,6 @@ public class TransferUI extends Transfer {
     private static JPanel mainPanel;
     private Boolean receiverAccountTextFieldChecker = false;
     private Boolean amountTextFieldChecker = false;
-    private int r;
-    private double a;
 
     BankDatabase bankDatabase = getBankDatabase();
 
@@ -22,9 +18,32 @@ public class TransferUI extends Transfer {
                 atmKeypad,atmCashDispenser);
     }
 
-//    public RoundedButton getButton(JPanel panel){
-//        return panel
-//    }
+    public RoundedButton getButtonByName(JPanel panel, String buttonName) {
+        for (Component comp : panel.getComponents()) {
+            if (comp instanceof JPanel) {
+                RoundedButton found = getButtonByName((JPanel) comp, buttonName);
+                if (found != null) return found;
+            } else if (comp instanceof RoundedButton && buttonName.equals(comp.getName())) {
+                return (RoundedButton) comp;
+            }
+        }
+        return null;
+    }
+
+    public void goBackToMainPanel() {
+        Container parent = mainPanel.getParent();
+        if (parent != null) {
+            Container current = parent;
+            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+                current = current.getParent();
+            }
+
+            if (current != null) {
+                CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, "mainMenu");
+            }
+        }
+    }
 
     public JPanel getSelectionMenu(String title, String firstSelection, String secondSelection, int fontSize, Font font, String NextPage){
         JPanel panel = new JPanel(new GridBagLayout());
@@ -55,8 +74,11 @@ public class TransferUI extends Transfer {
                 true, 200, 10);
         selectionTwoBtn.setHorizontalAlignment(SwingConstants.LEFT);
 
+        selectionOneBtn.setName("FIRST_BUTTON");
+        selectionTwoBtn.setName("SECOND_BUTTON");
+
         selectionOneBtn.addActionListener(e -> showCard(NextPage));
-        selectionTwoBtn.addActionListener(e -> System.exit(0)); // 退出
+        selectionTwoBtn.addActionListener(e -> goBackToMainPanel());
 
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -80,6 +102,15 @@ public class TransferUI extends Transfer {
         panel.add(buttonPanel, gbc);
 
         return panel;
+    }
+
+    private void clearInputFields(TextFields a, TextFields b) {
+        if (a != null) {
+            a.setText("");
+        }
+        if (b != null) {
+            b.setText("");
+        }
     }
 
     public JPanel receiveTransferInformation(String remainAmount){
@@ -194,22 +225,25 @@ public class TransferUI extends Transfer {
 
             try {
                 int accountNumber = Integer.parseInt(accountText);
-                r = accountNumber;
 
                 if (bankDatabase.isAccountNumberExist(accountNumber) == -1) {
                     receiverAccountTextField.warning();
                     receiverLabel.setText(receiver + " | The receiver account does not exist");
+                    receiverAccountTextFieldChecker = false;
                 } else if (super.getAccountNumber() == accountNumber) {
                     receiverAccountTextField.warning();
                     receiverLabel.setText(receiver + " | The send account and receiver account can not be same.");
+                    receiverAccountTextFieldChecker = false;
                 } else {
                     setReceiverAccounts(accountNumber);
                     receiverAccountTextFieldChecker = true;
+                    setReceiverAccounts(accountNumber);
                     receiverLabel.setText(receiver);
                 }
             } catch (NumberFormatException ex) {
                 receiverAccountTextField.warning();
                 receiverLabel.setText(receiver + " | Please enter a valid account number");
+                receiverAccountTextFieldChecker = false;
             }
 
             String amountText = amountTextField.getContent().trim();
@@ -221,24 +255,25 @@ public class TransferUI extends Transfer {
 
             try {
                 double amountValue = Double.parseDouble(amountText);
-                a = amountValue;
 
                 if (!isTwoDecimalOnly(amountValue)) {
                     amountTextField.warning();
                     amountLabel.setText(amount + " | Only two decimal amount is maximum allowed");
+                    amountTextFieldChecker = false;
                 } else {
                     setAmount(amountValue);
                     amountTextFieldChecker = true;
-                    amountLabel.setText(amount); // 清除错误信息
+                    amountLabel.setText(amount);
                 }
             } catch (NumberFormatException ex) {
                 amountTextField.warning();
                 amountLabel.setText(amount + " | Please enter a valid amount");
+                amountTextFieldChecker = false;
             }
 
-            // 所有验证通过后跳转
             if (receiverAccountTextFieldChecker && amountTextFieldChecker) {
                 showCard("CONFIRMATION");
+                clearInputFields(receiverAccountTextField,amountTextField);
             }
         });
 
@@ -260,7 +295,7 @@ public class TransferUI extends Transfer {
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.BOTH;
 
-        String previous = "The system is going to transfer " + a + " to account number: " + r;
+        String previous = "The system is going to transfer " + getAmount() + " to account number: " + getReceiverAccounts();
         JLabel previousLabel = new JLabel();
         previousLabel.setText(previous);
         previousLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
@@ -278,6 +313,15 @@ public class TransferUI extends Transfer {
         JPanel selectionMenu = getSelectionMenu(title,firstSelection,secondSelection,fontSize,font,"AFTER_TRANSACTION");
         selectionMenu.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         panel.add(selectionMenu, gbc);
+
+        RoundedButton firstButton = getButtonByName(selectionMenu, "FIRST_BUTTON");
+        firstButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
+                System.out.println(bankDatabase.getAvailableBalance(getAccountNumber()));
+            }
+        });
 
         return panel;
     }
@@ -302,7 +346,6 @@ public class TransferUI extends Transfer {
 
         panel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
-        gbc.gridy = 0;
         gbc.weighty = 0.1;
         panel.add(transactionInformationLabel, gbc);
         gbc.gridy = 1;
@@ -314,7 +357,53 @@ public class TransferUI extends Transfer {
         return panel;
     }
 
-    private  void showCard(String cardName) {
+    private void showCard(String cardName) {
+        if ("INFO".equals(cardName)) {
+            Component[] components = cardPanel.getComponents();
+            for (Component comp : components) {
+                if ("INFO".equals(((JPanel)comp).getName())) {
+                    cardPanel.remove(comp);
+                    break;
+                }
+            }
+
+            JPanel infoCard = receiveTransferInformation("Currently asset in your account HKD$"+bankDatabase.getAvailableBalance(getAccountNumber()));
+            infoCard.setName("INFO");
+            cardPanel.add(infoCard, "INFO");
+        }
+
+        if ("CONFIRMATION".equals(cardName)) {
+            Component[] components = cardPanel.getComponents();
+            for (Component comp : components) {
+                if ("CONFIRMATION".equals(((JPanel)comp).getName())) {
+                    cardPanel.remove(comp);
+                    break;
+                }
+            }
+
+            JPanel confirmationCard = confirmationStep(
+                    "Transfer Confirmation Operation:", "1- Confirm the transfer", "2-Cancel the transfer", 40,
+                    new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+            confirmationCard.setName("CONFIRMATION");
+            cardPanel.add(confirmationCard, "CONFIRMATION");
+        }
+
+        if ("AFTER_TRANSACTION".equals(cardName)) {
+            Component[] components = cardPanel.getComponents();
+            for (Component comp : components) {
+                if ("AFTER_TRANSACTION".equals(((JPanel)comp).getName())) {
+                    cardPanel.remove(comp);
+                    break;
+                }
+            }
+
+            String transactionInfo = "Total HK$ " + getAmount() + " transfers to account " + getReceiverAccounts() + ".";
+            JPanel afterTransactionCard = afterTransaction(transactionInfo,
+                    new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+            afterTransactionCard.setName("AFTER_TRANSACTION");
+            cardPanel.add(afterTransactionCard, "AFTER_TRANSACTION");
+        }
+
         cardLayout.show(cardPanel, cardName);
     }
 
@@ -339,19 +428,7 @@ public class TransferUI extends Transfer {
         JPanel menuCard = getSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
                 new Font(Font.SANS_SERIF, Font.PLAIN, 30), "INFO");
 
-        JPanel infoCard = receiveTransferInformation("Currently asset in your account HKD$"+bankDatabase.getAvailableBalance(getAccountNumber()));
-
-        JPanel confirmationCard = confirmationStep(
-                "Transfer Confirmation Operation:", "1- Confirm the transfer", "2-Cancel the transfer", 40,
-                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-
-        JPanel afterTransactionCard = afterTransaction("Total HK$ 33.00 transfers to account 21111.",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-
         cardPanel.add(menuCard, "MENU");
-        cardPanel.add(infoCard, "INFO");
-        cardPanel.add(confirmationCard, "CONFIRMATION");
-        cardPanel.add(afterTransactionCard, "AFTER_TRANSACTION");
 
         gbc.gridy = 0;
         gbc.weightx = 1.0;
