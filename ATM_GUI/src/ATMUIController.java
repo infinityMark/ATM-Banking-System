@@ -5,11 +5,21 @@ import javax.swing.*;
  */
 public class ATMUIController {
     private ATMUI atmUI;
+    private ATM atm;
+    private ATMListenerRegistrar listenerRegistrar;
 
-    public ATMUIController(ATMUI atmUI) {
+    public ATMUIController(ATMUI atmUI, ATM atm) {
         this.atmUI = atmUI;
+        this.atm = atm;
+        this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
     }
 
+    // ------------- General method for switching panels -------------
+    public void switchToPanel(String panelName) {
+        atmUI.switchPanel(panelName);
+    }
+
+    // ------------- Convenience methods for switching panels -------------
     public void switchToLoginPanel() {
         atmUI.switchPanel("login");
     }
@@ -34,28 +44,18 @@ public class ATMUIController {
         return atmUI.getMainFrame();
     }
 
+    public void setup() {
+        listenerRegistrar.registerAllListeners();
+    }
+
     // For testing only
     public static void main(String[] args) {
-        ATMUI atmUI = new ATMUI();
-        ATMUIController atm = new ATMUIController(atmUI);
-        atm.switchToLoginPanel();
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        atm.switchToMainMenuPanel();
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        atm.switchToBalancePanel();
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        atm.switchToTransferPanel();
+        EnhancedATMUI atmUI = new EnhancedATMUI();
+        atmUI.initializeUI();
+        ATM atm = new ATM();
+        ATMUIController controller = new ATMUIController(atmUI, atm);
+
+        controller.setup(); // register all listeners
+        controller.getMainFrame().setVisible(true); // show UI
     }
 }
