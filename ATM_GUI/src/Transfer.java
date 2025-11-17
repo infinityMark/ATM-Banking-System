@@ -19,6 +19,10 @@ public class Transfer extends Transaction {
         keypad = atmKeypad;
     } // end Transfer constructor
 
+    public Transfer(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase){
+        super(userAccountNumber, atmScreen, atmBankDatabase,"Transfer");
+    }
+
 
     public JPanel getGUI(){
         return mainPanel;
