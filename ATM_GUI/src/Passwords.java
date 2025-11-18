@@ -12,7 +12,7 @@ public class Passwords extends JPasswordField{
     private boolean isHovered = false;
 
 
-    public Passwords(int widths, int heights, Color focus, Color hover, Color bordercolor) {
+    public Passwords(int widths, int heights, Color focus, Color hover, Color bordercolor, Font font) {
         super();
         setfocusBorderColor(focus);
         sethoverBorderColor(hover);
@@ -20,6 +20,7 @@ public class Passwords extends JPasswordField{
 
 //        setPreferredSize(new Dimension(widths, heights));
         setOpaque(false);
+        setFont(font);
         setForeground(Color.BLACK);
         setFont(new Font("Sans Serif", Font.PLAIN, 14));
         setPreferredSize(new Dimension(widths, heights));
