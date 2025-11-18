@@ -48,6 +48,8 @@ public class ATMListenerRegistrar {
                 e -> controller.switchToTransferPanel());
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Account Info",
                 e -> controller.showAccountInfo());
+        addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transaction History",
+                 e -> controller.showTransactionHistory());
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
                 e -> controller.exitSystem());
 
