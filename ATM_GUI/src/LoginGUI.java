@@ -26,7 +26,11 @@ public class LoginGUI extends JFrame {
         getContentPane().setBackground(new Color(0,0,139)); 
 
         centerPanel = new JPanel(new GridBagLayout());
-        passwordF = new JPasswordField();
+        passwordF = new Passwords(200, 30,
+                StandardColor.GreyHighest.getColor(0),
+                StandardColor.Blue.getColor(0),
+                StandardColor.GreyHighest.getColor(1),
+                new Font(Font.SANS_SERIF, Font.BOLD,30));
         accounTF = new TextFields(200, 30,
                 StandardColor.GreyHighest.getColor(0),
                 StandardColor.Blue.getColor(0),
