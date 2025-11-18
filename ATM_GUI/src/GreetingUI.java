@@ -6,7 +6,7 @@ public class GreetingUI {
     private static JPanel cardPanel;
     private static JPanel mainPanel;
 
-    static private GridBagConstraints createDefaultGridBagConstraints() {
+    static protected GridBagConstraints createDefaultGridBagConstraints() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.weightx = 1.0;
@@ -14,19 +14,20 @@ public class GreetingUI {
         return gbc;
     }
 
-    static private JLabel createStyledLabel(String text, Font font, Color color) {
+    static protected JLabel createStyledLabel(String text, Font font, Color color) {
         JLabel label = new JLabel(text);
         label.setFont(font);
         label.setForeground(color);
         return label;
     }
 
-    static private JPanel reminderUI(){
+    static protected JPanel reminderUI(){
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 15, 10, 15);
 
         JLabel label = createStyledLabel("Take out your card after operation", ATMUI.NORMAL_FONT, StandardColor.GreyHighest.getColor(1));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
         panel.add(label, gbc);
         panel.add(imageLabel,gbc);
@@ -40,6 +41,7 @@ public class GreetingUI {
         gbc.insets = new Insets(10, 15, 10, 15);
 
         JLabel label = createStyledLabel("Welcome to use ATM system", ATMUI.NORMAL_FONT, StandardColor.GreyHighest.getColor(1));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png")));
         panel.add(label, gbc);
         panel.add(imageLabel,gbc);
@@ -61,7 +63,6 @@ public class GreetingUI {
         JPanel atmPhoto = createGreetingUI();
         JPanel reminderPanel = reminderUI();
 
-//        addComponentToPanel(mainPanel, gbc, taskTitle, 0, 0.1);
         gbc.gridy = 1;
         gbc.gridx = 0;
         gbc.weighty = 1;
