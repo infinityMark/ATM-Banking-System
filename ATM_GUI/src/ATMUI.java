@@ -240,10 +240,10 @@ public class ATMUI {
     protected JPanel createLoginPanel() {
         JButton confirmButton = new JButton();
         confirmButton.setName("Confirm");
-        LoginGUI loginGUI = new LoginGUI();
+        LoginGUI loginGUI = new LoginGUI(true);
         confirmButton = new JButton("Confirm");
         confirmButton.setName(test);
-        JPanel panel = loginGUI.createMainMenuPanels(true, confirmButton);
+        JPanel panel = loginGUI.createMainMenuPanels();
         panel.setName(LOGIN_PANEL);
         return panel;
     }
