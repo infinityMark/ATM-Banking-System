@@ -54,7 +54,7 @@ public class ATMUI {
     protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
     public ATMUI() {
-         initializeUI();
+        initializeUI();
     }
 
     public ATMUI(String methodName) {
@@ -82,6 +82,7 @@ public class ATMUI {
 
     public void initializeUI() {
         baseSetup();
+
         mainframe.setLocationRelativeTo(null);
 
         JPanel mainContainer = new JPanel(new BorderLayout(0, 10));
@@ -94,10 +95,10 @@ public class ATMUI {
         mainContainer.add(lowerPanel, BorderLayout.SOUTH);
         mainframe.add(mainContainer);
 
-        try{
+        try {
             ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
             mainframe.setIconImage(icon.getImage());
-        }catch (NullPointerException nullPointerException){
+        } catch (NullPointerException nullPointerException) {
             System.out.println("Invalid image path");
         }
 
@@ -237,6 +238,8 @@ public class ATMUI {
     // -------------functional panels creation methods-------------
 
     protected JPanel createLoginPanel() {
+        JButton confirmButton = new JButton();
+        confirmButton.setName("Confirm");
         LoginGUI loginGUI = new LoginGUI();
         confirmButton = new JButton("Confirm");
         confirmButton.setName(test);
@@ -251,16 +254,26 @@ public class ATMUI {
         return panel;
     }
 
+    //method of createBalancePanel
     protected JPanel createBalancePanel() {
-        JPanel panel = new JPanel(new FlowLayout());
-        panel.setName(BALANCE_PANEL);
-        panel.add(new JLabel("Current Balance:"));
-        panel.add(new JLabel("¥ 10000.00"));
+        // default balance panel with account number 0
+        BalanceInquiryUI balancePanel = new BalanceInquiryUI(0);
+        balancePanel.setName(BALANCE_PANEL);
+    
+        // Add action listener for the back button
+        balancePanel.getBackButton().addActionListener(e -> {
+            switchPanel(MAIN_MENU_PANEL);
+        });
+    
+        return balancePanel;
+    }
 
-        JButton backBtn = new JButton("Back to Menu");
-        backBtn.setName("Back To Menu");
-        panel.add(backBtn);
-        return panel;
+    //update the balance panel with the current user's account can't check error
+    public void updateBalancePanel(int accountNumber) {
+        JPanel balancePanel = getPanel(BALANCE_PANEL);
+        if (balancePanel instanceof BalanceInquiryUI) {
+            ((BalanceInquiryUI) balancePanel).setAccountNumber(accountNumber);
+        }
     }
 
     protected JPanel createWithdrawPanel() {
@@ -280,10 +293,6 @@ public class ATMUI {
         transferUI.resetToInitialState();
         return panel;
     }
-
-
-
-
 
     protected JPanel createKeypadPanel() {
         JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5)); // 4行3列网格
@@ -325,7 +334,6 @@ public class ATMUI {
         }
         return null; // 没找到返回null
     }
-
 
     // switch center panel by name（切换中间面板）
     public void switchPanel(String name) {
