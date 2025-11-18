@@ -52,7 +52,7 @@ public class LoginGUI {
 //        }
 //    }
 
-    public JPanel createMainMenuPanels(boolean showLoginGUI){
+    public JPanel createMainMenuPanels(boolean showLoginGUI, JButton confirmButton){
         mainP = new JPanel(new GridBagLayout());
         mainP.setBackground(new Color(0, 0, 139));
 
@@ -69,7 +69,7 @@ public class LoginGUI {
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
         reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
 
-        setupMainPanel();
+        setupMainPanel(confirmButton);
 
         accountGot = false;
         accountPass = false;
@@ -95,7 +95,7 @@ public class LoginGUI {
     protected JButton getConfirmButton(){
         return confirmButton;
     }
-    private void setupMainPanel() {
+    private void setupMainPanel(JButton button) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
@@ -121,7 +121,7 @@ public class LoginGUI {
         mainP.add(centerPanel, gbc);
 
         // 按钮面板 - 第2行
-        JPanel buttonPanel = createButtonPanel();
+        JPanel buttonPanel = createButtonPanel(button);
         gbc.gridy = 2;
         gbc.weighty = 0.1; // 按钮占10%高度
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -188,7 +188,7 @@ public class LoginGUI {
     /**
      * 创建按钮面板
      */
-    private JPanel createButtonPanel() {
+    private JPanel createButtonPanel(JButton jButton) {
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setBackground(new Color(0, 0, 139));
 
@@ -196,11 +196,12 @@ public class LoginGUI {
         btnGbc.insets = new Insets(5, 10, 5, 10);
         btnGbc.fill = GridBagConstraints.HORIZONTAL;
 
-        confirmButton = new JButton("Confirm");
+//        confirmButton = new JButton("Confirm");
         delButton = new JButton("Del");
         cancelButton = new JButton("Cancel");
 
-        confirmButton.setFocusable(false);
+//        confirmButton.setFocusable(false);
+        jButton.setFocusable(false);
         delButton.setFocusable(false);
         cancelButton.setFocusable(false);
 
@@ -208,7 +209,8 @@ public class LoginGUI {
         btnGbc.gridx = 0;
         btnGbc.gridy = 0;
         btnGbc.weightx = 0.33; // 平均分配宽度
-        buttonPanel.add(confirmButton, btnGbc);
+//        buttonPanel.add(confirmButton, btnGbc);
+        buttonPanel.add(jButton, btnGbc);
 
         // Del 按钮 - 第1列
         btnGbc.gridx = 1;
@@ -228,9 +230,9 @@ public class LoginGUI {
      */
     private void setupButtons() {
 //        confirmButton
-        confirmButton.addActionListener(e -> {
-            confirmBT();
-        });
+//        confirmButton.addActionListener(e -> {
+//            confirmBT();
+//        });
 
         delButton.addActionListener(e -> {
             delBT();

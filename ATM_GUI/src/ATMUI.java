@@ -10,6 +10,8 @@ public class ATMUI {
     public static final String TRANSFER_PANEL = "transfer";
     public static final String HISTORY_PANEL = "history";
     public static final String KEYPAD_PANEL = "keypad";
+    public static final String test = "test";
+
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -32,6 +34,8 @@ public class ATMUI {
     private JButton Button2;
     private JButton Button3;
     private JButton Button4;
+
+    private JButton confirmButton;
 
     // Right side panel buttons
     private JButton Button5;
@@ -234,7 +238,9 @@ public class ATMUI {
 
     protected JPanel createLoginPanel() {
         LoginGUI loginGUI = new LoginGUI();
-        JPanel panel = loginGUI.createMainMenuPanels(true);
+        confirmButton = new JButton("Confirm");
+        confirmButton.setName(test);
+        JPanel panel = loginGUI.createMainMenuPanels(true, confirmButton);
         panel.setName(LOGIN_PANEL);
         return panel;
     }
