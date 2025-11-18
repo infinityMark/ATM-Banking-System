@@ -32,6 +32,10 @@ public class ATMUIController {
     }
 
     // ------------- Convenience methods for switching panels -------------
+    public void switchToGreetingPanel() {
+        atmUI.switchPanel("greeting");
+    }
+
     public void switchToLoginPanel() {
         atmUI.switchPanel("login");
     }

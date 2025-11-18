@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class ATMUI {
     // ------------- Panel name constants -------------
+    public static final String GREETING_PANEL = "greeting";
     public static final String LOGIN_PANEL = "login";
     public static final String MAIN_MENU_PANEL = "mainMenu";
     public static final String BALANCE_PANEL = "balance";
@@ -206,6 +207,10 @@ public class ATMUI {
     }
 
     private void insertToCenterPanel() {
+        JPanel greetingPanel = createGreetingPanel();
+        centerPanel.add(greetingPanel, LOGIN_PANEL);
+        registerPanel(greetingPanel);
+
         JPanel loginPanel = createLoginPanel();
         centerPanel.add(loginPanel, LOGIN_PANEL);
         registerPanel(loginPanel);
@@ -236,6 +241,13 @@ public class ATMUI {
     }
 
     // -------------functional panels creation methods-------------
+
+
+    protected JPanel createGreetingPanel() {
+        JPanel panel = GreetingUI.GreetingUI();
+        panel.setName(GREETING_PANEL);
+        return panel;
+    }
 
     protected JPanel createLoginPanel() {
         JButton confirmButton = new JButton();

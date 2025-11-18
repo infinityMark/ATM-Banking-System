@@ -36,6 +36,9 @@ public class ATMListenerRegistrar {
      */
     private void initBaseActionConfigs() {
         // Login Panel
+        addButtonListener(ATMUI.GREETING_PANEL, "greeting", e -> controller.handleLogin());
+        // System.out.println("Login button listener added.");
+
         addButtonListener(ATMUI.LOGIN_PANEL, "Login", e -> controller.handleLogin());
         // System.out.println("Login button listener added.");
 
@@ -51,8 +54,7 @@ public class ATMListenerRegistrar {
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transaction History",
                  e -> controller.showTransactionHistory());
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
-                e -> controller.exitSystem());
-
+                e -> controller.switchToGreetingPanel());
         addButtonListener(ATMUI.test,"test",
                 e -> controller.switchToMainMenuPanel());
 

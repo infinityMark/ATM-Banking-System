@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GreetingUI {
-    private static CardLayout cardLayout;
-    private static JPanel cardPanel;
     private static JPanel mainPanel;
 
     static protected GridBagConstraints createDefaultGridBagConstraints() {
@@ -49,6 +49,21 @@ public class GreetingUI {
         return panel;
     }
 
+    static public void goToPanel(String name) {
+        Container parent = mainPanel.getParent();
+        if (parent != null) {
+            Container current = parent;
+            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+                current = current.getParent();
+            }
+
+            if (current != null) {
+                CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, name);
+            }
+        }
+    }
+
     static public JPanel GreetingUI() {
         mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
@@ -70,20 +85,47 @@ public class GreetingUI {
         gbc.gridx = 1;
         mainPanel.add(reminderPanel, gbc);
 
+        mainPanel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                goToPanel(ATMUI.LOGIN_PANEL);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         return mainPanel;
     }
 
-    public static void main(String[] args) {
-        JFrame jFrame = new JFrame();
-        mainPanel = GreetingUI();
-        jFrame.add(mainPanel);
-
-        jFrame.setTitle("ATM 系统"); // 设置窗口标题
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 关闭时退出程序
-        jFrame.setSize(1600, 1600); // 设置窗口大小
-        jFrame.setLocationRelativeTo(null); // 窗口居中显示
-        jFrame.setResizable(false); // 禁止调整大小（可选）
-
-        jFrame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame jFrame = new JFrame();
+//        mainPanel = GreetingUI();
+//        jFrame.add(mainPanel);
+//
+//        jFrame.setTitle("ATM 系统");
+//        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        jFrame.setSize(1600, 1600);
+//        jFrame.setLocationRelativeTo(null);
+//        jFrame.setResizable(false);
+//
+//        jFrame.setVisible(true);
+//    }
 }
