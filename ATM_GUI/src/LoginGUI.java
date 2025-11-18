@@ -7,7 +7,7 @@ public class LoginGUI {
     private TextFields accounTF;
     private JPanel centerPanel;
     private Passwords passwordF;
-    private JButton confirmButton, delButton, cancelButton;
+    private JButton confirmButton, delButton, cancelButton, confirmButton_Test;
     private String savedAccount;
     private boolean accountGot, accountPass, pwPass, invalidinput;
     private int currentAccountNumber, currentPin;
@@ -103,7 +103,7 @@ public class LoginGUI {
         gbc.insets = new Insets(5, 5, 5, 5);
         mainP.add(reminderL, gbc);
     }
-    
+
     /**
      * 设置中心面板（账号密码输入区域）
      */
@@ -162,6 +162,7 @@ public class LoginGUI {
         btnGbc.fill = GridBagConstraints.HORIZONTAL;
 
 //        confirmButton = new JButton("Confirm");
+        confirmButton_Test = new JButton("Confirm");
         delButton = new JButton("Del");
         cancelButton = new JButton("Cancel");
 
@@ -209,10 +210,14 @@ public class LoginGUI {
      * 设置按钮事件监听器
      */
     private void setupButtons() {
-//        confirmButton
+////        confirmButton
 //        confirmButton.addActionListener(e -> {
 //            confirmBT();
 //        });
+
+        confirmButton_Test.addActionListener(e -> {
+            confirmBT();
+        });
 
         delButton.addActionListener(e -> {
             delBT();
@@ -296,6 +301,7 @@ public class LoginGUI {
                 }
             } else {
                 String password = new String(passwordF.getPassword());
+                System.out.println(password);
                 if (!ifisEmpty(password)) {
                     checkInput();
                     if (pwPass) {
@@ -303,12 +309,11 @@ public class LoginGUI {
                         currentAccountNumber = passedAccount;
                         MainMenuGUI temp = new MainMenuGUI(false, currentAccountNumber);
 
-//                        switchPanel(MAIN_MENU_PANEL);
-
                         passedPIN = Integer.parseInt(new String(passwordF.getPassword()));
                         pwPass = false;
                         accountGot = false;
                         clearInput();
+                        goToPanel(ATMUI.MAIN_MENU_PANEL);
                     }
                 }
             }
@@ -318,7 +323,6 @@ public class LoginGUI {
     private void delBT() {
         if (!invalidinput) {
             if (accounTF.hasFocus()) {
-                goToPanel(ATMUI.MAIN_MENU_PANEL);
                 String text = accounTF.getText();
                 if (!text.isEmpty())
                     accounTF.setText(text.substring(0, text.length() - 1));
