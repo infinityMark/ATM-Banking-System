@@ -67,8 +67,6 @@ public class LoginGUI {
         //buttin with keypad!!!
 
 
-
-
         if(showLoginGUI)
         {
             SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
