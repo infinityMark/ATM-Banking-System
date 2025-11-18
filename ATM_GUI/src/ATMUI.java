@@ -166,7 +166,7 @@ public class ATMUI {
         // initialize left buttons, change if needed
         Button1 = new JButton("Example");
         Button1.setName("Left1");
-        Button2 = new JButton("Left2");
+        Button2 = new JButton("Back to Menu");
         Button2.setName("Left2");
         Button3 = new JButton("Left3");
         Button3.setName("Left3");
