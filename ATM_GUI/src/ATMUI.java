@@ -50,7 +50,7 @@ public class ATMUI {
     protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
     public ATMUI() {
-         initializeUI();
+        initializeUI();
     }
 
     public ATMUI(String methodName) {
@@ -78,6 +78,7 @@ public class ATMUI {
 
     public void initializeUI() {
         baseSetup();
+
         mainframe.setLocationRelativeTo(null);
 
         JPanel mainContainer = new JPanel(new BorderLayout(0, 10));
@@ -90,10 +91,10 @@ public class ATMUI {
         mainContainer.add(lowerPanel, BorderLayout.SOUTH);
         mainframe.add(mainContainer);
 
-        try{
+        try {
             ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
             mainframe.setIconImage(icon.getImage());
-        }catch (NullPointerException nullPointerException){
+        } catch (NullPointerException nullPointerException) {
             System.out.println("Invalid image path");
         }
 
@@ -274,10 +275,6 @@ public class ATMUI {
         return panel;
     }
 
-    
-
-
-
     protected JPanel createKeypadPanel() {
         JPanel panel = new JPanel(new GridLayout(4, 3, 5, 5)); // 4行3列网格
         panel.setName(KEYPAD_PANEL);
@@ -314,7 +311,6 @@ public class ATMUI {
         }
         return null; // 没找到返回null
     }
-
 
     // switch center panel by name（切换中间面板）
     public void switchPanel(String name) {
