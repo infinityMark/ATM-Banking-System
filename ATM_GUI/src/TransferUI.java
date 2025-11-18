@@ -93,7 +93,10 @@ public class TransferUI extends Transfer {
         selectionTwoBtn.setName(BUTTON_SECOND);
 
         selectionOneBtn.addActionListener(e -> showCard(nextPage));
-        selectionTwoBtn.addActionListener(e -> goBackToMainPanel());
+        selectionTwoBtn.addActionListener(e -> {
+            showCard(nextPage);
+            goBackToMainPanel();
+        });
 
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 

@@ -90,8 +90,12 @@ public class ATMUI {
         mainContainer.add(lowerPanel, BorderLayout.SOUTH);
         mainframe.add(mainContainer);
 
-//        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
-//        mainframe.setIconImage(icon.getImage());
+        try{
+            ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
+            mainframe.setIconImage(icon.getImage());
+        }catch (NullPointerException nullPointerException){
+            System.out.println("Invalid image path");
+        }
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         final double rate = 0.9;

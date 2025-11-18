@@ -46,6 +46,7 @@ public class ATM extends JFrame {
       mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       // setting icon for window
+//      try
       ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
       setIconImage(icon.getImage());
 
