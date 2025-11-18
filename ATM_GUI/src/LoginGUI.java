@@ -6,7 +6,7 @@ import java.util.Date;
 
 
 public class LoginGUI extends JFrame {
-    private JTextField accounTF;
+    private TextFields accounTF;
     private JPanel centerPanel;
     private JPasswordField passwordF;
     private JButton confirmButton,delButton,cancelButton;
@@ -18,7 +18,7 @@ public class LoginGUI extends JFrame {
     
     public LoginGUI()
     
-    {   //測試借用的frame
+    {
         super("Main Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
@@ -27,7 +27,12 @@ public class LoginGUI extends JFrame {
 
         centerPanel = new JPanel(new GridBagLayout());
         passwordF = new JPasswordField();
-        accounTF = new JTextField();
+        accounTF = new TextFields(200, 30,
+                StandardColor.GreyHighest.getColor(0),
+                StandardColor.Blue.getColor(0),
+                StandardColor.GreyHighest.getColor(1),
+                new Font(Font.SANS_SERIF, Font.BOLD,30));
+
         reminderL = new JLabel("Please Enter your Account number and PIN number ",SwingConstants.CENTER);
 
         Toppanel();
