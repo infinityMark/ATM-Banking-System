@@ -233,7 +233,8 @@ public class ATMUI {
     // -------------functional panels creation methods-------------
 
     protected JPanel createLoginPanel() {
-        JPanel panel = new LoginGUI(true).getMainP();
+        LoginGUI loginGUI = new LoginGUI();
+        JPanel panel = loginGUI.createMainMenuPanels(true);
         panel.setName(LOGIN_PANEL);
         return panel;
     }
@@ -274,7 +275,7 @@ public class ATMUI {
         return panel;
     }
 
-    
+
 
 
 

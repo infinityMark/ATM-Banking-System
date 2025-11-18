@@ -12,7 +12,6 @@ public class ATMUIController {
         this.atmUI = atmUI;
         this.atm = atm;
         this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
-
     }
 
     public void run() {
