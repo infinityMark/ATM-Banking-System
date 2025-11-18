@@ -49,7 +49,7 @@ public class ATMUI {
     protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
     public ATMUI() {
-        // initializeUI();
+         initializeUI();
     }
 
     public ATMUI(String methodName) {
@@ -73,7 +73,6 @@ public class ATMUI {
         gbc.gridy = 1;
         gbc.weighty = 0.9;
         mainPanel.add(contentPanel, gbc);
-
     }
 
     public void initializeUI() {
@@ -90,8 +89,8 @@ public class ATMUI {
         mainContainer.add(lowerPanel, BorderLayout.SOUTH);
         mainframe.add(mainContainer);
 
-        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
-        mainframe.setIconImage(icon.getImage());
+//        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
+//        mainframe.setIconImage(icon.getImage());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         final double rate = 0.9;
@@ -235,12 +234,8 @@ public class ATMUI {
     }
 
     protected JPanel createMainMenuPanel() {
-        JPanel panel = new MainMenuGUI(true, 21111).getMainPanel();
+        JPanel panel = new MainMenuGUI(true, 21111).getMainP();
         panel.setName(MAIN_MENU_PANEL);
-//        panel.add(new JButton("View Balance"));
-//        panel.add(new JButton("Withdraw Cash"));
-//        panel.add(new JButton("Transfer Funds"));
-//        panel.add(new JButton("Exit"));
         return panel;
     }
 

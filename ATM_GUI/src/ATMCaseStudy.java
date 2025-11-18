@@ -7,7 +7,7 @@ public class ATMCaseStudy {
       // EnhancedATMUI atmUI = new EnhancedATMUI();
       EnhancedATMUI atmUI = new EnhancedATMUI();
       ATM atm = new ATM();
-      // atm.run();
+//      atm.run();
       ATMUIController controller = new ATMUIController(atmUI, atm);
       controller.run();
    } // end main

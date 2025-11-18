@@ -60,56 +60,56 @@ public class EnhancedATMUI extends ATMUI {
      * it may cause we can't get the work done on time
      */
 
-    @Override
-    protected JPanel createLoginPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setName(LOGIN_PANEL);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = GridBagConstraints.WEST;
-
-        // 账号输入
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(new JLabel("Account Number:"), gbc);
-
-        gbc.gridx = 1;
-        JTextField accField = new JTextField(15);
-        panel.add(accField, gbc);
-
-        // PIN输入
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(new JLabel("PIN:"), gbc);
-
-        gbc.gridx = 1;
-        JPasswordField pinField = new JPasswordField(15);
-        panel.add(pinField, gbc);
-
-        // 登录按钮（设置名称与监听器匹配）
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        JButton loginBtn = new JButton("Login");
-        loginBtn.setName("Login");
-        panel.add(loginBtn, gbc);
-
-        // 账号输入框焦点效果（保持不变）
-        accField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                accField.setBackground(Color.LIGHT_GRAY);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                accField.setBackground(Color.WHITE);
-            }
-        });
-
-        return panel;
-    }
+//    @Override
+//    protected JPanel createLoginPanel() {
+//        JPanel panel = new JPanel(new GridBagLayout());
+//        panel.setName(LOGIN_PANEL);
+//        GridBagConstraints gbc = new GridBagConstraints();
+//        gbc.insets = new Insets(5, 5, 5, 5);
+//        gbc.anchor = GridBagConstraints.WEST;
+//
+//        // 账号输入
+//        gbc.gridx = 0;
+//        gbc.gridy = 0;
+//        panel.add(new JLabel("Account Number:"), gbc);
+//
+//        gbc.gridx = 1;
+//        JTextField accField = new JTextField(15);
+//        panel.add(accField, gbc);
+//
+//        // PIN输入
+//        gbc.gridx = 0;
+//        gbc.gridy = 1;
+//        panel.add(new JLabel("PIN:"), gbc);
+//
+//        gbc.gridx = 1;
+//        JPasswordField pinField = new JPasswordField(15);
+//        panel.add(pinField, gbc);
+//
+//        // 登录按钮（设置名称与监听器匹配）
+//        gbc.gridx = 0;
+//        gbc.gridy = 2;
+//        gbc.gridwidth = 2;
+//        gbc.anchor = GridBagConstraints.CENTER;
+//        JButton loginBtn = new JButton("Login");
+//        loginBtn.setName("Login");
+//        panel.add(loginBtn, gbc);
+//
+//        // 账号输入框焦点效果（保持不变）
+//        accField.addFocusListener(new FocusAdapter() {
+//            @Override
+//            public void focusGained(FocusEvent e) {
+//                accField.setBackground(Color.LIGHT_GRAY);
+//            }
+//
+//            @Override
+//            public void focusLost(FocusEvent e) {
+//                accField.setBackground(Color.WHITE);
+//            }
+//        });
+//
+//        return panel;
+//    }
 }
 /*
  * Done by AI, Will improve later, do not judge me :)
