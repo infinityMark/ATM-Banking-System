@@ -51,6 +51,9 @@ public class ATMListenerRegistrar {
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
                 e -> controller.exitSystem());
 
+        addButtonListener(ATMUI.test,"test",
+                e -> controller.switchToMainMenuPanel());
+
         addButtonListener("leftButtonPanel", "Left1", e -> controller.showInfo());
         // System.out.println("have link");
 

@@ -10,6 +10,8 @@ public class ATMUI {
     public static final String TRANSFER_PANEL = "transfer";
     public static final String HISTORY_PANEL = "history";
     public static final String KEYPAD_PANEL = "keypad";
+    public static final String test = "test";
+
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -32,6 +34,8 @@ public class ATMUI {
     private JButton Button2;
     private JButton Button3;
     private JButton Button4;
+
+    private JButton confirmButton;
 
     // Right side panel buttons
     private JButton Button5;
@@ -237,7 +241,9 @@ public class ATMUI {
         JButton confirmButton = new JButton();
         confirmButton.setName("Confirm");
         LoginGUI loginGUI = new LoginGUI();
-        JPanel panel = loginGUI.createMainMenuPanels(true);
+        confirmButton = new JButton("Confirm");
+        confirmButton.setName(test);
+        JPanel panel = loginGUI.createMainMenuPanels(true, confirmButton);
         panel.setName(LOGIN_PANEL);
         return panel;
     }
@@ -279,21 +285,25 @@ public class ATMUI {
     }
 
     protected JPanel createKeypadPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 3, 5, 5)); // 4行3列网格
+        JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5)); // 4行3列网格
         panel.setName(KEYPAD_PANEL);
         registerPanel(panel);
-        panel.add(new JButton("1"));
-        panel.add(new JButton("2"));
-        panel.add(new JButton("3"));
+                panel.add(new JButton("7"));
+        panel.add(new JButton("8"));
+        panel.add(new JButton("9"));
+        panel.add(new JButton("Confirm"));
         panel.add(new JButton("4"));
         panel.add(new JButton("5"));
         panel.add(new JButton("6"));
-        panel.add(new JButton("7"));
-        panel.add(new JButton("8"));
-        panel.add(new JButton("9"));
-        panel.add(new JButton("Clean"));
+        panel.add(new JButton("Delete"));
+        panel.add(new JButton("1"));
+        panel.add(new JButton("2"));
+        panel.add(new JButton("3"));
+        panel.add(new JButton("Clear"));
         panel.add(new JButton("0"));
-        panel.add(new JButton("Confirm"));
+        panel.add(new JButton("."));
+        panel.add(new JButton("00"));
+        panel.add(new JButton(""));
         return panel;
     }
 

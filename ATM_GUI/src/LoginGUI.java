@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,42 +16,8 @@ public class LoginGUI {
     private JPanel mainP;
     private static int passedAccount, passedPIN;
 
-//    public LoginGUI(boolean showLoginGUI) {
-//        mainP = new JPanel(new GridBagLayout());
-//        mainP.setBackground(new Color(0, 0, 139));
-//
-//        centerPanel = new JPanel(new GridBagLayout());
-//        passwordF = new Passwords(200, 30,
-//                StandardColor.GreyHighest.getColor(0),
-//                StandardColor.Blue.getColor(0),
-//                StandardColor.GreyHighest.getColor(1),
-//                new Font(Font.SANS_SERIF, Font.BOLD, 30));
-//        accounTF = new TextFields(200, 30,
-//                StandardColor.GreyHighest.getColor(0),
-//                StandardColor.Blue.getColor(0),
-//                StandardColor.GreyHighest.getColor(1),
-//                new Font(Font.SANS_SERIF, Font.BOLD, 30));
-//        reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
-//
-//        setupMainPanel();
-//
-//        accountGot = false;
-//        accountPass = false;
-//        pwPass = false;
-//        invalidinput = false;
-//        currentAccountNumber = 0;
-//        currentPin = 0;
-//
-//        // 初始化按钮
-//        setupButtons();
-//
-//        if (showLoginGUI) {
-//            SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
-//            mainP.setVisible(true);
-//        }
-//    }
 
-    public JPanel createMainMenuPanels(boolean showLoginGUI){
+    public JPanel createMainMenuPanels(boolean showLoginGUI, JButton confirmButton){
         mainP = new JPanel(new GridBagLayout());
         mainP.setBackground(new Color(0, 0, 139));
 
@@ -69,7 +34,7 @@ public class LoginGUI {
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
         reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
 
-        setupMainPanel();
+        setupMainPanel(confirmButton);
 
         accountGot = false;
         accountPass = false;
@@ -95,7 +60,7 @@ public class LoginGUI {
     protected JButton getConfirmButton(){
         return confirmButton;
     }
-    private void setupMainPanel() {
+    private void setupMainPanel(JButton button) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
@@ -121,7 +86,7 @@ public class LoginGUI {
         mainP.add(centerPanel, gbc);
 
         // 按钮面板 - 第2行
-        JPanel buttonPanel = createButtonPanel();
+        JPanel buttonPanel = createButtonPanel(button);
         gbc.gridy = 2;
         gbc.weighty = 0.1; // 按钮占10%高度
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -138,7 +103,7 @@ public class LoginGUI {
         gbc.insets = new Insets(5, 5, 5, 5);
         mainP.add(reminderL, gbc);
     }
-
+    
     /**
      * 设置中心面板（账号密码输入区域）
      */
@@ -188,7 +153,7 @@ public class LoginGUI {
     /**
      * 创建按钮面板
      */
-    private JPanel createButtonPanel() {
+    private JPanel createButtonPanel(JButton jButton) {
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setBackground(new Color(0, 0, 139));
 
@@ -196,11 +161,12 @@ public class LoginGUI {
         btnGbc.insets = new Insets(5, 10, 5, 10);
         btnGbc.fill = GridBagConstraints.HORIZONTAL;
 
-        confirmButton = new JButton("Confirm");
+//        confirmButton = new JButton("Confirm");
         delButton = new JButton("Del");
         cancelButton = new JButton("Cancel");
 
-        confirmButton.setFocusable(false);
+//        confirmButton.setFocusable(false);
+        jButton.setFocusable(false);
         delButton.setFocusable(false);
         cancelButton.setFocusable(false);
 
@@ -208,7 +174,8 @@ public class LoginGUI {
         btnGbc.gridx = 0;
         btnGbc.gridy = 0;
         btnGbc.weightx = 0.33; // 平均分配宽度
-        buttonPanel.add(confirmButton, btnGbc);
+//        buttonPanel.add(confirmButton, btnGbc);
+        buttonPanel.add(jButton, btnGbc);
 
         // Del 按钮 - 第1列
         btnGbc.gridx = 1;
@@ -223,14 +190,29 @@ public class LoginGUI {
         return buttonPanel;
     }
 
+    public void goToPanel(String name) {
+        Container parent = mainP.getParent();
+        if (parent != null) {
+            Container current = parent;
+            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+                current = current.getParent();
+            }
+
+            if (current != null) {
+                CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, name);
+            }
+        }
+    }
+
     /**
      * 设置按钮事件监听器
      */
     private void setupButtons() {
 //        confirmButton
-        confirmButton.addActionListener(e -> {
-            confirmBT();
-        });
+//        confirmButton.addActionListener(e -> {
+//            confirmBT();
+//        });
 
         delButton.addActionListener(e -> {
             delBT();
@@ -335,6 +317,7 @@ public class LoginGUI {
     private void delBT() {
         if (!invalidinput) {
             if (accounTF.hasFocus()) {
+                goToPanel(ATMUI.MAIN_MENU_PANEL);
                 String text = accounTF.getText();
                 if (!text.isEmpty())
                     accounTF.setText(text.substring(0, text.length() - 1));

@@ -16,43 +16,43 @@ public class EnhancedATMUI extends ATMUI {
         super();
     }
 
-    @Override
-    protected JPanel createMainMenuPanel() {
-        JPanel panel = new JPanel(new GridLayout(5, 1, 5, 5));
-        panel.setName(MAIN_MENU_PANEL);
-
-        // 余额查询按钮
-        JButton balanceBtn = new JButton("View Balance");
-        balanceBtn.setName("View Balance"); // 设置名称匹配监听器
-
-        // 取款按钮
-        JButton withdrawBtn = new JButton("Withdraw Cash");
-        withdrawBtn.setName("Withdraw Cash"); // 设置名称匹配监听器
-
-        // 转账按钮
-        JButton transferBtn = new JButton("Transfer Funds");
-        transferBtn.setName("Transfer Funds"); // 设置名称匹配监听器
-
-        // 账户信息按钮
-        //JButton infoBtn = new JButton("Account Info");
-        //infoBtn.setName("Account Info"); // 设置名称匹配监听器
-
-        JButton historyBtn = new JButton("Transaction History");
-        historyBtn.setName("Transaction History"); // 设置名称匹配监听器
-
-        // 退出按钮
-        JButton exitBtn = new JButton("Exit");
-        exitBtn.setName("Exit"); // 设置名称匹配监听器
-
-        // 添加所有按钮到面板
-        panel.add(balanceBtn);
-        panel.add(withdrawBtn);
-        panel.add(transferBtn);
-        panel.add(historyBtn);
-        panel.add(exitBtn);
-
-        return panel;
-    }
+//    @Override
+//    protected JPanel createMainMenuPanel() {
+//        JPanel panel = new JPanel(new GridLayout(5, 1, 5, 5));
+//        panel.setName(MAIN_MENU_PANEL);
+//
+//        // 余额查询按钮
+//        JButton balanceBtn = new JButton("View Balance");
+//        balanceBtn.setName("View Balance"); // 设置名称匹配监听器
+//
+//        // 取款按钮
+//        JButton withdrawBtn = new JButton("Withdraw Cash");
+//        withdrawBtn.setName("Withdraw Cash"); // 设置名称匹配监听器
+//
+//        // 转账按钮
+//        JButton transferBtn = new JButton("Transfer Funds");
+//        transferBtn.setName("Transfer Funds"); // 设置名称匹配监听器
+//
+//        // 账户信息按钮
+//        //JButton infoBtn = new JButton("Account Info");
+//        //infoBtn.setName("Account Info"); // 设置名称匹配监听器
+//
+//        JButton historyBtn = new JButton("Transaction History");
+//        historyBtn.setName("Transaction History"); // 设置名称匹配监听器
+//
+//        // 退出按钮
+//        JButton exitBtn = new JButton("Exit");
+//        exitBtn.setName("Exit"); // 设置名称匹配监听器
+//
+//        // 添加所有按钮到面板
+//        panel.add(balanceBtn);
+//        panel.add(withdrawBtn);
+//        panel.add(transferBtn);
+//        panel.add(historyBtn);
+//        panel.add(exitBtn);
+//
+//        return panel;
+//    }
 
     /*
      * Done by AI, Will improve later, do not judge me :)
