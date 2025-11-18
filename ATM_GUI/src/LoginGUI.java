@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,41 +15,6 @@ public class LoginGUI {
     private JLabel reminderL;
     private JPanel mainP;
     private static int passedAccount, passedPIN;
-
-//    public LoginGUI(boolean showLoginGUI) {
-//        mainP = new JPanel(new GridBagLayout());
-//        mainP.setBackground(new Color(0, 0, 139));
-//
-//        centerPanel = new JPanel(new GridBagLayout());
-//        passwordF = new Passwords(200, 30,
-//                StandardColor.GreyHighest.getColor(0),
-//                StandardColor.Blue.getColor(0),
-//                StandardColor.GreyHighest.getColor(1),
-//                new Font(Font.SANS_SERIF, Font.BOLD, 30));
-//        accounTF = new TextFields(200, 30,
-//                StandardColor.GreyHighest.getColor(0),
-//                StandardColor.Blue.getColor(0),
-//                StandardColor.GreyHighest.getColor(1),
-//                new Font(Font.SANS_SERIF, Font.BOLD, 30));
-//        reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
-//
-//        setupMainPanel();
-//
-//        accountGot = false;
-//        accountPass = false;
-//        pwPass = false;
-//        invalidinput = false;
-//        currentAccountNumber = 0;
-//        currentPin = 0;
-//
-//        // 初始化按钮
-//        setupButtons();
-//
-//        if (showLoginGUI) {
-//            SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
-//            mainP.setVisible(true);
-//        }
-//    }
 
     public JPanel createMainMenuPanels(boolean showLoginGUI, JButton confirmButton){
         mainP = new JPanel(new GridBagLayout());
@@ -225,6 +189,21 @@ public class LoginGUI {
         return buttonPanel;
     }
 
+    public void goToPanel(String name) {
+        Container parent = mainP.getParent();
+        if (parent != null) {
+            Container current = parent;
+            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+                current = current.getParent();
+            }
+
+            if (current != null) {
+                CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, name);
+            }
+        }
+    }
+
     /**
      * 设置按钮事件监听器
      */
@@ -338,6 +317,7 @@ public class LoginGUI {
     private void delBT() {
         if (!invalidinput) {
             if (accounTF.hasFocus()) {
+                goToPanel(ATMUI.MAIN_MENU_PANEL);
                 String text = accounTF.getText();
                 if (!text.isEmpty())
                     accounTF.setText(text.substring(0, text.length() - 1));
