@@ -11,11 +11,6 @@ public class ATM extends JFrame {
    private Keypad keypad; // ATM's keypad
    private CashDispenser cashDispenser; // ATM's cash dispenser
 
-   private JFrame mainFrame;
-   private CardLayout cardLayout;
-   private JPanel functionPanel;
-   private JPanel keypadPanel;
-
    // private DepositSlot depositSlot; // ATM's deposit slot
    private BankDatabase bankDatabase; // account information database
 
@@ -41,37 +36,6 @@ public class ATM extends JFrame {
       // ATM GUI implements to initial the mainFrame setting.
       // initializeGUI();
    } // end no-argument ATM constructor
-
-   private void initializeGUI() {
-      mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-      // setting icon for window
-//      try
-      ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
-      setIconImage(icon.getImage());
-
-      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-      final double rate = 0.9;
-      int screenWidth = (int) (screenSize.width * rate);
-      int screenHeight = (int) (screenSize.height * rate);
-
-      setSize(screenWidth, screenHeight);
-      setLocationRelativeTo(null);
-
-      setLayout(new BorderLayout());
-
-      Transaction currentTransaction = createTransaction(3);
-
-      functionPanel = currentTransaction.getPanelUI();
-      // functionPanel =
-      // createFunctionPanel((int)(screenWidth*0.7),screenHeight,"keypad");
-      keypadPanel = createkeypadPanel((int) (screenWidth * 0.3), screenHeight, "keypad");
-
-      add(functionPanel, BorderLayout.CENTER);
-      add(keypadPanel, BorderLayout.EAST);
-
-      setVisible(true);
-   }
 
    // Temporary for test
    private JPanel createkeypadPanel(int width, int height, String methodName) {

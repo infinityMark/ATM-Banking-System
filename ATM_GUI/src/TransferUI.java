@@ -539,10 +539,7 @@ public class TransferUI extends Transfer {
         JPanel menuCard = createSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
                 new Font(Font.SANS_SERIF, Font.PLAIN, 30), CARD_INFO);
 
-        // JPanel jPanel = new LoginGUI(true).getMainP();
-
         cardPanel.add(menuCard, CARD_MENU);
-//        cardPanel.add(jPanel, TEST);
 
         addComponentToPanel(mainPanel, gbc, taskTitle, 0, 0.1);
         gbc.gridy = 1;
@@ -550,7 +547,6 @@ public class TransferUI extends Transfer {
         mainPanel.add(cardPanel, gbc);
 
         cardLayout.show(cardPanel, CARD_MENU);
-//        cardLayout.show(cardPanel, TEST);
         return mainPanel;
     }
 }

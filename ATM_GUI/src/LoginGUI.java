@@ -17,8 +17,42 @@ public class LoginGUI {
     private JPanel mainP;
     private static int passedAccount, passedPIN;
 
-    public LoginGUI(boolean showLoginGUI) {
-        // 使用 GridBagLayout 作为主布局
+//    public LoginGUI(boolean showLoginGUI) {
+//        mainP = new JPanel(new GridBagLayout());
+//        mainP.setBackground(new Color(0, 0, 139));
+//
+//        centerPanel = new JPanel(new GridBagLayout());
+//        passwordF = new Passwords(200, 30,
+//                StandardColor.GreyHighest.getColor(0),
+//                StandardColor.Blue.getColor(0),
+//                StandardColor.GreyHighest.getColor(1),
+//                new Font(Font.SANS_SERIF, Font.BOLD, 30));
+//        accounTF = new TextFields(200, 30,
+//                StandardColor.GreyHighest.getColor(0),
+//                StandardColor.Blue.getColor(0),
+//                StandardColor.GreyHighest.getColor(1),
+//                new Font(Font.SANS_SERIF, Font.BOLD, 30));
+//        reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
+//
+//        setupMainPanel();
+//
+//        accountGot = false;
+//        accountPass = false;
+//        pwPass = false;
+//        invalidinput = false;
+//        currentAccountNumber = 0;
+//        currentPin = 0;
+//
+//        // 初始化按钮
+//        setupButtons();
+//
+//        if (showLoginGUI) {
+//            SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
+//            mainP.setVisible(true);
+//        }
+//    }
+
+    public JPanel createMainMenuPanels(boolean showLoginGUI){
         mainP = new JPanel(new GridBagLayout());
         mainP.setBackground(new Color(0, 0, 139));
 
@@ -51,11 +85,16 @@ public class LoginGUI {
             SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
             mainP.setVisible(true);
         }
+
+        return mainP;
     }
 
     /**
      * 设置主面板的布局
      */
+    protected JButton getConfirmButton(){
+        return confirmButton;
+    }
     private void setupMainPanel() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -188,6 +227,7 @@ public class LoginGUI {
      * 设置按钮事件监听器
      */
     private void setupButtons() {
+//        confirmButton
         confirmButton.addActionListener(e -> {
             confirmBT();
         });
@@ -202,7 +242,6 @@ public class LoginGUI {
         });
     }
 
-    // 以下方法保持不变
     private void clearInput() {
         passwordF.setText("");
         accounTF.setText("");
@@ -280,6 +319,9 @@ public class LoginGUI {
                         passedAccount = Integer.parseInt(accounTF.getText());
                         currentAccountNumber = passedAccount;
                         MainMenuGUI temp = new MainMenuGUI(false, currentAccountNumber);
+
+//                        switchPanel(MAIN_MENU_PANEL);
+
                         passedPIN = Integer.parseInt(new String(passwordF.getPassword()));
                         pwPass = false;
                         accountGot = false;
