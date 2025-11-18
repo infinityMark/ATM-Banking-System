@@ -252,9 +252,10 @@ public class LoginGUI {
     }
 
     private void isinvalidinput() {
-        mainP.requestFocusInWindow();
+        reminderL.requestFocusInWindow();
         invalidinput = true;
     }
+
 
     private void confirmBT() {
         if (invalidinput) {
