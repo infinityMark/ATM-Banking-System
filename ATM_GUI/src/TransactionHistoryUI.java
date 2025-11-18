@@ -1,19 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class TransactionHistoryUI extends TransactionHistory {
+public class TransactionHistoryUI {
     private JTextArea history;
     private JPanel mainPanel;
 
-    public TransactionHistoryUI(int action, int ownAccount, int targetAccount, int tag, int subTag, double amounts) {
-        super(action, ownAccount, targetAccount, tag, subTag, amounts);
-
+    public TransactionHistoryUI(int accountNumber) {
         mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
 
-        JLabel titleLabel = new JLabel("Transaction History for Account: " + ownAccount, SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Transaction History for Account: " + accountNumber, SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titleLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         titleLabel.setOpaque(true);
@@ -29,7 +27,7 @@ public class TransactionHistoryUI extends TransactionHistory {
         history.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(history);
 
-        String historyText = TransactionHistory.getHistoryAsString(ownAccount);
+        String historyText = TransactionHistory.getHistoryAsString(accountNumber);
         history.setText(historyText);
 
         gbc.gridy = 1;
