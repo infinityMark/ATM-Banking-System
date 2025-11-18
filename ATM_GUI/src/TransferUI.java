@@ -62,6 +62,21 @@ public class TransferUI extends Transfer {
     /**
      * Creates a standardized selection menu with two options
      */
+    public void goBackToMainPanel() {
+        Container parent = mainPanel.getParent();
+        if (parent != null) {
+            Container current = parent;
+            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+                current = current.getParent();
+            }
+
+            if (current != null) {
+                CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, "mainMenu");
+            }
+        }
+    }
+
     public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
                                       int fontSize, Font font, String nextPage) {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -76,7 +91,7 @@ public class TransferUI extends Transfer {
         selectionTwoBtn.setName(BUTTON_SECOND);
 
         selectionOneBtn.addActionListener(e -> showCard(nextPage));
-        selectionTwoBtn.addActionListener(e -> super.goBackToMainPanel());
+        selectionTwoBtn.addActionListener(e -> goBackToMainPanel());
 
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 

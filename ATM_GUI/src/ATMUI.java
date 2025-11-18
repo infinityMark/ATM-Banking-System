@@ -229,12 +229,8 @@ public class ATMUI {
     // -------------functional panels creation methods-------------
 
     protected JPanel createLoginPanel() {
-        JPanel panel = new JPanel(new FlowLayout());
+        JPanel panel = new LoginGUI(true).getMainP();
         panel.setName(LOGIN_PANEL);
-        panel.add(new JLabel("a"));
-        panel.add(new JTextField(15));
-        panel.add(new JPasswordField(15));
-        panel.add(new JButton("a"));
         return panel;
     }
 

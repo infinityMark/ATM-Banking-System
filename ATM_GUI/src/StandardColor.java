@@ -23,7 +23,7 @@ public enum StandardColor {
             new Color(0,192,232),new Color(60,211,254)
     }),
     Blue(new Color[]{
-            new Color(0,136,255),new Color(0,145,255)
+            new Color(0,136,255),new Color(0,145,255),new Color(0,0,139)
     }),
     Indigo(new Color[]{
             new Color(97,85,245),new Color(107,93,255)
