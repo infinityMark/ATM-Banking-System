@@ -254,16 +254,26 @@ public class ATMUI {
         return panel;
     }
 
+    //method of createBalancePanel
     protected JPanel createBalancePanel() {
-        JPanel panel = new JPanel(new FlowLayout());
-        panel.setName(BALANCE_PANEL);
-        panel.add(new JLabel("Current Balance:"));
-        panel.add(new JLabel("¥ 10000.00"));
+        // default balance panel with account number 0
+        BalanceInquiryUI balancePanel = new BalanceInquiryUI(0);
+        balancePanel.setName(BALANCE_PANEL);
+    
+        // Add action listener for the back button
+        balancePanel.getBackButton().addActionListener(e -> {
+            switchPanel(MAIN_MENU_PANEL);
+        });
+    
+        return balancePanel;
+    }
 
-        JButton backBtn = new JButton("Back to Menu");
-        backBtn.setName("Back To Menu");
-        panel.add(backBtn);
-        return panel;
+    //update the balance panel with the current user's account can't check error
+    public void updateBalancePanel(int accountNumber) {
+        JPanel balancePanel = getPanel(BALANCE_PANEL);
+        if (balancePanel instanceof BalanceInquiryUI) {
+            ((BalanceInquiryUI) balancePanel).setAccountNumber(accountNumber);
+        }
     }
 
     protected JPanel createWithdrawPanel() {

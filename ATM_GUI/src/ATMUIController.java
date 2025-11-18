@@ -60,6 +60,10 @@ public class ATMUIController {
         atmUI.switchPanel(panelName);
     }
 
+    public void showTransactionHistory() {
+        atmUI.switchPanel("transactionHistory");
+    }
+    
     public JFrame getMainFrame() {
         return atmUI.getMainFrame();
     }
