@@ -227,4 +227,47 @@ public class TransactionHistory {
     public double getAmount() {
         return amount;
     }
+
+    public static String getHistoryAsString(int accountNumber) {
+        StringBuilder sb = new StringBuilder();
+        boolean f = false;
+
+        for (int i = 0; i < transactionCount; i++) {
+            TransactionHistory history = transactionHistory[i];
+            if (history.getOwnAccount() == accountNumber) {
+                f = true;
+
+                sb.append("Transaction Type: ")
+                        .append(transactionMission[history.getAction()])
+                        .append("\n");
+
+                sb.append("Transaction Id: ")
+                        .append(history.getTransactionId())
+                        .append("\n");
+
+                if (history.getAction() == 0) {
+                    sb.append("From: ")
+                            .append(history.getOwnAccount())
+                            .append(" -> To: ")
+                            .append(history.getTargetAccount())
+                            .append("\n");
+                }
+
+                sb.append(transactionMission[history.getAction()])
+                        .append(" amount: HK$ ")
+                        .append(String.format("%.2f", history.getAmount()))
+                        .append("\n");
+
+                sb.append("Date: ")
+                        .append(history.getFormattedTransactionDate())
+                        .append("\n\n");
+            }
+        }
+
+        if (!f) {
+            sb.append("No any record yet\n");
+        }
+
+        return sb.toString();
+    }
 }
