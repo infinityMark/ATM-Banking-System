@@ -4,8 +4,12 @@
 public class ATMCaseStudy {
    // main method creates and runs the ATM
    public static void main(String[] args) {
-      ATM theATM = new ATM();
-      theATM.run();
+      // EnhancedATMUI atmUI = new EnhancedATMUI();
+      EnhancedATMUI atmUI = new EnhancedATMUI();
+      ATM atm = new ATM();
+      // atm.run();
+      ATMUIController controller = new ATMUIController(atmUI, atm);
+      controller.run();
    } // end main
 } // end class ATMCaseStudy
 

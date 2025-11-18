@@ -10,6 +10,10 @@ public class ATMUI {
     public static final String TRANSFER_PANEL = "transfer";
     public static final String KEYPAD_PANEL = "keypad";
 
+    // Array to store all panels
+    private JPanel[] allPanels = new JPanel[20];
+    private int panelCount = 0;
+
     // Main frame and panels
 
     private CardLayout centerCardLayout;
@@ -48,7 +52,8 @@ public class ATMUI {
         // initializeUI();
     }
 
-    public ATMUI(String methodName){
+    public ATMUI(String methodName) {
+
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -68,6 +73,7 @@ public class ATMUI {
         gbc.gridy = 1;
         gbc.weighty = 0.9;
         mainPanel.add(contentPanel, gbc);
+
     }
 
     public void initializeUI() {
@@ -116,6 +122,8 @@ public class ATMUI {
         // left button panel (small proportion)
         leftButtonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         leftButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        leftButtonPanel.setName("leftButtonPanel");
+        registerPanel(leftButtonPanel);
 
         // center content panel (large proportion, using CardLayout)
         centerCardLayout = new CardLayout();
@@ -125,6 +133,8 @@ public class ATMUI {
         // right button panel (small proportion)
         rightButtonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
         rightButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        rightButtonPanel.setName("rightButtonPanel");
+        registerPanel(rightButtonPanel);
 
         // Set grid layout constraints
         gbc.fill = GridBagConstraints.BOTH;
@@ -154,16 +164,24 @@ public class ATMUI {
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-        Button1 = new JButton("Left 1");
-        Button2 = new JButton("Left 2");
-        Button3 = new JButton("Left 3");
-        Button4 = new JButton("Left 4");
+        Button1 = new JButton("Example");
+        Button1.setName("Left1");
+        Button2 = new JButton("Left2");
+        Button2.setName("Left2");
+        Button3 = new JButton("Left3");
+        Button3.setName("Left3");
+        Button4 = new JButton("Left4");
+        Button4.setName("Left4");
 
         // initialize right buttons, change if needed
-        Button5 = new JButton("Right 1");
-        Button6 = new JButton("Right 2");
-        Button7 = new JButton("Right 3");
-        Button8 = new JButton("Right 4");
+        Button5 = new JButton("Right1");
+        Button5.setName("Right1");
+        Button6 = new JButton("Right2");
+        Button6.setName("Right2");
+        Button7 = new JButton("Right3");
+        Button7.setName("Right3");
+        Button8 = new JButton("Right4");
+        Button8.setName("Right4");
 
         // left buttons
         leftButtonPanel.add(Button1);
@@ -179,12 +197,33 @@ public class ATMUI {
     }
 
     private void insertToCenterPanel() {
-        // 功能面板应添加到中间的centerPanel（使用CardLayout的面板）
-        centerPanel.add(createLoginPanel(), LOGIN_PANEL);
-        centerPanel.add(createMainMenuPanel(), MAIN_MENU_PANEL);
-        centerPanel.add(createBalancePanel(), BALANCE_PANEL);
-        centerPanel.add(createWithdrawPanel(), WITHDRAW_PANEL);
-        centerPanel.add(createTransferPanel(), TRANSFER_PANEL);
+        JPanel loginPanel = createLoginPanel();
+        centerPanel.add(loginPanel, LOGIN_PANEL);
+        registerPanel(loginPanel);
+
+        JPanel mainMenuPanel = createMainMenuPanel();
+        centerPanel.add(mainMenuPanel, MAIN_MENU_PANEL);
+        registerPanel(mainMenuPanel);
+
+        JPanel balancePanel = createBalancePanel();
+        centerPanel.add(balancePanel, BALANCE_PANEL);
+        registerPanel(balancePanel);
+
+        JPanel withdrawPanel = createWithdrawPanel();
+        centerPanel.add(withdrawPanel, WITHDRAW_PANEL);
+        registerPanel(withdrawPanel);
+
+        JPanel transferPanel = createTransferPanel();
+        centerPanel.add(transferPanel, TRANSFER_PANEL);
+        registerPanel(transferPanel);
+    }
+
+    // Method to register panels
+    public void registerPanel(JPanel panel) {
+        if (panelCount < allPanels.length) {
+            allPanels[panelCount] = panel;
+            panelCount++;
+        }
     }
 
     // -------------functional panels creation methods-------------
@@ -214,7 +253,10 @@ public class ATMUI {
         panel.setName(BALANCE_PANEL);
         panel.add(new JLabel("Current Balance:"));
         panel.add(new JLabel("¥ 10000.00"));
-        panel.add(new JButton("Back to Menu"));
+
+        JButton backBtn = new JButton("Back to Menu");
+        backBtn.setName("Back To Menu");
+        panel.add(backBtn);
         return panel;
     }
 
@@ -228,11 +270,36 @@ public class ATMUI {
         return panel;
     }
 
+    protected JPanel createTransferPanel() {
+        JPanel panel = new TransferUI(21111, screen, bankDatabase, atmKeypad, atmCashDispenser).transferLayout();
+        panel.setName(TRANSFER_PANEL);
+        return panel;
+    }
+
+    protected JPanel createKeypadPanel() {
+        JPanel panel = new JPanel(new GridLayout(4, 3, 5, 5)); // 4行3列网格
+        panel.setName(KEYPAD_PANEL);
+        registerPanel(panel);
+        panel.add(new JButton("1"));
+        panel.add(new JButton("2"));
+        panel.add(new JButton("3"));
+        panel.add(new JButton("4"));
+        panel.add(new JButton("5"));
+        panel.add(new JButton("6"));
+        panel.add(new JButton("7"));
+        panel.add(new JButton("8"));
+        panel.add(new JButton("9"));
+        panel.add(new JButton("Clean"));
+        panel.add(new JButton("0"));
+        panel.add(new JButton("Confirm"));
+        return panel;
+    }
+
+    // ------------- Waiting for improvement -------------
     Screen screen = new Screen();
     BankDatabase bankDatabase = new BankDatabase();
     Keypad atmKeypad;
     CashDispenser atmCashDispenser;
-
 
     public void switchPanels(String name) {
         if (TRANSFER_PANEL.equals(name)) {
@@ -250,40 +317,16 @@ public class ATMUI {
         centerCardLayout.show(centerPanel, name);
     }
 
-    protected JPanel createTransferPanel() {
-        JPanel panel = new TransferUI(21111, screen, bankDatabase, atmKeypad, atmCashDispenser).transferLayout();
-        panel.setName(TRANSFER_PANEL);
-        return panel;
-    }
-
-    protected JPanel createKeypadPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 3, 5, 5)); // 4行3列网格
-        panel.setName(KEYPAD_PANEL);
-        panel.add(new JButton("1"));
-        panel.add(new JButton("2"));
-        panel.add(new JButton("3"));
-        panel.add(new JButton("4"));
-        panel.add(new JButton("5"));
-        panel.add(new JButton("6"));
-        panel.add(new JButton("7"));
-        panel.add(new JButton("8"));
-        panel.add(new JButton("9"));
-        panel.add(new JButton("Clean"));
-        panel.add(new JButton("0"));
-        panel.add(new JButton("Confirm"));
-        return panel;
-    }
-
     // -------------Getter&Setter methods-------------
 
-    // get panel by name（从中间面板查找）
-    public JPanel getPanel(String name) {
-        for (Component comp : centerPanel.getComponents()) {
-            if (comp.getName() != null && comp.getName().equals(name)) {
-                return (JPanel) comp;
+    public JPanel getPanel(String panelName) {
+        for (int i = 0; i < panelCount; i++) {
+            JPanel panel = allPanels[i];
+            if (panel != null && panelName.equals(panel.getName())) {
+                return panel;
             }
         }
-        return null;
+        return null; // 没找到返回null
     }
 
     // switch center panel by name（切换中间面板）
@@ -352,11 +395,11 @@ public class ATMUI {
         }
     }
 
-    public JPanel getPanelUI(){
+    public JPanel getPanelUI() {
         return mainPanel;
     }
 
-    public void passInformation(String information){
+    public void passInformation(String information) {
         taskTitle.setText(information);
         taskTitle.revalidate();
         taskTitle.repaint();
@@ -377,8 +420,10 @@ public class ATMUI {
         }
     }
 
-    protected RoundedButton createStyledButton(String content,String changedContent,Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,
-                                               Color changedFontColor,Font fontDefaultStyle,Font fontChangedSize, boolean roundedStatus,int widths,int heights) {
+    protected RoundedButton createStyledButton(String content, String changedContent, Color defaultBackgroundColor,
+            Color changedBackgroundColor, Color defaultFontColor,
+            Color changedFontColor, Font fontDefaultStyle, Font fontChangedSize, boolean roundedStatus, int widths,
+            int heights) {
         RoundedButton button = new RoundedButton(content, changedContent,
                 defaultBackgroundColor,
                 changedBackgroundColor,

@@ -12,22 +12,36 @@ import java.awt.event.FocusEvent;
 // 增强版ATM UI，继承自基础ATMUI
 public class EnhancedATMUI extends ATMUI {
 
-    // 重写主菜单面板，添加账户信息和退出按钮
+    public EnhancedATMUI() {
+        super();
+    }
+
     @Override
     protected JPanel createMainMenuPanel() {
-        JPanel panel = new JPanel(new GridLayout(5, 1, 5, 5)); // 5行1列容纳所有按钮
-        panel.setName(MAIN_MENU_PANEL); // 使用父类的面板名称常量
+        JPanel panel = new JPanel(new GridLayout(5, 1, 5, 5));
+        panel.setName(MAIN_MENU_PANEL);
 
-        // 原有按钮
+        // 余额查询按钮
         JButton balanceBtn = new JButton("View Balance");
+        balanceBtn.setName("View Balance"); // 设置名称匹配监听器
+
+        // 取款按钮
         JButton withdrawBtn = new JButton("Withdraw Cash");
+        withdrawBtn.setName("Withdraw Cash"); // 设置名称匹配监听器
+
+        // 转账按钮
         JButton transferBtn = new JButton("Transfer Funds");
+        transferBtn.setName("Transfer Funds"); // 设置名称匹配监听器
 
-        // 新增按钮（与ATMListenerRegistrar中的配置文本一致）
+        // 账户信息按钮
         JButton infoBtn = new JButton("Account Info");
-        JButton exitBtn = new JButton("Exit");
+        infoBtn.setName("Account Info"); // 设置名称匹配监听器
 
-        // 添加所有按钮到面板（顺序与布局对应）
+        // 退出按钮
+        JButton exitBtn = new JButton("Exit");
+        exitBtn.setName("Exit"); // 设置名称匹配监听器
+
+        // 添加所有按钮到面板
         panel.add(balanceBtn);
         panel.add(withdrawBtn);
         panel.add(transferBtn);
@@ -43,7 +57,6 @@ public class EnhancedATMUI extends ATMUI {
      * it may cause we can't get the work done on time
      */
 
-    // 重写登录面板，优化登录界面
     @Override
     protected JPanel createLoginPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -70,15 +83,16 @@ public class EnhancedATMUI extends ATMUI {
         JPasswordField pinField = new JPasswordField(15);
         panel.add(pinField, gbc);
 
-        // 登录按钮（文本与监听器配置一致）
+        // 登录按钮（设置名称与监听器匹配）
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         JButton loginBtn = new JButton("Login");
+        loginBtn.setName("Login");
         panel.add(loginBtn, gbc);
 
-        // 账号输入框焦点效果
+        // 账号输入框焦点效果（保持不变）
         accField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {

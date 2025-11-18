@@ -12,6 +12,14 @@ public class ATMUIController {
         this.atmUI = atmUI;
         this.atm = atm;
         this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
+
+    }
+
+    public void run() {
+        atmUI.initializeUI();
+        setup(); // register all listeners
+        getMainFrame().setVisible(true); // show UI
+        // atm.run();
     }
 
     // ------------- General method for switching panels -------------
@@ -40,22 +48,34 @@ public class ATMUIController {
         atmUI.switchPanel("transfer");
     }
 
+    public void showAccountInfo() {
+        atmUI.switchPanel("accountInfo");
+    }
+
+    public void goToPanel(String panelName) {
+        atmUI.switchPanel(panelName);
+    }
+
     public JFrame getMainFrame() {
         return atmUI.getMainFrame();
     }
 
     public void setup() {
+        System.out.println("Registering listeners...");
         listenerRegistrar.registerAllListeners();
     }
 
-    // For testing only
-    public static void main(String[] args) {
-        EnhancedATMUI atmUI = new EnhancedATMUI();
-        atmUI.initializeUI();
-        ATM atm = new ATM();
-        ATMUIController controller = new ATMUIController(atmUI, atm);
+    // ------------- Handle logic parts for listeners -------------
 
-        controller.setup(); // register all listeners
-        controller.getMainFrame().setVisible(true); // show UI
+    public void handleLogin() {
+        switchToMainMenuPanel();
+    }
+
+    public void exitSystem() {
+        atmUI.getMainFrame().dispose();
+    }
+
+    public void showInfo() {
+        JOptionPane.showMessageDialog(atmUI.getMainFrame(), "聆听器示范");
     }
 }

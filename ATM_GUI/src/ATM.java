@@ -39,7 +39,7 @@ public class ATM extends JFrame {
 
       mainFrame = new JFrame("ATM GUI implement");
       // ATM GUI implements to initial the mainFrame setting.
-      initializeGUI();
+      // initializeGUI();
    } // end no-argument ATM constructor
 
    private void initializeGUI() {
