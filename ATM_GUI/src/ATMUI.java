@@ -8,6 +8,7 @@ public class ATMUI {
     public static final String BALANCE_PANEL = "balance";
     public static final String WITHDRAW_PANEL = "withdraw";
     public static final String TRANSFER_PANEL = "transfer";
+    public static final String HISTORY_PANEL = "history";
     public static final String KEYPAD_PANEL = "keypad";
 
     // Array to store all panels
@@ -271,6 +272,14 @@ public class ATMUI {
         panel.setName(TRANSFER_PANEL);
         return panel;
     }
+
+    protected JPanel createHistoryPanel() {
+        JPanel panel = new TransactionHistoryUI().transactionHistoryLayout();
+        panel.setName(HISTORY_PANEL);
+        return panel;
+    }
+
+
 
     protected JPanel createKeypadPanel() {
         JPanel panel = new JPanel(new GridLayout(4, 3, 5, 5)); // 4行3列网格
