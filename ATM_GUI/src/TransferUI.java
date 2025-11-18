@@ -21,7 +21,7 @@ public class TransferUI extends Transfer {
     private static final String BUTTON_SECOND = "SECOND_BUTTON";
 
     // Font constants
-    private static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
+    protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
     private static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
     private static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
     private static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);

@@ -50,7 +50,7 @@ public class ATMUI {
     JLabel taskTitle = new JLabel();
 
     protected static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 40);
-    protected static final Font NORMAL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
+    public static final Font NORMAL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
     protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
     public ATMUI() {
