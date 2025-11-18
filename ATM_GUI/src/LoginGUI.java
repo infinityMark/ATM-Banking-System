@@ -16,6 +16,7 @@ public class LoginGUI {
     private JPanel mainP;
     private static int passedAccount, passedPIN;
 
+
     public JPanel createMainMenuPanels(boolean showLoginGUI, JButton confirmButton){
         mainP = new JPanel(new GridBagLayout());
         mainP.setBackground(new Color(0, 0, 139));
@@ -102,7 +103,7 @@ public class LoginGUI {
         gbc.insets = new Insets(5, 5, 5, 5);
         mainP.add(reminderL, gbc);
     }
-
+    
     /**
      * 设置中心面板（账号密码输入区域）
      */
