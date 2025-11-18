@@ -236,12 +236,12 @@ public class ATMUI {
     }
 
     protected JPanel createMainMenuPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 1, 5, 5));
+        JPanel panel = new MainMenuGUI(true, 21111).getMainPanel();
         panel.setName(MAIN_MENU_PANEL);
-        panel.add(new JButton("View Balance"));
-        panel.add(new JButton("Withdraw Cash"));
-        panel.add(new JButton("Transfer Funds"));
-        panel.add(new JButton("Exit"));
+//        panel.add(new JButton("View Balance"));
+//        panel.add(new JButton("Withdraw Cash"));
+//        panel.add(new JButton("Transfer Funds"));
+//        panel.add(new JButton("Exit"));
         return panel;
     }
 
@@ -268,8 +268,10 @@ public class ATMUI {
     }
 
     protected JPanel createTransferPanel() {
-        JPanel panel = new TransferUI(21111, screen, bankDatabase, atmKeypad, atmCashDispenser).transferLayout();
+        TransferUI transferUI = new TransferUI(21111, screen, bankDatabase, atmKeypad, atmCashDispenser);
+        JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
+        transferUI.resetToInitialState();
         return panel;
     }
 
@@ -306,22 +308,6 @@ public class ATMUI {
     Keypad atmKeypad;
     CashDispenser atmCashDispenser;
 
-    public void switchPanels(String name) {
-        if (TRANSFER_PANEL.equals(name)) {
-            Component[] components = centerPanel.getComponents();
-            for (Component comp : components) {
-                if (TRANSFER_PANEL.equals(comp.getName())) {
-                    centerPanel.remove(comp);
-                }
-            }
-
-            JPanel transferPanel = createTransferPanel();
-            centerPanel.add(transferPanel, TRANSFER_PANEL);
-        }
-
-        centerCardLayout.show(centerPanel, name);
-    }
-
     // -------------Getter&Setter methods-------------
 
     public JPanel getPanel(String panelName) {
@@ -333,6 +319,7 @@ public class ATMUI {
         }
         return null; // 没找到返回null
     }
+
 
     // switch center panel by name（切换中间面板）
     public void switchPanel(String name) {
