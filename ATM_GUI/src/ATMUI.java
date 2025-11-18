@@ -230,6 +230,10 @@ public class ATMUI {
         JPanel transferPanel = createTransferPanel();
         centerPanel.add(transferPanel, TRANSFER_PANEL);
         registerPanel(transferPanel);
+
+        JPanel historyPanel = createHistoryPanel();
+        centerPanel.add(historyPanel, HISTORY_PANEL);
+        registerPanel(historyPanel);
     }
 
     // Method to register panels
