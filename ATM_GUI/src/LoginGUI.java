@@ -19,8 +19,7 @@ public class LoginGUI {
     private static int passedAccount,passedPIN;
 
     public LoginGUI(boolean showLoginGUI)
-
-    {   //測試借用的frame
+    {
 
         mainP= new JPanel();
 
@@ -83,7 +82,7 @@ public class LoginGUI {
     private void mainPanel()
     {
         mainP.setLayout(new BorderLayout());
-        mainP.setBackground(new Color(0,0,139));
+        mainP.setBackground(StandardColor.Blue.getColor(2));
     }
 
     private void Toppanel()
