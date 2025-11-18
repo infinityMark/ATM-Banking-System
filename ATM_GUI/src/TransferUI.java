@@ -193,6 +193,10 @@ public class TransferUI extends Transfer {
         return panel;
     }
 
+    public void resetToInitialState() {
+        cardLayout.show(cardPanel, "MENU");
+        resetValidationFlags();
+    }
     /**
      * Creates the post-transfer completion screen
      */
@@ -216,6 +220,7 @@ public class TransferUI extends Transfer {
         gbc.gridy = 2;
         gbc.weighty = 0.8;
         panel.add(continueMenu, gbc);
+        resetToInitialState();
 
         return panel;
     }
