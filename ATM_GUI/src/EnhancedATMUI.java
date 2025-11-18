@@ -34,8 +34,11 @@ public class EnhancedATMUI extends ATMUI {
         transferBtn.setName("Transfer Funds"); // 设置名称匹配监听器
 
         // 账户信息按钮
-        JButton infoBtn = new JButton("Account Info");
-        infoBtn.setName("Account Info"); // 设置名称匹配监听器
+        //JButton infoBtn = new JButton("Account Info");
+        //infoBtn.setName("Account Info"); // 设置名称匹配监听器
+
+        JButton historyBtn = new JButton("Transaction History");
+        historyBtn.setName("Transaction History"); // 设置名称匹配监听器
 
         // 退出按钮
         JButton exitBtn = new JButton("Exit");
@@ -45,7 +48,7 @@ public class EnhancedATMUI extends ATMUI {
         panel.add(balanceBtn);
         panel.add(withdrawBtn);
         panel.add(transferBtn);
-        panel.add(infoBtn);
+        panel.add(historyBtn);
         panel.add(exitBtn);
 
         return panel;

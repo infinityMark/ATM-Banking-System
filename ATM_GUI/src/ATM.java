@@ -37,7 +37,7 @@ public class ATM extends JFrame {
       // depositSlot = new DepositSlot(); // create deposit slot
       bankDatabase = new BankDatabase(); // create acct info database
 
-      mainFrame = new JFrame("ATM GUI implement");
+      //mainFrame = new JFrame("ATM GUI implement");
       // ATM GUI implements to initial the mainFrame setting.
       // initializeGUI();
    } // end no-argument ATM constructor

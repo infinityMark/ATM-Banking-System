@@ -37,7 +37,7 @@ public class ATMListenerRegistrar {
     private void initBaseActionConfigs() {
         // Login Panel
         addButtonListener(ATMUI.LOGIN_PANEL, "Login", e -> controller.handleLogin());
-        //System.out.println("Login button listener added.");
+        // System.out.println("Login button listener added.");
 
         // Main Menu
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "View Balance",
@@ -52,7 +52,9 @@ public class ATMListenerRegistrar {
                 e -> controller.exitSystem());
 
         addButtonListener("leftButtonPanel", "Left1", e -> controller.showInfo());
-        //System.out.println("have link");
+        // System.out.println("have link");
+
+        addButtonListener("leftButtonPanel", "Left2", e -> controller.goToPanel("mainMenu"));
     }
 
     /**
