@@ -67,7 +67,7 @@ public class ATMUIController {
     public void showTransactionHistory() {
         atmUI.switchPanel("transactionHistory");
     }
-    
+
     public JFrame getMainFrame() {
         return atmUI.getMainFrame();
     }
@@ -77,6 +77,10 @@ public class ATMUIController {
         listenerRegistrar.registerAllListeners();
     }
 
+    public String getCurrentPanelName() {
+        return atmUI.getCurrentPanelName();
+    }
+
     // ------------- Handle logic parts for listeners -------------
 
     public void handleLogin() {
@@ -84,10 +88,11 @@ public class ATMUIController {
     }
 
     public void exitSystem() {
+        JOptionPane.showMessageDialog(atmUI.getMainFrame(), "Exit System. Goodbye!");
         atmUI.getMainFrame().dispose();
     }
 
     public void showInfo() {
-        JOptionPane.showMessageDialog(atmUI.getMainFrame(), "聆听器示范");
+        JOptionPane.showMessageDialog(atmUI.getMainFrame(), "啊哦，Listener出问题咯！");
     }
 }

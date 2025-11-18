@@ -13,6 +13,11 @@ public class ATMUI {
     public static final String KEYPAD_PANEL = "keypad";
     public static final String test = "test";
 
+    private String currentPanelName;
+
+    // ------------- Instance GUI --------------------
+    private LoginGUI loginGUI;
+    private MainMenuGUI mainMenuGUI;
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -34,15 +39,13 @@ public class ATMUI {
     private JButton Button1;
     private JButton Button2;
     private JButton Button3;
-    private JButton Button4;
 
-    private JButton confirmButton;
+    // private JButton confirmButton;
 
     // Right side panel buttons
     private JButton Button5;
     private JButton Button6;
     private JButton Button7;
-    private JButton Button8;
 
     public boolean isAutoSize = false;
 
@@ -55,7 +58,7 @@ public class ATMUI {
     protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
     public ATMUI() {
-        initializeUI();
+        // initializeUI();
     }
 
     public ATMUI(String methodName) {
@@ -130,7 +133,7 @@ public class ATMUI {
         mainUpperPanel.setBorder(BorderFactory.createTitledBorder("Function Area"));
 
         // left button panel (small proportion)
-        leftButtonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+        leftButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         leftButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         leftButtonPanel.setName("leftButtonPanel");
         registerPanel(leftButtonPanel);
@@ -141,7 +144,7 @@ public class ATMUI {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // right button panel (small proportion)
-        rightButtonPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+        rightButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         rightButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         rightButtonPanel.setName("rightButtonPanel");
         registerPanel(rightButtonPanel);
@@ -153,17 +156,17 @@ public class ATMUI {
         // left panel occupies 20%
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.weightx = 0.2;
+        gbc.weightx = 0.15;
         mainUpperPanel.add(leftButtonPanel, gbc);
 
         // center panel occupies 60%
         gbc.gridx = 1;
-        gbc.weightx = 0.6;
+        gbc.weightx = 0.7;
         mainUpperPanel.add(centerPanel, gbc);
 
         // right panel occupies 20%
         gbc.gridx = 2;
-        gbc.weightx = 0.2;
+        gbc.weightx = 0.15;
         mainUpperPanel.add(rightButtonPanel, gbc);
 
         // lower keypad panel
@@ -174,36 +177,36 @@ public class ATMUI {
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-        Button1 = new JButton("Example");
+        Button1 = new JButton(" ");
         Button1.setName("Left1");
-        Button2 = new JButton("Back to Menu");
+        Button2 = new JButton(" ");
         Button2.setName("Left2");
-        Button3 = new JButton("Left3");
+        Button3 = new JButton(" ");
         Button3.setName("Left3");
-        Button4 = new JButton("Left4");
-        Button4.setName("Left4");
+        // Button4 = new JButton("Left4");
+        // Button4.setName("Left4");
 
         // initialize right buttons, change if needed
-        Button5 = new JButton("Right1");
+        Button5 = new JButton(" ");
         Button5.setName("Right1");
-        Button6 = new JButton("Right2");
+        Button6 = new JButton(" ");
         Button6.setName("Right2");
-        Button7 = new JButton("Right3");
+        Button7 = new JButton("跳过登录(直达Main menu)");
         Button7.setName("Right3");
-        Button8 = new JButton("Right4");
-        Button8.setName("Right4");
+        // Button8 = new JButton("Right4");
+        // Button8.setName("Right4");
 
         // left buttons
         leftButtonPanel.add(Button1);
         leftButtonPanel.add(Button2);
         leftButtonPanel.add(Button3);
-        leftButtonPanel.add(Button4);
+        // leftButtonPanel.add(Button4);
 
         // right buttons
         rightButtonPanel.add(Button5);
         rightButtonPanel.add(Button6);
         rightButtonPanel.add(Button7);
-        rightButtonPanel.add(Button8);
+        // rightButtonPanel.add(Button8);
     }
 
     private void insertToCenterPanel() {
@@ -246,45 +249,52 @@ public class ATMUI {
 
     // -------------functional panels creation methods-------------
 
-
     protected JPanel createGreetingPanel() {
-        JPanel panel = GreetingUI.GreetingUI();
+        GreetingUI greetingUI = new GreetingUI();
+        JPanel panel = greetingUI.getMainPanel();
         panel.setName(GREETING_PANEL);
         return panel;
     }
 
     protected JPanel createLoginPanel() {
-        JButton confirmButton = new JButton();
-        confirmButton.setName("Confirm");
-        LoginGUI loginGUI = new LoginGUI(true);
-        confirmButton = new JButton("Confirm");
-        confirmButton.setName(test);
+        loginGUI = new LoginGUI(true);
         JPanel panel = loginGUI.createMainMenuPanels();
         panel.setName(LOGIN_PANEL);
+
+        JButton confirmButton = new JButton();
+        confirmButton.setName("Confirm");
+        confirmButton = new JButton("Confirm");
+        confirmButton.setName(test);
         return panel;
     }
 
     protected JPanel createMainMenuPanel() {
-        JPanel panel = new MainMenuGUI(true, 21111).getMainP();
+        mainMenuGUI = new MainMenuGUI(true, 21111);
+        JPanel panel = mainMenuGUI.getMainP();
         panel.setName(MAIN_MENU_PANEL);
         return panel;
     }
 
-    //method of createBalancePanel
+    // method of createBalancePanel
     protected JPanel createBalancePanel() {
         // default balance panel with account number 0
         BalanceInquiryUI balancePanel = new BalanceInquiryUI(0);
         balancePanel.setName(BALANCE_PANEL);
-    
+
         // Add action listener for the back button
         balancePanel.getBackButton().addActionListener(e -> {
             switchPanel(MAIN_MENU_PANEL);
         });
-    
+
         return balancePanel;
     }
 
-    //update the balance panel with the current user's account can't check error
+    public JPanel createHistoryPanel() {
+        JPanel panel = new JPanel(new FlowLayout());
+        return panel;
+    }
+
+    // update the balance panel with the current user's account can't check error
     public void updateBalancePanel(int accountNumber) {
         JPanel balancePanel = getPanel(BALANCE_PANEL);
         if (balancePanel instanceof BalanceInquiryUI) {
@@ -314,22 +324,15 @@ public class ATMUI {
         JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5)); // 4行3列网格
         panel.setName(KEYPAD_PANEL);
         registerPanel(panel);
-                panel.add(new JButton("7"));
-        panel.add(new JButton("8"));
-        panel.add(new JButton("9"));
-        panel.add(new JButton("Confirm"));
-        panel.add(new JButton("4"));
-        panel.add(new JButton("5"));
-        panel.add(new JButton("6"));
-        panel.add(new JButton("Delete"));
-        panel.add(new JButton("1"));
-        panel.add(new JButton("2"));
-        panel.add(new JButton("3"));
-        panel.add(new JButton("Clear"));
-        panel.add(new JButton("0"));
-        panel.add(new JButton("."));
-        panel.add(new JButton("00"));
-        panel.add(new JButton(""));
+
+        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00",
+                "" };
+        for (String key : keys) {
+            JButton btn = new JButton(key);
+            btn.setFont(ATMUI.NORMAL_FONT);
+            btn.setName(key.toLowerCase());
+            panel.add(btn);
+        }
         return panel;
     }
 
@@ -351,10 +354,11 @@ public class ATMUI {
         return null; // 没找到返回null
     }
 
-    // switch center panel by name（切换中间面板）
+    // switch center panel by name
     public void switchPanel(String name) {
         JPanel targetPanel = getPanel(name);
         if (targetPanel != null) {
+            this.currentPanelName = name;
             centerCardLayout.show(centerPanel, name); // CardLayout作用于centerPanel
         } else {
             // Error handling: panel not found
@@ -392,6 +396,14 @@ public class ATMUI {
         return null;
     }
 
+    public LoginGUI getLoginGUI() {
+        return loginGUI;
+    }
+
+    public String getCurrentPanelName() {
+        return currentPanelName;
+    }
+
     // ------------- Side panel buttons getters -------------
 
     public JButton getButton(int index) {
@@ -402,16 +414,16 @@ public class ATMUI {
                 return Button2;
             case 3:
                 return Button3;
-            case 4:
-                return Button4;
+            // case 4:
+            // return Button4;
             case 5:
                 return Button5;
             case 6:
                 return Button6;
             case 7:
                 return Button7;
-            case 8:
-                return Button8;
+            // case 8:
+            // return Button8;
             default:
                 return null;
         }

@@ -4,19 +4,18 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class LoginGUI {
     private JTextField accounTF;
     private JPanel centerPanel;
     private JPasswordField passwordF;
-    private JButton confirmButton,delButton,cancelButton;
+    private JButton confirmButton, delButton, cancelButton;
     private String savedAccount;
-    private boolean accountGot,accountPass,pwPass,invalidinput;
-    private int currentAccountNumber,currentPin;
+    private boolean accountGot, accountPass, pwPass, invalidinput;
+    private int currentAccountNumber, currentPin;
     private BankDatabase bankDatabase;
     private JLabel reminderL;
     private JPanel mainP;
-    private static int passedAccount,passedPIN;
+    private static int passedAccount, passedPIN;
 
     public void goToPanel(String name) {
         Container parent = mainP.getParent();
@@ -29,21 +28,28 @@ public class LoginGUI {
             if (current != null) {
                 CardLayout layout = (CardLayout) current.getLayout();
                 layout.show(current, name);
+
+                current.revalidate();
+                current.repaint();
+            } else {
+                System.err.println("CardLayout miss,无法切换面板");
             }
+        } else {
+            System.err.println("mainP = null,无法切换面板");
         }
     }
 
     public LoginGUI(boolean showLoginGUI)
 
-    {   //測試借用的frame
+    { // 測試借用的frame
 
-        mainP= new JPanel();
+        mainP = new JPanel();
         mainPanel();
 
         centerPanel = new JPanel(new GridBagLayout());
         passwordF = new JPasswordField();
         accounTF = new JTextField();
-        reminderL = new JLabel("Please Enter your Account number and PIN number ",SwingConstants.CENTER);
+        reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
 
         Toppanel();
         Bottompanel();
@@ -52,11 +58,11 @@ public class LoginGUI {
         accountGot = false;
         accountPass = false;
         pwPass = false;
-        invalidinput=false;
-        currentAccountNumber=0;
-        currentPin=0;
+        invalidinput = false;
+        currentAccountNumber = 0;
+        currentPin = 0;
 
-        //button with keypad
+        // button with keypad
         confirmButton = new JButton("Confirm");
         delButton = new JButton("Del");
         cancelButton = new JButton("Cancel");
@@ -64,107 +70,102 @@ public class LoginGUI {
         delButton.setFocusable(false);
         cancelButton.setFocusable(false);
 
-
-        confirmButton.addActionListener(e ->
-        {
+        confirmButton.addActionListener(e -> {
             confirmBT();
         });
-        delButton.addActionListener(e ->
-        {
+        delButton.addActionListener(e -> {
             delBT();
         });
-        cancelButton.addActionListener(e ->
-        {   if(!invalidinput)
-            clearInput();
+        cancelButton.addActionListener(e -> {
+            if (!invalidinput)
+                clearInput();
         });
 
-        //只是用來測試的，這裏是keypad的三個按鈕。
-        //mainP.add(confirmButton,BorderLayout.WEST);
-        //mainP.add(delButton,BorderLayout.EAST);
-        //mainP.add(cancelButton,BorderLayout.NORTH);
-        //buttin with keypad!!!
+        // 只是用來測試的，這裏是keypad的三個按鈕。
+        // mainP.add(confirmButton,BorderLayout.WEST);
+        // mainP.add(delButton,BorderLayout.EAST);
+        // mainP.add(cancelButton,BorderLayout.NORTH);
+        // buttin with keypad!!!
 
-
-
-
-        if(showLoginGUI)
-        {
+        if (showLoginGUI) {
             SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
             mainP.setVisible(true);
         }
     }
-    private void mainPanel()
-    {
+
+    private void mainPanel() {
         mainP.setLayout(new BorderLayout());
-        mainP.setBackground(new Color(0,0,139));
+        mainP.setBackground(new Color(0, 0, 139));
     }
 
-    protected JPanel createMainMenuPanels(){
+    protected JPanel createMainMenuPanels() {
         return mainP;
     }
 
-    private void Toppanel()
-    {
-        JLabel timeL= new JLabel("DATE: "+ getTime(),SwingConstants.CENTER);
-        font(timeL,1,Color.WHITE,20);
-        timeL.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+    private void Toppanel() {
+        JLabel timeL = new JLabel("DATE: " + getTime(), SwingConstants.CENTER);
+        font(timeL, 1, Color.WHITE, 20);
+        timeL.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         timeL.setOpaque(true);
         backGroudColor(timeL);
-        mainP.add(timeL,BorderLayout.NORTH);
+        mainP.add(timeL, BorderLayout.NORTH);
     }
-    private void Bottompanel()
-    {
-        font(reminderL,3,Color.YELLOW,16);
-        reminderL.setBorder(BorderFactory.createLineBorder(Color.GRAY,1));
+
+    private void Bottompanel() {
+        font(reminderL, 3, Color.YELLOW, 16);
+        reminderL.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         reminderL.setOpaque(true);
         backGroudColor(reminderL);
-        mainP.add(reminderL,BorderLayout.SOUTH);
+        mainP.add(reminderL, BorderLayout.SOUTH);
     }
-    private void Centerpannel()
-    {
 
-        centerPanel.setBackground(new Color(0,0,139));
+    private void Centerpannel() {
+
+        centerPanel.setBackground(new Color(0, 0, 139));
 
         GridBagConstraints gap = new GridBagConstraints();
-        gap.insets = new Insets(20,20,20,20);//the gap bettwen the field
-        gap.anchor = GridBagConstraints.WEST;//向左對齊
+        gap.insets = new Insets(20, 20, 20, 20);// the gap bettwen the field
+        gap.anchor = GridBagConstraints.WEST;// 向左對齊
 
         JLabel accountL = new JLabel("ACCOUNT NUMBER: ");
-        font(accountL,1,Color.WHITE,18);
-
+        font(accountL, 1, Color.WHITE, 18);
 
         accounTF.setPreferredSize(new Dimension(400, 50));
         accounTF.setFont(new Font("DEFAULT", Font.PLAIN, 18));
 
         JLabel passwordL = new JLabel("PASSWORD: ");
-        font(passwordL,1,Color.WHITE,18);
+        font(passwordL, 1, Color.WHITE, 18);
 
+        passwordF.setPreferredSize(new Dimension(400, 50));
+        passwordF.setFont(new Font("DEFAULT", Font.PLAIN, 18));
 
-        passwordF.setPreferredSize(new Dimension(400,50));
-        passwordF.setFont(new Font("DEFAULT",Font.PLAIN,18));
+        gap.gridx = 0;
+        gap.gridy = 0;
+        centerPanel.add(accountL, gap);
+        gap.gridx = 1;
+        gap.gridy = 0;
+        centerPanel.add(accounTF, gap);
 
-        gap.gridx = 0 ; gap.gridy = 0;
-        centerPanel.add(accountL,gap);
-        gap.gridx = 1 ; gap.gridy = 0;
-        centerPanel.add(accounTF,gap);
+        gap.gridx = 0;
+        gap.gridy = 1;
+        centerPanel.add(passwordL, gap);
+        gap.gridx = 1;
+        gap.gridy = 1;
+        centerPanel.add(passwordF, gap);
 
-        gap.gridx = 0 ; gap.gridy = 1;
-        centerPanel.add(passwordL,gap);
-        gap.gridx = 1 ; gap.gridy = 1;
-        centerPanel.add(passwordF,gap);
-
-        mainP.add(centerPanel,BorderLayout.CENTER);
+        mainP.add(centerPanel, BorderLayout.CENTER);
     }
-    private void clearInput()
-    {
+
+    public void clearInput() {
         passwordF.setText("");
         accounTF.setText("");
         accountGot = false;
         savedAccount = null;
         accounTF.requestFocusInWindow();
     }
-    private Boolean ifisEmpty(String input){
-        if(input.isEmpty()){
+
+    private Boolean ifisEmpty(String input) {
+        if (input.isEmpty()) {
             reminderL.setText("Input cannot be empty!!!,press Confirm to continous");
             reminderL.setForeground(Color.RED);
             isinvalidinput();
@@ -172,170 +173,157 @@ public class LoginGUI {
         }
         return false;
     }
+
     private void checkInput() {
         if (accounTF.hasFocus()) {
             try {
                 currentAccountNumber = Integer.parseInt(savedAccount);
                 accountPass = true;
-            } catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 reminderL.setText("Invalid account number format!!!,press Confirm to continous");
                 reminderL.setForeground(Color.RED);
+                System.out.println("Invalid account number format");
                 isinvalidinput();
             }
         } else {
             try {
                 bankDatabase = new BankDatabase();
                 currentPin = Integer.parseInt(new String(passwordF.getPassword()));
-                boolean authenticated = bankDatabase.authenticateUser(currentAccountNumber,currentPin);
-                if(authenticated) {
-                    pwPass=true;
+                boolean authenticated = bankDatabase.authenticateUser(currentAccountNumber, currentPin);
+                System.out.println(currentAccountNumber + ", " + currentPin);
+                System.out.println("Authentication result: " + authenticated);
+                if (authenticated) {
+                    pwPass = true;
                 } else {
                     reminderL.setText("Invalid account number or PIN!!! Please try again,press Confirm to continous");
                     reminderL.setForeground(Color.RED);
                     isinvalidinput();
+                    System.out.println("Invalid account number or PIN");
                 }
             } catch (NumberFormatException e) {
                 reminderL.setText("Invalid PIN format!!! Please try again,press Confirm to continous");
                 reminderL.setForeground(Color.RED);
                 isinvalidinput();
+                System.out.println("Invalid PIN format");
             }
         }
     }
-    private void isinvalidinput()
-    {
+
+    private void isinvalidinput() {
+        System.out.println("Invalid input detected");
         reminderL.requestFocusInWindow();
         invalidinput = true;
     }
-    private void confirmBT()
-    {   if(invalidinput)
-    {
-        reminderL.setText("Please Enter your Account number and PIN number ");
-        reminderL.setForeground(Color.YELLOW);
-        invalidinput = false;
-        clearInput();
-    }
-    else
-    {
-        if(!accountGot)
-        {
-            savedAccount=accounTF.getText();
-            if(!ifisEmpty(savedAccount))
-            {
-                checkInput();
-                if(accountPass)
-                {
-                    accountGot= true;
-                    passwordF.requestFocusInWindow();
+
+    public void confirmBT() {
+        if (invalidinput) {
+            reminderL.setText("Please Enter your Account number and PIN number ");
+            reminderL.setForeground(Color.YELLOW);
+            invalidinput = false;
+            clearInput();
+            System.out.println("reset input");
+        } else {
+            if (!accountGot) {
+                savedAccount = accounTF.getText();
+                if (!ifisEmpty(savedAccount)) {
+                    checkInput();
+                    if (accountPass) {
+                        accountGot = true;
+                        passwordF.requestFocusInWindow();
+                    }
+                }
+            } else {
+                String password = new String(passwordF.getPassword());
+
+                if (!ifisEmpty(password)) {
+                    checkInput();
+                    if (pwPass) {
+                        passedAccount = Integer.parseInt(accounTF.getText());
+                        currentAccountNumber = passedAccount;
+                        // MainMenuGUI temp = new MainMenuGUI(false, currentAccountNumber);
+                        passedPIN = Integer.parseInt(new String(passwordF.getPassword()));
+                        pwPass = false;
+                        accountGot = false;
+                        clearInput();
+                        System.out.println(currentAccountNumber);
+                        System.out.println(passedPIN);
+                        goToPanel(ATMUI.MAIN_MENU_PANEL);
+                    }
                 }
             }
         }
-        else
-        {
-            String password = new String(passwordF.getPassword());
-
-            if(!ifisEmpty(password))
-            {
-                checkInput();
-                if(pwPass)
-                {
-                    passedAccount = Integer.parseInt(accounTF.getText());
-                    currentAccountNumber = passedAccount;
-                    MainMenuGUI temp = new MainMenuGUI(false, currentAccountNumber) ;
-                    passedPIN =Integer.parseInt(new String(passwordF.getPassword()));
-                    pwPass = false;
-                    accountGot= false;
-                    clearInput();
-                    System.out.println(currentAccountNumber);
-                    System.out.println(passedPIN);
-                    goToPanel(ATMUI.MAIN_MENU_PANEL);
-                }
-            }
-        }
-    }
-
 
     }
-    private void delBT(){
-        if(!invalidinput)
-        {
 
-            if(accounTF.hasFocus())
-            {
+    public void delBT() {
+        if (!invalidinput) {
+
+            if (accounTF.hasFocus()) {
                 String text = accounTF.getText();
-                if(!text.isEmpty())
-                    accounTF.setText(text.substring(0,text.length()-1));
+                if (!text.isEmpty())
+                    accounTF.setText(text.substring(0, text.length() - 1));
                 accounTF.requestFocusInWindow();
-            }
-            else
-            {
+            } else {
                 String text = new String(passwordF.getPassword());
-                if(!text.isEmpty())
+                if (!text.isEmpty())
                     passwordF.setText(text.substring(0, text.length() - 1));
                 passwordF.requestFocusInWindow();
             }
         }
 
-
-
-
     }
 
-
-
-    private String getTime(){
-        SimpleDateFormat T=new SimpleDateFormat("yyyy-MM-dd");
+    private String getTime() {
+        SimpleDateFormat T = new SimpleDateFormat("yyyy-MM-dd");
         String Time = T.format(new Date());
         return Time;
     }
-    private void font(JLabel font,int type,Color color,int size)
-    {   if(type==1)
-        font.setFont(new Font("DEFAULT", Font.BOLD, size));
-        if(type==0)
+
+    private void font(JLabel font, int type, Color color, int size) {
+        if (type == 1)
+            font.setFont(new Font("DEFAULT", Font.BOLD, size));
+        if (type == 0)
             font.setFont(new Font("DEFAULT", Font.PLAIN, size));
-        if(type==2)
+        if (type == 2)
             font.setFont(new Font("DEFAULT", Font.ITALIC, size));
         font.setForeground(color);
     }
-    private void backGroudColor(JLabel BGC)
-    {
-        BGC.setBackground(new Color(0,0,139));
+
+    private void backGroudColor(JLabel BGC) {
+        BGC.setBackground(new Color(0, 0, 139));
     }
 
-    public void resetlogin()
-    {
+    public void resetlogin() {
         passedAccount = 0;
         passedPIN = 0;
 
     }
+
     public JPanel getMainPanel() {
         return mainP;
     }
 
-    public int getAccountNumber(){
+    public int getAccountNumber() {
         return passedAccount;
     }
-    //測試用的 del 了// 就可以跑
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            // 建立 JFrame
-//            JFrame frame = new JFrame("Login Frame");
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.setSize(900, 600);
-//            frame.setLocationRelativeTo(null);
-//
-//            // 建立 LoginGUI 物件
-//            LoginGUI login = new LoginGUI(true);
-//
-//            // 把主面板放到 JFrame
-//            frame.setContentPane(login.getMainPanel());
-//
-//            // 顯示視窗
-//            frame.setVisible(true);
-//        });
-//    }
-
-
-
-
+    // 測試用的 del 了// 就可以跑
+    // public static void main(String[] args) {
+    // SwingUtilities.invokeLater(() -> {
+    // // 建立 JFrame
+    // JFrame frame = new JFrame("Login Frame");
+    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // frame.setSize(900, 600);
+    // frame.setLocationRelativeTo(null);
+    //
+    // // 建立 LoginGUI 物件
+    // LoginGUI login = new LoginGUI(true);
+    //
+    // // 把主面板放到 JFrame
+    // frame.setContentPane(login.getMainPanel());
+    //
+    // // 顯示視窗
+    // frame.setVisible(true);
+    // });
+    // }
 
 }

@@ -52,20 +52,78 @@ public class ATMListenerRegistrar {
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Account Info",
                 e -> controller.showAccountInfo());
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transaction History",
-                 e -> controller.showTransactionHistory());
+                e -> controller.showTransactionHistory());
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
                 e -> controller.switchToGreetingPanel());
-        addButtonListener(ATMUI.test,"test",
+        addButtonListener(ATMUI.test, "test",
                 e -> controller.switchToMainMenuPanel());
 
-        addButtonListener("leftButtonPanel", "Left1", e -> controller.showInfo());
-        // System.out.println("have link");
+        addButtonListener("leftButtonPanel", "Left1", e -> {
+            if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.goToPanel(ATMUI.MAIN_MENU_PANEL);
+            } else {
+                System.out.println(controller.getCurrentPanelName() + ", mainMenu");
+                controller.showInfo();
+            }
+        });
 
-        addButtonListener("leftButtonPanel", "Left2", e -> controller.goToPanel("mainMenu"));
-    
-        addButtonListener("leftButtonPanel", "Left3", e -> controller.goToPanel("mainMenu"));
+        addButtonListener("leftButtonPanel", "Left2", e -> {
+            if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.goToPanel(ATMUI.WITHDRAW_PANEL);
+            } else {
+                System.out.println(controller.getCurrentPanelName() + ", withdraw");
+                controller.showInfo();
+            }
+        });
+
+        addButtonListener("leftButtonPanel", "Left3", e -> {
+            controller.exitSystem();
+        });
+
+        addButtonListener("rightButtonPanel", "Right1", e -> {
+            if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.goToPanel(ATMUI.TRANSFER_PANEL);
+            } else {
+                System.out.println(controller.getCurrentPanelName() + ", transfer");
+                controller.showInfo();
+            }
+        });
+
+        addButtonListener("rightButtonPanel", "Right2", e -> {
+            if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.goToPanel(ATMUI.HISTORY_PANEL);
+            } else {
+                System.out.println(controller.getCurrentPanelName() + ", transactionHistory");
+                controller.showInfo();
+            }
+        });
+
+        addButtonListener("rightButtonPanel", "Right3", e -> controller.goToPanel("mainMenu"));
+
+        addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
+            if (atmUI.getLoginGUI() != null) {
+                atmUI.getLoginGUI().confirmBT();
+            } else {
+                System.out.println("LoginGUI is null");
+            }
+        });
+
+        addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
+            if (atmUI.getLoginGUI() != null) {
+                atmUI.getLoginGUI().delBT();
+            } else {
+                System.out.println("LoginGUI is null");
+            }
+        });
+
+        addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
+            if (atmUI.getLoginGUI() != null) {
+                atmUI.getLoginGUI().clearInput();
+            } else {
+                System.out.println("LoginGUI is null");
+            }
+        });
     }
-
 
     /**
      * 添加按钮Listener
