@@ -58,7 +58,10 @@ public class ATMListenerRegistrar {
         // System.out.println("have link");
 
         addButtonListener("leftButtonPanel", "Left2", e -> controller.goToPanel("mainMenu"));
+    
+        addButtonListener("leftButtonPanel", "Left3", e -> controller.goToPanel("mainMenu"));
     }
+
 
     /**
      * 添加按钮Listener

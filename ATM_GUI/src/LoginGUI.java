@@ -282,7 +282,6 @@ public class LoginGUI {
         invalidinput = true;
     }
 
-
     private void confirmBT() {
         if (invalidinput) {
             reminderL.setText("Please Enter your Account number and PIN number ");
@@ -368,4 +367,19 @@ public class LoginGUI {
     public JPanel getMainP() {
         return mainP;
     }
+
+    // // 测试用的 main 方法
+    // public static void main(String[] args) {
+    // SwingUtilities.invokeLater(() -> {
+    // JFrame testFrame = new JFrame("Login Test");
+    // testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // testFrame.setSize(600, 500);
+    // testFrame.setLocationRelativeTo(null);
+    //
+    // LoginGUI loginGUI = new LoginGUI(true);
+    // testFrame.add(loginGUI.getMainP());
+    // testFrame.setVisible(true);
+    // });
+    // }
+    //
 }
