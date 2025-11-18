@@ -79,9 +79,9 @@ public class LoginGUI {
         });
 
         //只是用來測試的，這裏是keypad的三個按鈕。
-        mainP.add(confirmButton,BorderLayout.WEST);
-        mainP.add(delButton,BorderLayout.EAST);
-        mainP.add(cancelButton,BorderLayout.NORTH);
+        //mainP.add(confirmButton,BorderLayout.WEST);
+        //mainP.add(delButton,BorderLayout.EAST);
+        //mainP.add(cancelButton,BorderLayout.NORTH);
         //buttin with keypad!!!
 
 
