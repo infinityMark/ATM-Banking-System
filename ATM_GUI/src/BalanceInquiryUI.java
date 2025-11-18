@@ -176,7 +176,7 @@ public class BalanceInquiryUI extends JPanel {
     }
 
     private String getCurrentTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(new Date());
     }
 
