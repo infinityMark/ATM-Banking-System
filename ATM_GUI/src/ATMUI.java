@@ -275,11 +275,7 @@ public class ATMUI {
         return panel;
     }
 
-    protected JPanel createHistoryPanel() {
-        JPanel panel = new TransactionHistoryUI().transactionHistoryLayout();
-        panel.setName(HISTORY_PANEL);
-        return panel;
-    }
+    
 
 
 
