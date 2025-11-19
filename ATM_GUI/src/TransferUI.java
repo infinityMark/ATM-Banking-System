@@ -7,7 +7,7 @@ import java.awt.event.FocusListener;
 
 /**
  * Transfer User Interface - Handles the GUI for money transfer operations
- * Provides a multi-step form for transferring funds between accounts
+ * Provides a multistep form for transferring funds between accounts
  */
 public class TransferUI extends Transfer {
     // Constants for card names
@@ -510,7 +510,7 @@ public class TransferUI extends Transfer {
         switch (cardName) {
             case CARD_INFO:
                 JPanel infoCard = createReceiveTransferInformation(
-                        "Currently asset in your account HKD$" + bankDatabase.getAvailableBalance(super.getCurrentAccountNumber()));
+                        "Currently asset in your account HKD$" + bankDatabase.getAvailableBalance(((ATMUI) this).getCurrentAccountNumber()));
                 infoCard.setName(CARD_INFO);
                 cardPanel.add(infoCard, CARD_INFO);
                 break;

@@ -47,6 +47,16 @@ public class ATMUI extends ATM {
     private JButton Button2;
     private JButton Button3;
 
+    private int currentAccountNumber;
+
+    public void setCurrentAccountNumber(int currentAccountNumber1){
+        currentAccountNumber = currentAccountNumber1;
+    }
+
+    public int getCurrentAccountNumber(){
+        return currentAccountNumber;
+    }
+
     // private JButton confirmButton;
 
     // Right side panel buttons
