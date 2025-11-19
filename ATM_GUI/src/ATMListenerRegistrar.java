@@ -16,6 +16,9 @@ import javax.swing.JTextField;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 import java.awt.Container;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ATMListenerRegistrar {
     private final ATMUI atmUI;
@@ -36,33 +39,59 @@ public class ATMListenerRegistrar {
      */
     private void initBaseActionConfigs() {
         // Login Panel
-        addButtonListener(ATMUI.GREETING_PANEL, "greeting", e -> controller.handleLogin());
+        // addButtonListener(ATMUI.GREETING_PANEL, "greeting", e ->
+        // controller.handleGreeting());
         // System.out.println("Login button listener added.");
 
-        addButtonListener(ATMUI.LOGIN_PANEL, "Login", e -> controller.handleLogin());
+        // addButtonListener(ATMUI.LOGIN_PANEL, "Login", e -> controller.handleLogin());
         // System.out.println("Login button listener added.");
 
         // Main Menu
-        addButtonListener(ATMUI.MAIN_MENU_PANEL, "View Balance",
-                e -> controller.switchToBalancePanel());
-        addButtonListener(ATMUI.MAIN_MENU_PANEL, "Withdraw Cash",
-                e -> controller.switchToWithdrawPanel());
-        addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transfer Funds",
-                e -> controller.switchToTransferPanel());
-        addButtonListener(ATMUI.MAIN_MENU_PANEL, "Account Info",
-                e -> controller.showAccountInfo());
-        addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transaction History",
-                e -> controller.showTransactionHistory());
-        addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
-                e -> controller.switchToGreetingPanel());
-//        addButtonListener(ATMUI.test, "test",
-//                e -> controller.switchToMainMenuPanel());
+        /*
+         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "View Balance",
+         * e -> controller.switchToBalancePanel());
+         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Withdraw Cash",
+         * e -> controller.switchToWithdrawPanel());
+         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transfer Funds",
+         * e -> controller.switchToTransferPanel());
+         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Account Info",
+         * e -> controller.showAccountInfo());
+         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transaction History",
+         * e -> controller.showTransactionHistory());
+         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
+         * e -> controller.switchToGreetingPanel());
+         * // addButtonListener(ATMUI.test, "test",
+         * // e -> controller.switchToMainMenuPanel());
+         */
+
+        addMouseListener(
+                GreetingUI.GREETING_PANEL,
+                GreetingUI.GREETING_PANEL,
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        controller.switchToLoginPanel();
+                        System.out.println("Clicked");
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        ((Component) e.getSource()).setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                        System.out.println("Entred");
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        ((Component) e.getSource()).setCursor(java.awt.Cursor.getDefaultCursor());
+                        System.out.println("Exited");
+                    }
+                });
 
         addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.goToPanel(ATMUI.MAIN_MENU_PANEL);
+                controller.goToPanel(ATMUI.BALANCE_PANEL);
             } else {
-                System.out.println(controller.getCurrentPanelName() + ", mainMenu");
+                System.out.println(controller.getCurrentPanelName() + ", view Balance");
                 controller.showInfo();
             }
         });
@@ -77,7 +106,13 @@ public class ATMListenerRegistrar {
         });
 
         addButtonListener("leftButtonPanel", "Left3", e -> {
-            controller.exitSystem();
+            if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
+                // controller.goToPanel(ATMUI.LOGIN_PANEL);
+                controller.goToPanel(ATMUI.GREETING_PANEL);
+            } else {
+                System.out.println(controller.getCurrentPanelName() + ", withdraw");
+                controller.showInfo();
+            }
         });
 
         addButtonListener("rightButtonPanel", "Right1", e -> {
@@ -123,6 +158,10 @@ public class ATMListenerRegistrar {
                 System.out.println("LoginGUI is null");
             }
         });
+
+        addButtonListener(ATMUI.GREETING_PANEL, ATMUI.GREETING_PANEL, e -> {
+            controller.switchToLoginPanel();
+        });
     }
 
     /**
@@ -145,6 +184,11 @@ public class ATMListenerRegistrar {
     // 3. 处理键盘事件
     public void addKeyListener(String panelName, String componentName, KeyListener listener) {
         actionConfigs.add(new Object[] { panelName, componentName, "key", listener });
+    }
+
+    // 4. 处理鼠标事件
+    public void addMouseListener(String panelName, String componentName, MouseListener listener) {
+        actionConfigs.add(new Object[] { panelName, componentName, "mouse", listener });
     }
 
     // 遍历所有配置，按类型绑定监听器
@@ -171,17 +215,40 @@ public class ATMListenerRegistrar {
                 ((JTextField) comp).addFocusListener((FocusListener) listener);
             } else if (type.equals("key")) {
                 comp.addKeyListener((KeyListener) listener);
+            } else if (type.equals("mouse")) { // 处理鼠标监听器
+                comp.addMouseListener((MouseListener) listener);
             }
         }
     }
 
     // 辅助方法：按组件名称查找（组件需用setName设置名称）
-    private Component findComponentByName(Container container, String name) {
+    /*private Component findComponentByName(Container container, String name) {
         for (Component comp : container.getComponents()) {
             if (name.equals(comp.getName())) {
                 return comp;
             }
             // 递归找子组件（如果组件里还有面板）
+            if (comp instanceof Container) {
+                Component child = findComponentByName((Container) comp, name);
+                if (child != null)
+                    return child;
+            }
+        }
+        return null;
+    }*/
+
+    private Component findComponentByName(Container container, String name) {
+        // 先检查容器本身是否匹配名称
+        if (name.equals(container.getName())) {
+            return container;
+        }
+
+        // 然后查找子组件
+        for (Component comp : container.getComponents()) {
+            if (name.equals(comp.getName())) {
+                return comp;
+            }
+            // 递归查找子组件
             if (comp instanceof Container) {
                 Component child = findComponentByName((Container) comp, name);
                 if (child != null)

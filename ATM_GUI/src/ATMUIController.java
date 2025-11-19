@@ -1,20 +1,19 @@
+import java.awt.CardLayout;
+import java.awt.Container;
 import javax.swing.*;
 
 /**
  * controller class for ATMUI
  */
 public class ATMUIController {
+    private Container mainContainer;
+    private CardLayout cardLayout;
     private ATMUI atmUI;
     private ATM atm;
     private ATMListenerRegistrar listenerRegistrar;
 
     public ATMUIController(ATMUI atmUI, ATM atm) {
         this.atmUI = atmUI;
-        this.atm = atm;
-        this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
-    }
-
-    public ATMUIController(ATM atm) {
         this.atm = atm;
         this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
     }
@@ -33,7 +32,7 @@ public class ATMUIController {
 
     // ------------- Convenience methods for switching panels -------------
     public void switchToGreetingPanel() {
-        atmUI.switchPanel("exit");
+        atmUI.switchPanel("greeting");
     }
 
     public void switchToLoginPanel() {
@@ -82,9 +81,13 @@ public class ATMUIController {
     }
 
     // ------------- Handle logic parts for listeners -------------
+    public void handleGreeting() {
+        switchToLoginPanel();
+    }
 
     public void handleLogin() {
-        switchToMainMenuPanel();
+        switchToLoginPanel();
+        // switchToMainMenuPanel();
     }
 
     public void exitSystem() {

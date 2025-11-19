@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GreetingUI {
+    public static final String GREETING_PANEL = "greeting";
     private static JPanel mainPanel;
 
     public GreetingUI() {
@@ -72,6 +73,7 @@ public class GreetingUI {
 
     static public JPanel createGreetingPanel() {
         mainPanel = new JPanel(new GridBagLayout());
+        mainPanel.setName(GREETING_PANEL);
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -92,32 +94,35 @@ public class GreetingUI {
         gbc.gridx = 1;
         mainPanel.add(reminderPanel, gbc);
 
-        mainPanel.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                goToPanel(ATMUI.LOGIN_PANEL);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
+        /*
+         * mainPanel.addMouseListener(new MouseListener() {
+         * 
+         * @Override
+         * public void mouseClicked(MouseEvent e) {
+         * goToPanel(ATMUI.LOGIN_PANEL);
+         * }
+         * 
+         * @Override
+         * public void mousePressed(MouseEvent e) {
+         * 
+         * }
+         * 
+         * @Override
+         * public void mouseReleased(MouseEvent e) {
+         * 
+         * }
+         * 
+         * @Override
+         * public void mouseEntered(MouseEvent e) {
+         * 
+         * }
+         * 
+         * @Override
+         * public void mouseExited(MouseEvent e) {
+         * 
+         * }
+         * });
+         */
 
         return mainPanel;
     }
