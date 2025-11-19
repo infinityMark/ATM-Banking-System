@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class ATMUI {
     // ------------- Panel name constants -------------
-    public static final String GREETING_PANEL = "greeting";
+    public static final String GREETING_PANEL = "exit";
     public static final String LOGIN_PANEL = "login";
     public static final String MAIN_MENU_PANEL = "mainMenu";
     public static final String BALANCE_PANEL = "balance";
@@ -12,6 +12,11 @@ public class ATMUI {
     public static final String HISTORY_PANEL = "history";
     public static final String KEYPAD_PANEL = "keypad";
     public static final String test = "test";
+
+    protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
+    protected static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
+    protected static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+    protected static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 
     private String currentPanelName;
 

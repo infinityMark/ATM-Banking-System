@@ -33,7 +33,7 @@ public class ATMUIController {
 
     // ------------- Convenience methods for switching panels -------------
     public void switchToGreetingPanel() {
-        atmUI.switchPanel("greeting");
+        atmUI.switchPanel("exit");
     }
 
     public void switchToLoginPanel() {
@@ -88,8 +88,7 @@ public class ATMUIController {
     }
 
     public void exitSystem() {
-        JOptionPane.showMessageDialog(atmUI.getMainFrame(), "Exit System. Goodbye!");
-        atmUI.getMainFrame().dispose();
+        switchToGreetingPanel();
     }
 
     public void showInfo() {

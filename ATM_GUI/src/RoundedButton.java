@@ -60,7 +60,7 @@ public class RoundedButton extends JButton{
         setBackground(StandardColor.GreyHighest.getColorMode());
         setForeground(StandardColor.GreyHighest.getOppositeColorMode());
 
-        setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+        setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
         this.setMaximumSize(new Dimension(200,40));
 
         this.addMouseListener(new MouseAdapter() {

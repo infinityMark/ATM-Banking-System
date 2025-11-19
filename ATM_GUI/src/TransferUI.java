@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 /**
  * Transfer User Interface - Handles the GUI for money transfer operations
@@ -13,18 +15,20 @@ public class TransferUI extends Transfer {
     private static final String CARD_INFO = "INFO";
     private static final String CARD_CONFIRMATION = "CONFIRMATION";
     private static final String CARD_AFTER_TRANSACTION = "AFTER_TRANSACTION";
-    private static final String TEST = "test";
-
 
     // Constants for button names
     private static final String BUTTON_FIRST = "FIRST_BUTTON";
     private static final String BUTTON_SECOND = "SECOND_BUTTON";
+    private static final String AMOUNT_LABEL = "AMOUNT";
+    private static final String RECEIVER_LABEL = "RECEIVER";
+    private static final String AMOUNT_TEXTFIELD = "RECEIVER_TEXTFIELDA";
+    private static final String amountText = "Amount";
+    private static final String receiverText = "Receiver account";
 
-    // Font constants
-    protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
-    private static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
-    private static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
-    private static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+//    private TextFields receiverAccountTextField;
+//    private TextFields amountTextField;
+//    private JLabel receiverLabel;
+//    private JLabel amountLabel;
 
     // Layout components
     private static CardLayout cardLayout;
@@ -133,9 +137,16 @@ public class TransferUI extends Transfer {
 
         TextFields receiverAccountTextField = createInputField(40);
         TextFields amountTextField = createInputField(40);
+        amountTextField.setName(AMOUNT_TEXTFIELD);
 
-        JLabel receiverLabel = createStyledLabel("Receiver account", FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
-        JLabel amountLabel = createStyledLabel("Amount", FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        JLabel receiverLabel = createStyledLabel(receiverText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        receiverLabel.setName(RECEIVER_LABEL);
+        JLabel amountLabel = createStyledLabel(amountText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        amountLabel.setName(AMOUNT_LABEL);
+
+        setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
+        setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
+        setupFieldListener(amountTextField, amountLabel, amountText);
 
         JPanel amountDisplay = createAmountDisplayPanel(amountTextField);
 
@@ -173,7 +184,7 @@ public class TransferUI extends Transfer {
         // Create confirmation message
         String confirmationMessage = String.format("The system is going to transfer %.2f to account number: %d",
                 getAmount(), getReceiverAccounts());
-        JLabel confirmationLabel = createStyledLabel(confirmationMessage, FONT_TITLE_LARGE,
+        JLabel confirmationLabel = createStyledLabel(confirmationMessage, FONT_SMALL,
                 StandardColor.GreyHighest.getOppositeColorMode());
 
         gbc.weighty = 0.0;
@@ -342,6 +353,19 @@ public class TransferUI extends Transfer {
         return panel;
     }
 
+    private void setupFieldListener(TextFields textField, JLabel label, String content){
+        textField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                label.setText(content);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+            }
+        });
+    }
     /**
      * Sets up the confirmation button validation and action logic
      */
@@ -357,6 +381,10 @@ public class TransferUI extends Transfer {
                     receiverAccountTextField.getContent().trim(), receiverAccountTextField, receiverLabel);
             boolean isAmountValid = validateAmount(
                     amountTextField.getContent().trim(), amountTextField, amountLabel);
+
+            if (super.isLimitAccountConditionCheckerHappen(getAmount(),"Transfer")){
+                showValidationError(amountTextField, amountLabel, String.format("Sorry, You are not allowed to %s over HK$50000 at once time.","Transfer"));
+            }
 
             if (isReceiverValid && isAmountValid) {
                 showCard(CARD_CONFIRMATION);
@@ -499,7 +527,7 @@ public class TransferUI extends Transfer {
                 String transactionInfo = String.format("Total HK$ %.2f transfers to account %d.",
                         getAmount(), getReceiverAccounts());
                 JPanel afterTransactionCard = createAfterTransaction(transactionInfo,
-                        new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+                        new Font(Font.SANS_SERIF, Font.PLAIN, 20));
                 afterTransactionCard.setName(CARD_AFTER_TRANSACTION);
                 cardPanel.add(afterTransactionCard, CARD_AFTER_TRANSACTION);
                 break;

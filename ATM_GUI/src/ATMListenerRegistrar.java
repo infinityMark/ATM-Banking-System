@@ -55,8 +55,8 @@ public class ATMListenerRegistrar {
                 e -> controller.showTransactionHistory());
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
                 e -> controller.switchToGreetingPanel());
-        addButtonListener(ATMUI.test, "test",
-                e -> controller.switchToMainMenuPanel());
+//        addButtonListener(ATMUI.test, "test",
+//                e -> controller.switchToMainMenuPanel());
 
         addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
