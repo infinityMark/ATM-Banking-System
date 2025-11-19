@@ -328,7 +328,7 @@ public class ATMUI {
         String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00",
                 "" };
         for (String key : keys) {
-            JButton btn = new JButton(key);
+            RoundedButton btn = new RoundedButton(key);
             btn.setFont(ATMUI.NORMAL_FONT);
             btn.setName(key.toLowerCase());
             panel.add(btn);
