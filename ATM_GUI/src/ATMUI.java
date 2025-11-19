@@ -23,6 +23,7 @@ public class ATMUI {
     // ------------- Instance GUI --------------------
     private LoginGUI loginGUI;
     private MainMenuGUI mainMenuGUI;
+    private GreetingUI greetingGUI;
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -123,12 +124,16 @@ public class ATMUI {
 
     private void baseSetup() {
         mainframe = new JFrame("ATM System");
+
+        mainframe.setMinimumSize(new Dimension(800, 600));
+
         if (isAutoSize) {
             mainframe.pack();
         } else {
-            mainframe.setSize(600, 800);
+            mainframe.setSize(1200, 900);
         }
         mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
     private void createUpperAndLowerPanels() {
@@ -141,17 +146,20 @@ public class ATMUI {
         leftButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         leftButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         leftButtonPanel.setName("leftButtonPanel");
+        leftButtonPanel.setMinimumSize(new Dimension(100, 200));
         registerPanel(leftButtonPanel);
 
         // center content panel (large proportion, using CardLayout)
         centerCardLayout = new CardLayout();
         centerPanel = new JPanel(centerCardLayout);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        centerPanel.setMinimumSize(new Dimension(400, 400));
 
         // right button panel (small proportion)
         rightButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         rightButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         rightButtonPanel.setName("rightButtonPanel");
+        rightButtonPanel.setMinimumSize(new Dimension(100, 200));
         registerPanel(rightButtonPanel);
 
         // Set grid layout constraints
@@ -177,26 +185,27 @@ public class ATMUI {
         // lower keypad panel
         lowerPanel = createKeypadPanel();
         lowerPanel.setBorder(BorderFactory.createTitledBorder("Keypad"));
+        lowerPanel.setMinimumSize(new Dimension(0, 200));
         lowerPanel.setPreferredSize(new Dimension(750, 200));
     }
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-        Button1 = new JButton(" ");
+        Button1 = createFixedSizeButton(" ");
         Button1.setName("Left1");
-        Button2 = new JButton(" ");
+        Button2 = createFixedSizeButton(" ");
         Button2.setName("Left2");
-        Button3 = new JButton(" ");
+        Button3 = createFixedSizeButton(" ");
         Button3.setName("Left3");
         // Button4 = new JButton("Left4");
         // Button4.setName("Left4");
 
         // initialize right buttons, change if needed
-        Button5 = new JButton(" ");
+        Button5 = createFixedSizeButton(" ");
         Button5.setName("Right1");
-        Button6 = new JButton(" ");
+        Button6 = createFixedSizeButton(" ");
         Button6.setName("Right2");
-        Button7 = new JButton("跳过登录(直达Main menu)");
+        Button7 = createFixedSizeButton("跳过登录(直达Main menu)");
         Button7.setName("Right3");
         // Button8 = new JButton("Right4");
         // Button8.setName("Right4");
@@ -214,9 +223,17 @@ public class ATMUI {
         // rightButtonPanel.add(Button8);
     }
 
+    private JButton createFixedSizeButton(String text) {
+        JButton button = new JButton(text);
+        button.setMinimumSize(new Dimension(80, 50));
+        button.setPreferredSize(new Dimension(80, 50));
+        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        return button;
+    }
+
     private void insertToCenterPanel() {
         JPanel greetingPanel = createGreetingPanel();
-        centerPanel.add(greetingPanel, LOGIN_PANEL);
+        centerPanel.add(greetingPanel, GREETING_PANEL);
         registerPanel(greetingPanel);
 
         JPanel loginPanel = createLoginPanel();
@@ -255,8 +272,8 @@ public class ATMUI {
     // -------------functional panels creation methods-------------
 
     protected JPanel createGreetingPanel() {
-        GreetingUI greetingUI = new GreetingUI();
-        JPanel panel = greetingUI.getMainPanel();
+        greetingGUI = new GreetingUI();
+        JPanel panel = greetingGUI.getMainPanel();
         panel.setName(GREETING_PANEL);
         return panel;
     }
@@ -403,6 +420,14 @@ public class ATMUI {
 
     public LoginGUI getLoginGUI() {
         return loginGUI;
+    }
+
+    public GreetingUI getGreetingUI() {
+        return greetingGUI;
+    }
+
+    public MainMenuGUI getMainmenuGUI() {
+        return mainMenuGUI;
     }
 
     public String getCurrentPanelName() {
