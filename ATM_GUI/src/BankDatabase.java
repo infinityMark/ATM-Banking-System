@@ -8,7 +8,7 @@ public class BankDatabase {
    public BankDatabase() {
       accounts = new Account[9]; // 8 accounts for testing
       accounts[0] = new SavingAccount(11111, 11111, 1000.0, 1000.0);
-      accounts[1] = new ChequeAccount(21111, 21111, 55000.0, 55000.0);
+      accounts[1] = new ChequeAccount(21111, 21111, 25000.0, 25000.0);
       accounts[2] = new SavingAccount(12222, 12222, 50200.0, 50200.0);
       accounts[3] = new ChequeAccount(22222, 22222, 2000.0, 2000.0);
       accounts[4] = new SavingAccount(13333, 33333, 10000.0, 10000.0);

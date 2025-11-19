@@ -145,7 +145,6 @@ public class TransferUI extends Transfer {
         amountLabel.setName(AMOUNT_LABEL);
 
         setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
-        setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
         setupFieldListener(amountTextField, amountLabel, amountText);
 
         JPanel amountDisplay = createAmountDisplayPanel(amountTextField);
@@ -384,6 +383,7 @@ public class TransferUI extends Transfer {
 
             if (super.isLimitAccountConditionCheckerHappen(getAmount(),"Transfer")){
                 showValidationError(amountTextField, amountLabel, String.format("Sorry, You are not allowed to %s over HK$50000 at once time.","Transfer"));
+                return;
             }
 
             if (isReceiverValid && isAmountValid) {
