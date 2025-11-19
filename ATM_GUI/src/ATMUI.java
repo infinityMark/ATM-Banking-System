@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class ATMUI {
     // ------------- Panel name constants -------------
-    public static final String GREETING_PANEL = "exit";
+    public static final String GREETING_PANEL = "greeting";
     public static final String LOGIN_PANEL = "login";
     public static final String MAIN_MENU_PANEL = "mainMenu";
     public static final String BALANCE_PANEL = "balance";

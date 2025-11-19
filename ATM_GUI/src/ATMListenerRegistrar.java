@@ -55,14 +55,14 @@ public class ATMListenerRegistrar {
                 e -> controller.showTransactionHistory());
         addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
                 e -> controller.switchToGreetingPanel());
-//        addButtonListener(ATMUI.test, "test",
-//                e -> controller.switchToMainMenuPanel());
+        // addButtonListener(ATMUI.test, "test",
+        // e -> controller.switchToMainMenuPanel());
 
         addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.goToPanel(ATMUI.MAIN_MENU_PANEL);
+                controller.goToPanel(ATMUI.BALANCE_PANEL);
             } else {
-                System.out.println(controller.getCurrentPanelName() + ", mainMenu");
+                System.out.println(controller.getCurrentPanelName() + ", view Balance");
                 controller.showInfo();
             }
         });
@@ -77,7 +77,13 @@ public class ATMListenerRegistrar {
         });
 
         addButtonListener("leftButtonPanel", "Left3", e -> {
-            controller.exitSystem();
+            if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.goToPanel(ATMUI.LOGIN_PANEL);
+                controller.goToPanel("greeting");
+            } else {
+                System.out.println(controller.getCurrentPanelName() + ", withdraw");
+                controller.showInfo();
+            }
         });
 
         addButtonListener("rightButtonPanel", "Right1", e -> {
