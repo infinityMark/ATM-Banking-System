@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 public class LoginGUI extends ATMUI{
     private JTextField accounTF;
     private JPanel centerPanel;
@@ -16,6 +17,9 @@ public class LoginGUI extends ATMUI{
     private JLabel reminderL;
     private JPanel mainP;
     private static int passedAccount, passedPIN;
+    
+    // Track which field is currently focused
+    private boolean accountFieldFocused = true;
 
     public void goToPanel(String name) {
         Container parent = mainP.getParent();
@@ -39,10 +43,8 @@ public class LoginGUI extends ATMUI{
         }
     }
 
-    public LoginGUI(boolean showLoginGUI)
-
-    { // 測試借用的frame
-
+    public LoginGUI(boolean showLoginGUI) 
+    {   // 測試借用的frame
         mainP = new JPanel();
         mainPanel();
 
@@ -61,6 +63,22 @@ public class LoginGUI extends ATMUI{
         invalidinput = false;
         currentAccountNumber = 0;
         currentPin = 0;
+        
+        // Set initial focus to account field
+        accountFieldFocused = true;
+
+        // Add focus listeners to track which field is focused
+        accounTF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                accountFieldFocused = true;
+            }
+        });
+        
+        passwordF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                accountFieldFocused = false;
+            }
+        });
 
         // button with keypad
         confirmButton = new JButton("Confirm");
@@ -80,16 +98,75 @@ public class LoginGUI extends ATMUI{
             if (!invalidinput)
                 clearInput();
         });
-
+        
         // 只是用來測試的，這裏是keypad的三個按鈕。
-         mainP.add(confirmButton,BorderLayout.WEST);
-         mainP.add(delButton,BorderLayout.EAST);
-         mainP.add(cancelButton,BorderLayout.NORTH);
+        //mainP.add(confirmButton,BorderLayout.WEST);
+        //mainP.add(delButton,BorderLayout.EAST);
+        //mainP.add(cancelButton,BorderLayout.NORTH);
         // buttin with keypad!!!
-
+        
         if (showLoginGUI) {
             SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
             mainP.setVisible(true);
+        }
+    }
+
+    // NEW METHODS FOR KEYPAD INTEGRATION
+    
+    /**
+     * Handles number input from keypad
+     */
+    public void handleNumberInput(String number) {
+        if (accountFieldFocused) {
+            String currentText = accounTF.getText();
+            accounTF.setText(currentText + number);
+        } else {
+            String currentText = new String(passwordF.getPassword());
+            passwordF.setText(currentText + number);
+        }
+    }
+    
+    /**
+     * Handles delete action from keypad - deletes last character
+     */
+    public void handleDelete() {
+        if (accountFieldFocused) {
+            String currentText = accounTF.getText();
+            if (!currentText.isEmpty()) {
+                accounTF.setText(currentText.substring(0, currentText.length() - 1));
+            }
+        } else {
+            String currentText = new String(passwordF.getPassword());
+            if (!currentText.isEmpty()) {
+                passwordF.setText(currentText.substring(0, currentText.length() - 1));
+            }
+        }
+    }
+    
+    /**
+     * Handles clear action from keypad - clears all input
+     */
+    public void handleClear() {
+        clearInput();
+    }
+    
+    /**
+     * Handles confirm action from keypad - attempts login
+     */
+    public void handleConfirm() {
+        confirmBT();
+    }
+    
+    /**
+     * Switches focus between account and password fields
+     */
+    public void switchFocus() {
+        if (accountFieldFocused) {
+            passwordF.requestFocus();
+            accountFieldFocused = false;
+        } else {
+            accounTF.requestFocus();
+            accountFieldFocused = true;
         }
     }
 
@@ -120,7 +197,6 @@ public class LoginGUI extends ATMUI{
     }
 
     private void Centerpannel() {
-
         centerPanel.setBackground(new Color(0, 0, 139));
 
         GridBagConstraints gap = new GridBagConstraints();
@@ -162,6 +238,7 @@ public class LoginGUI extends ATMUI{
         accountGot = false;
         savedAccount = null;
         accounTF.requestFocusInWindow();
+        accountFieldFocused = true;
     }
 
     private Boolean ifisEmpty(String input) {
@@ -175,7 +252,8 @@ public class LoginGUI extends ATMUI{
     }
 
     private void checkInput() {
-        if (accounTF.hasFocus()) {
+        // change accountTF.hasFocus -> accountFieldFoucsed
+        if (accountFieldFocused) {
             try {
                 currentAccountNumber = Integer.parseInt(savedAccount);
                 accountPass = true;
@@ -209,6 +287,8 @@ public class LoginGUI extends ATMUI{
         }
     }
 
+    
+    
     private void isinvalidinput() {
         System.out.println("Invalid input detected");
         reminderL.requestFocusInWindow();
@@ -230,6 +310,7 @@ public class LoginGUI extends ATMUI{
                     if (accountPass) {
                         accountGot = true;
                         passwordF.requestFocusInWindow();
+                        accountFieldFocused = false;
                     }
                 }
             } else {
@@ -254,12 +335,11 @@ public class LoginGUI extends ATMUI{
                 }
             }
         }
-
     }
 
     public void delBT() {
         if (!invalidinput) {
-
+            /*
             if (accounTF.hasFocus()) {
                 String text = accounTF.getText();
                 if (!text.isEmpty())
@@ -271,8 +351,9 @@ public class LoginGUI extends ATMUI{
                     passwordF.setText(text.substring(0, text.length() - 1));
                 passwordF.requestFocusInWindow();
             }
+             */
+            handleDelete();
         }
-
     }
 
     private String getTime() {
@@ -298,7 +379,6 @@ public class LoginGUI extends ATMUI{
     public void resetlogin() {
         passedAccount = 0;
         passedPIN = 0;
-
     }
 
     public JPanel getMainPanel() {

@@ -135,9 +135,21 @@ public class ATMListenerRegistrar {
 
         addButtonListener("rightButtonPanel", "Right3", e -> controller.goToPanel("mainMenu"));
 
+        // Keypad number buttons (0-9)
+        for (int i = 0; i <= 9; i++) {
+            final int number = i;
+            addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
+                if (atmUI.getLoginGUI() != null) {
+                    atmUI.getLoginGUI().handleNumberInput(String.valueOf(number));
+                }
+            });
+        }
+        
+        
+        
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (atmUI.getLoginGUI() != null) {
-                atmUI.getLoginGUI().confirmBT();
+                atmUI.getLoginGUI().handleConfirm();
             } else {
                 System.out.println("LoginGUI is null");
             }
@@ -145,7 +157,7 @@ public class ATMListenerRegistrar {
 
         addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
             if (atmUI.getLoginGUI() != null) {
-                atmUI.getLoginGUI().delBT();
+                atmUI.getLoginGUI().handleDelete();
             } else {
                 System.out.println("LoginGUI is null");
             }
@@ -153,12 +165,25 @@ public class ATMListenerRegistrar {
 
         addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
             if (atmUI.getLoginGUI() != null) {
-                atmUI.getLoginGUI().clearInput();
+                atmUI.getLoginGUI().handleClear();
             } else {
                 System.out.println("LoginGUI is null");
             }
         });
-
+        
+        // Double zero button
+        addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
+            if (atmUI.getLoginGUI() != null) {
+                atmUI.getLoginGUI().handleNumberInput(".");
+            }
+        });
+        
+        // Double zero button
+        addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
+            if (atmUI.getLoginGUI() != null) {
+                atmUI.getLoginGUI().handleNumberInput("00");
+            }
+        });
         addButtonListener(ATMUI.GREETING_PANEL, ATMUI.GREETING_PANEL, e -> {
             controller.switchToLoginPanel();
         });
