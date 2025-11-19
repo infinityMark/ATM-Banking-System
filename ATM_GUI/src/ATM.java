@@ -4,7 +4,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ATM extends JFrame {
+public class ATM {
    private boolean userAuthenticated; // whether user is authenticated
    private int currentAccountNumber; // current user's account number
    private Screen screen; // ATM's screen
@@ -37,28 +37,6 @@ public class ATM extends JFrame {
       // initializeGUI();
    } // end no-argument ATM constructor
 
-   // Temporary for test
-   private JPanel createkeypadPanel(int width, int height, String methodName) {
-      JPanel panel = new JPanel();
-      panel.setBackground(StandardColor.Red.getColor(1));
-      panel.setPreferredSize(new Dimension(width, height));
-
-      return panel;
-   }
-
-   // Temporary for test
-   private JPanel createFunctionPanel(int width, int height, String methodName) {
-      JPanel panel = new JPanel();
-      panel.setBackground(Color.PINK);
-      panel.setPreferredSize(new Dimension(width, height));
-
-      JLabel label = new JLabel(methodName);
-      label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 32));
-      panel.add(label);
-
-      return panel;
-   }
-
    // start ATM
    public void run() {
       // welcome and authenticate user; perform transactions
@@ -76,6 +54,14 @@ public class ATM extends JFrame {
       } // end while
    } // end method run
 
+   public void setCurrentAccountNumber(int currentAccountNumbers){
+      this.currentAccountNumber = currentAccountNumbers;
+   }
+
+   public int getCurrentAccountNumber(){
+      return currentAccountNumber;
+   }
+
    // attempts to authenticate user against database
    private void authenticateUser() {
       screen.displayMessage("\nPlease enter your account number: ");
@@ -90,7 +76,6 @@ public class ATM extends JFrame {
       if (!userAuthenticated) {
          screen.displayMessageLine("Invalid account number or PIN. Please try again.");
       } // end if
-
       currentAccountNumber = accountNumber; // save user's account #
    } // end method authenticateUser
 

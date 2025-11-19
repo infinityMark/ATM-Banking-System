@@ -510,7 +510,7 @@ public class TransferUI extends Transfer {
         switch (cardName) {
             case CARD_INFO:
                 JPanel infoCard = createReceiveTransferInformation(
-                        "Currently asset in your account HKD$" + bankDatabase.getAvailableBalance(getAccountNumber()));
+                        "Currently asset in your account HKD$" + bankDatabase.getAvailableBalance(super.getCurrentAccountNumber()));
                 infoCard.setName(CARD_INFO);
                 cardPanel.add(infoCard, CARD_INFO);
                 break;

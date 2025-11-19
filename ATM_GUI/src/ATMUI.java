@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ATMUI {
+public class ATMUI extends ATM{
     // ------------- Panel name constants -------------
     public static final String GREETING_PANEL = "exit";
     public static final String LOGIN_PANEL = "login";
@@ -318,7 +318,7 @@ public class ATMUI {
     }
 
     protected JPanel createTransferPanel() {
-        TransferUI transferUI = new TransferUI(21111, screen, bankDatabase, atmKeypad, atmCashDispenser);
+        TransferUI transferUI = new TransferUI(super.getCurrentAccountNumber(), screen, bankDatabase, atmKeypad, atmCashDispenser);
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();

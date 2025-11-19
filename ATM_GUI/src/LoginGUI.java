@@ -4,7 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoginGUI {
+public class LoginGUI extends ATMUI{
     private JTextField accounTF;
     private JPanel centerPanel;
     private JPasswordField passwordF;
@@ -82,9 +82,9 @@ public class LoginGUI {
         });
 
         // 只是用來測試的，這裏是keypad的三個按鈕。
-        // mainP.add(confirmButton,BorderLayout.WEST);
-        // mainP.add(delButton,BorderLayout.EAST);
-        // mainP.add(cancelButton,BorderLayout.NORTH);
+         mainP.add(confirmButton,BorderLayout.WEST);
+         mainP.add(delButton,BorderLayout.EAST);
+         mainP.add(cancelButton,BorderLayout.NORTH);
         // buttin with keypad!!!
 
         if (showLoginGUI) {
@@ -247,6 +247,8 @@ public class LoginGUI {
                         clearInput();
                         System.out.println(currentAccountNumber);
                         System.out.println(passedPIN);
+                        super.setCurrentAccountNumber(currentAccountNumber);
+                        System.out.println(super.getCurrentAccountNumber());
                         goToPanel(ATMUI.MAIN_MENU_PANEL);
                     }
                 }
@@ -306,24 +308,4 @@ public class LoginGUI {
     public int getAccountNumber() {
         return passedAccount;
     }
-    // 測試用的 del 了// 就可以跑
-    // public static void main(String[] args) {
-    // SwingUtilities.invokeLater(() -> {
-    // // 建立 JFrame
-    // JFrame frame = new JFrame("Login Frame");
-    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // frame.setSize(900, 600);
-    // frame.setLocationRelativeTo(null);
-    //
-    // // 建立 LoginGUI 物件
-    // LoginGUI login = new LoginGUI(true);
-    //
-    // // 把主面板放到 JFrame
-    // frame.setContentPane(login.getMainPanel());
-    //
-    // // 顯示視窗
-    // frame.setVisible(true);
-    // });
-    // }
-
 }
