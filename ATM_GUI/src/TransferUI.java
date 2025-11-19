@@ -35,6 +35,8 @@ public class TransferUI extends Transfer {
     private static JPanel cardPanel;
     private static JPanel mainPanel;
 
+    private int userAccountNumberInUI;
+
     // Validation states
     private Boolean isReceiverValid = false;
     private Boolean isAmountValid = false;
@@ -44,6 +46,7 @@ public class TransferUI extends Transfer {
     public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
                       Keypad atmKeypad, CashDispenser atmCashDispenser) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
+        userAccountNumberInUI = userAccountNumber;
     }
 
     /**
@@ -410,7 +413,7 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
-            if (super.getAccountNumber() == accountNumber) {
+            if (userAccountNumberInUI == accountNumber) {
                 showValidationError(textField, label, "The send account and receiver account can not be same.");
                 return false;
             }
