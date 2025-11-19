@@ -106,4 +106,14 @@ public class ATMUIController {
     public void loginSuccess(int accountNunber) {
         this.accountNumber = accountNunber;
     }
+    
+    
+    // update balance inquiry
+    public void updateBalancePanel(int accountNumber) {
+        JPanel balancePanel = atmUI.getPanel(ATMUI.BALANCE_PANEL);
+        if (balancePanel instanceof BalanceInquiryUI) {
+            ((BalanceInquiryUI) balancePanel).setAccountNumber(accountNumber);
+            ((BalanceInquiryUI) balancePanel).refreshBalance();
+        }
+    }
 }

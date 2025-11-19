@@ -310,29 +310,14 @@ public class ATMUI extends ATM {
 
     // method of createBalancePanel
     protected JPanel createBalancePanel() {
-        // default balance panel with account number 0
-        BalanceInquiryUI balancePanel = new BalanceInquiryUI(0);
+        BalanceInquiryUI balancePanel = new BalanceInquiryUI(getCurrentAccountNumber());
         balancePanel.setName(BALANCE_PANEL);
-
-        // Add action listener for the back button
-        balancePanel.getBackButton().addActionListener(e -> {
-            switchPanel(MAIN_MENU_PANEL);
-        });
-
         return balancePanel;
     }
 
     public JPanel createHistoryPanel() {
         JPanel panel = new JPanel(new FlowLayout());
         return panel;
-    }
-
-    // update the balance panel with the current user's account can't check error
-    public void updateBalancePanel(int accountNumber) {
-        JPanel balancePanel = getPanel(BALANCE_PANEL);
-        if (balancePanel instanceof BalanceInquiryUI) {
-            ((BalanceInquiryUI) balancePanel).setAccountNumber(accountNumber);
-        }
     }
 
     protected JPanel createWithdrawPanel() {
