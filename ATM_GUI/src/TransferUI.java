@@ -36,6 +36,8 @@ public class TransferUI extends Transfer {
     private static JPanel mainPanel;
 
     private int userAccountNumberInUI;
+    private int receiverInUI;
+    private double amountInUI;
 
     // Validation states
     private Boolean isReceiverValid = false;
@@ -380,13 +382,12 @@ public class TransferUI extends Transfer {
             resetValidationFlags();
 
             boolean isReceiverValid = validateReceiverAccount(
-                    receiverAccountTextField.getContent().trim(), receiverAccountTextField, receiverLabel);
+                    receiverAccountTextField.getContent(), receiverAccountTextField, receiverLabel);
             boolean isAmountValid = validateAmount(
-                    amountTextField.getContent().trim(), amountTextField, amountLabel);
+                    amountTextField.getContent(), amountTextField, amountLabel);
 
             if (super.isLimitAccountConditionCheckerHappen(getAmount(),"Transfer")){
                 showValidationError(amountTextField, amountLabel, String.format("Sorry, You are not allowed to %s over HK$50000 at once time.","Transfer"));
-                return;
             }
 
             if (isReceiverValid && isAmountValid) {
@@ -407,6 +408,7 @@ public class TransferUI extends Transfer {
 
         try {
             int accountNumber = Integer.parseInt(accountText);
+            System.out.println("a"+accountNumber+"b"+userAccountNumberInUI);
 
             if (bankDatabase.isAccountNumberExist(accountNumber) == -1) {
                 showValidationError(textField, label, "The receiver account does not exist");
@@ -418,7 +420,7 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
-            setReceiverAccounts(accountNumber);
+            receiverInUI = accountNumber;
             clearValidationError(label);
             return true;
 
@@ -446,6 +448,7 @@ public class TransferUI extends Transfer {
             }
 
             setAmount(amountValue);
+            amountInUI = amountValue;
             clearValidationError(label);
             return true;
 
@@ -492,7 +495,7 @@ public class TransferUI extends Transfer {
      * Executes the actual transfer operation
      */
     private void executeTransfer() {
-        bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
+        bankDatabase.transfer(userAccountNumberInUI, receiverInUI, amountInUI);
         System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(getAccountNumber()));
     }
 
