@@ -54,7 +54,7 @@ public class ATM {
       } // end while
    } // end method run
 
-   public void setCurrentAccountNumber(int currentAccountNumbers){
+   public synchronized void setCurrentAccountNumber(int currentAccountNumbers){
       this.currentAccountNumber = currentAccountNumbers;
    }
 

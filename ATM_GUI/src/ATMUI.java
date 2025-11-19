@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ATMUI extends ATM{
+public class ATMUI {
     // ------------- Panel name constants -------------
     public static final String GREETING_PANEL = "greeting";
     public static final String LOGIN_PANEL = "login";
@@ -45,6 +45,16 @@ public class ATMUI extends ATM{
     private JButton Button1;
     private JButton Button2;
     private JButton Button3;
+
+    private int currentAccountNumber;
+
+    public void setCurrentAccountNumber(int currentAccountNumber1){
+        currentAccountNumber = currentAccountNumber1;
+    }
+
+    public int getCurrentAccountNumber(){
+        return currentAccountNumber;
+    }
 
     // private JButton confirmButton;
 
@@ -335,7 +345,7 @@ public class ATMUI extends ATM{
     }
 
     protected JPanel createTransferPanel() {
-        TransferUI transferUI = new TransferUI(super.getCurrentAccountNumber(), screen, bankDatabase, atmKeypad, atmCashDispenser);
+        TransferUI transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase, atmKeypad, atmCashDispenser);
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();
