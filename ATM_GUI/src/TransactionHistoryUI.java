@@ -14,23 +14,28 @@ public class TransactionHistoryUI {
 
     private static final String CARD_HISTORY = "HISTORY";
 
-    public TransactionHistoryUI(int accountNumber) {
+    public void createTransactionHistoryUI(int accountNumber) {
         initializeMainPanel();
         createHistory(accountNumber);
-        
+
         String historyText = TransactionHistory.getHistoryAsString(accountNumber);
         cardLayout.show(cardPanel, CARD_HISTORY);
+
+    }
+
+    public TransactionHistoryUI() {
 
     }
 
     private void initializeMainPanel() {
         mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
-        
+
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
-        JLabel taskTitle = createStyledLabel("Transaction History", FONT_TITLE_LARGE, StandardColor.Blue.getColorMode());
+        JLabel taskTitle = createStyledLabel("Transaction History", FONT_TITLE_LARGE,
+                StandardColor.Blue.getColorMode());
         taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
         gbc.gridy = 0;
@@ -56,13 +61,12 @@ public class TransactionHistoryUI {
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel titleLabel = createStyledLabel("Transaction History for Account: " + accountNumber, 
-                                            FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        JLabel titleLabel = createStyledLabel("Transaction History for Account: " + accountNumber,
+                FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(StandardColor.Blue.getColorMode(), 2),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                BorderFactory.createLineBorder(StandardColor.Blue.getColorMode(), 2),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         titleLabel.setOpaque(true);
         titleLabel.setBackground(StandardColor.GreyHighest.getColorMode());
 
@@ -70,17 +74,16 @@ public class TransactionHistoryUI {
         gbc.weighty = 0.1;
         historyPanel.add(titleLabel, gbc);
 
-        //text area
+        // text area
         history = new JTextArea(50, 50);
-        //cant edit
+        // cant edit
         history.setEditable(false);
         history.setFont(FONT_SMALL);
         history.setBackground(StandardColor.Green.getColorMode());
         history.setForeground(StandardColor.GreyHighest.getOppositeColorMode());
         history.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(StandardColor.Green.getColorMode(), 1),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                BorderFactory.createLineBorder(StandardColor.Green.getColorMode(), 1),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         history.setLineWrap(true);
         history.setWrapStyleWord(true);
 
@@ -91,7 +94,7 @@ public class TransactionHistoryUI {
         history.setText(historyText);
 
         gbc.gridy = 1;
-        gbc.weighty = 0.8;//80%
+        gbc.weighty = 0.8;// 80%
         gbc.insets = new Insets(20, 20, 20, 20);
         historyPanel.add(scrollPane, gbc);
 

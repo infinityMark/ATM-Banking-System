@@ -10,7 +10,11 @@ public class MainMenuGUI {
     private BankDatabase bankDatabase;
     private static final Color DARK_BLUE = new Color(0, 0, 139);
 
-    public MainMenuGUI(boolean showMainMenu, int currentAccountNumber) {
+    public MainMenuGUI() {
+
+    }
+
+    public void createMainMenuGUI(boolean showMainMenu, int currentAccountNumber) {
         mainP = new JPanel();
         mainPanel();
         currentAccountNumberMMG = currentAccountNumber;
@@ -137,18 +141,4 @@ public class MainMenuGUI {
     public JPanel getMainPanel() {
         return mainP;
     }
-
-    // AI 寫的mian用來測試的
-    // public static void main(String[] args) {
-    // SwingUtilities.invokeLater(() -> {
-    // JFrame frame = new JFrame("ATM Main Menu");
-    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // frame.setSize(900, 600);
-    // frame.setLocationRelativeTo(null);
-    // MainMenuGUI menu = new MainMenuGUI(true, 22222);
-    // frame.setContentPane(menu.mainP);
-    // frame.setVisible(true);
-    // });
-    // }
-
 }

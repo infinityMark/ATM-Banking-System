@@ -15,28 +15,36 @@ public class WithdrawalUI extends JPanel {
     private CardLayout cardLayout;
     private JPanel cardPanel;
     private JPanel mainPanel;
-    
+
     // Withdrawal data
     private int selectedAmount;
     private int currentAccountNumber;
-    private BankDatabase bankDatabase;
-    private CashDispenser cashDispenser;
+    private BankDatabase bankDatabase = new BankDatabase();// 给你添加了个临时的，为了让代码能运行起来
+    private CashDispenser cashDispenser = new CashDispenser();// 给你添加了个临时的，为了让代码能运行起来
     private Withdrawal withdrawal;
-    
+
     // UI Components
     private JLabel statusLabel;
     private JTextField customAmountField;
 
     // Constants for preset amounts
-    private final int[] PRESET_AMOUNTS = {200, 400, 800, 1000};
+    private final int[] PRESET_AMOUNTS = { 200, 400, 800, 1000 };
     private final int CANCELED = 6;
 
-    public WithdrawalUI(int accountNumber, BankDatabase bankDatabase, CashDispenser cashDispenser) {
+    public WithdrawalUI() {
+        // 我仅仅是把你的constructor里的东西拆分，并没有改变你的logic
+    }
+
+    public void createWithdrawalUI(int accountNumber
+    // , BankDatabase bankDatabase, CashDispenser cashDispenser
+    ) {
         this.currentAccountNumber = accountNumber;
-        this.bankDatabase = bankDatabase;
-        this.cashDispenser = cashDispenser;
-        this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(), bankDatabase, new Keypad(), cashDispenser);
-        
+        // =============bankdatabase和cashDispenser 传不进来，我只能给你accountNumber=========
+        // this.bankDatabase = bankDatabase;
+        // this.cashDispenser = cashDispenser;
+        // this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(),
+        // bankDatabase, new Keypad(), cashDispenser);
+
         initializeUI();
     }
 
@@ -47,8 +55,8 @@ public class WithdrawalUI extends JPanel {
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
         // Title
-        JLabel taskTitle = createStyledLabel("Withdrawal", 
-                new Font(Font.SANS_SERIF, Font.BOLD, 40), 
+        JLabel taskTitle = createStyledLabel("Withdrawal",
+                new Font(Font.SANS_SERIF, Font.BOLD, 40),
                 StandardColor.Blue.getColorMode());
         taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -86,7 +94,7 @@ public class WithdrawalUI extends JPanel {
         gbc.insets = new Insets(10, 15, 10, 15);
 
         // Title
-        JLabel titleLabel = createStyledLabel("Withdrawal Menu", 
+        JLabel titleLabel = createStyledLabel("Withdrawal Menu",
                 new Font(Font.SANS_SERIF, Font.BOLD, 32),
                 StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,7 +118,7 @@ public class WithdrawalUI extends JPanel {
         // Preset amount buttons
         JPanel amountPanel = new JPanel(new GridLayout(3, 2, 10, 10));
         amountPanel.setBackground(StandardColor.GreyHighest.getColorMode());
-        
+
         // Preset amounts
         for (int i = 0; i < PRESET_AMOUNTS.length; i++) {
             int amount = PRESET_AMOUNTS[i];
@@ -119,13 +127,13 @@ public class WithdrawalUI extends JPanel {
         }
 
         // Custom amount button
-        RoundedButton customButton = createActionButton("Custom Amount", 
+        RoundedButton customButton = createActionButton("Custom Amount",
                 StandardColor.Blue.getColorMode());
         customButton.addActionListener(e -> showCard(CARD_CUSTOM));
         amountPanel.add(customButton);
 
         // Cancel button
-        RoundedButton cancelButton = createActionButton("Cancel", 
+        RoundedButton cancelButton = createActionButton("Cancel",
                 StandardColor.Red.getColorMode());
         cancelButton.addActionListener(e -> goBackToMainPanel());
         amountPanel.add(cancelButton);
@@ -145,7 +153,7 @@ public class WithdrawalUI extends JPanel {
         gbc.insets = new Insets(10, 15, 10, 15);
 
         // Title
-        JLabel titleLabel = createStyledLabel("Enter Custom Amount", 
+        JLabel titleLabel = createStyledLabel("Enter Custom Amount",
                 new Font(Font.SANS_SERIF, Font.BOLD, 32),
                 StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -168,11 +176,11 @@ public class WithdrawalUI extends JPanel {
         // Custom amount input
         JPanel inputPanel = new JPanel(new FlowLayout());
         inputPanel.setBackground(StandardColor.GreyHighest.getColorMode());
-        
-        JLabel amountLabel = createStyledLabel("HK$", 
+
+        JLabel amountLabel = createStyledLabel("HK$",
                 new Font(Font.SANS_SERIF, Font.BOLD, 20),
                 StandardColor.GreyHighest.getOppositeColorMode());
-        
+
         customAmountField = new JTextField(10);
         customAmountField.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
         customAmountField.setHorizontalAlignment(JTextField.RIGHT);
@@ -188,11 +196,11 @@ public class WithdrawalUI extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
-        RoundedButton confirmButton = createActionButton("Confirm", 
+        RoundedButton confirmButton = createActionButton("Confirm",
                 StandardColor.Green.getColorMode());
         confirmButton.addActionListener(e -> processCustomAmount());
 
-        RoundedButton backButton = createActionButton("Back", 
+        RoundedButton backButton = createActionButton("Back",
                 StandardColor.Yellow.getColorMode());
         backButton.addActionListener(e -> showCard(CARD_MENU));
 
@@ -204,7 +212,7 @@ public class WithdrawalUI extends JPanel {
         panel.add(buttonPanel, gbc);
 
         // Status label
-        statusLabel = createStyledLabel("", 
+        statusLabel = createStyledLabel("",
                 new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 StandardColor.Red.getColorMode());
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -223,7 +231,7 @@ public class WithdrawalUI extends JPanel {
         gbc.insets = new Insets(10, 15, 10, 15);
 
         // Title
-        JLabel titleLabel = createStyledLabel("Confirm Withdrawal", 
+        JLabel titleLabel = createStyledLabel("Confirm Withdrawal",
                 new Font(Font.SANS_SERIF, Font.BOLD, 32),
                 StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -246,7 +254,7 @@ public class WithdrawalUI extends JPanel {
         // Note breakdown (if available)
         if (cashDispenser.isSufficientCashAvailable(selectedAmount)) {
             cashDispenser.precheckNumberOfAmountType(selectedAmount);
-            
+
             JLabel notesLabel = createStyledLabel(
                     String.format("You will receive:\n%d x HK$1000\n%d x HK$500\n%d x HK$100",
                             cashDispenser.getNumberOfOneThousand(),
@@ -265,11 +273,11 @@ public class WithdrawalUI extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
-        RoundedButton confirmButton = createActionButton("Confirm Withdrawal", 
+        RoundedButton confirmButton = createActionButton("Confirm Withdrawal",
                 StandardColor.Green.getColorMode());
         confirmButton.addActionListener(e -> executeWithdrawal());
 
-        RoundedButton cancelButton = createActionButton("Cancel", 
+        RoundedButton cancelButton = createActionButton("Cancel",
                 StandardColor.Red.getColorMode());
         cancelButton.addActionListener(e -> showCard(CARD_MENU));
 
@@ -290,7 +298,7 @@ public class WithdrawalUI extends JPanel {
         gbc.insets = new Insets(10, 15, 10, 15);
 
         // Result message
-        JLabel resultLabel = createStyledLabel("Withdrawal Successful!", 
+        JLabel resultLabel = createStyledLabel("Withdrawal Successful!",
                 new Font(Font.SANS_SERIF, Font.BOLD, 32),
                 StandardColor.Green.getColorMode());
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -323,7 +331,7 @@ public class WithdrawalUI extends JPanel {
         panel.add(balanceLabel, gbc);
 
         // Instruction
-        JLabel instructionLabel = createStyledLabel("Please take your cash now.", 
+        JLabel instructionLabel = createStyledLabel("Please take your cash now.",
                 new Font(Font.SANS_SERIF, Font.PLAIN, 18),
                 StandardColor.Orange.getColorMode());
         instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -333,7 +341,7 @@ public class WithdrawalUI extends JPanel {
         panel.add(instructionLabel, gbc);
 
         // Continue button
-        RoundedButton continueButton = createActionButton("Back to Main Menu", 
+        RoundedButton continueButton = createActionButton("Back to Main Menu",
                 StandardColor.Blue.getColorMode());
         continueButton.addActionListener(e -> goBackToMainPanel());
 
@@ -353,12 +361,12 @@ public class WithdrawalUI extends JPanel {
                 new Font(Font.SANS_SERIF, Font.BOLD, 18),
                 new Font(Font.SANS_SERIF, Font.BOLD, 18),
                 true, 150, 50);
-        
+
         button.addActionListener(e -> {
             selectedAmount = amount;
             showCard(CARD_CONFIRMATION);
         });
-        
+
         return button;
     }
 
@@ -371,7 +379,7 @@ public class WithdrawalUI extends JPanel {
             }
 
             int amount = Integer.parseInt(amountText);
-            
+
             // Check if amount is multiples of 100, 500, or 1000
             if (!withdrawal.isMultiplesCondition(amount)) {
                 statusLabel.setText("Amount must be multiples of HK$ 100, 500, or 1000");
@@ -417,10 +425,10 @@ public class WithdrawalUI extends JPanel {
         // Perform the withdrawal
         bankDatabase.debit(currentAccountNumber, selectedAmount);
         cashDispenser.dispenseCash();
-        
+
         // Record transaction history
         new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double) selectedAmount);
-        
+
         showCard(CARD_RESULT);
     }
 

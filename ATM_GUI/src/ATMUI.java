@@ -21,10 +21,13 @@ public class ATMUI extends ATM {
     private String currentPanelName = GREETING_PANEL;
 
     // ------------- Instance GUI --------------------
+    public JPanel keypadPanel;
+    public GreetingUI greetingGUI;
     public LoginGUI loginGUI;
-    private MainMenuGUI mainMenuGUI;
-    private GreetingUI greetingGUI;
-    private JPanel keypadPanel;
+    public MainMenuGUI mainMenuGUI;
+    public TransactionHistoryUI historyGUI;
+    public WithdrawalUI withdrawGUI;
+    public BalanceInquiryUI balance;
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -208,30 +211,24 @@ public class ATMUI extends ATM {
         Button2.setName("Left2");
         Button3 = createFixedSizeButton(" ");
         Button3.setName("Left3");
-        // Button4 = new JButton("Left4");
-        // Button4.setName("Left4");
 
         // initialize right buttons, change if needed
         Button5 = createFixedSizeButton(" ");
         Button5.setName("Right1");
         Button6 = createFixedSizeButton(" ");
         Button6.setName("Right2");
-        Button7 = createFixedSizeButton("跳过登录(直达Main menu)");
+        Button7 = createFixedSizeButton("回到Menu");
         Button7.setName("Right3");
-        // Button8 = new JButton("Right4");
-        // Button8.setName("Right4");
 
         // left buttons
         leftButtonPanel.add(Button1);
         leftButtonPanel.add(Button2);
         leftButtonPanel.add(Button3);
-        // leftButtonPanel.add(Button4);
 
         // right buttons
         rightButtonPanel.add(Button5);
         rightButtonPanel.add(Button6);
         rightButtonPanel.add(Button7);
-        // rightButtonPanel.add(Button8);
     }
 
     private JButton createFixedSizeButton(String text) {
@@ -250,8 +247,6 @@ public class ATMUI extends ATM {
         JPanel loginPanel = createLoginPanel();
         centerPanel.add(loginPanel, LOGIN_PANEL);
         registerPanel(loginPanel);
-
-        // createPanelAfterLogin();
     }
 
     public void createPanelAfterLogin() {
@@ -296,43 +291,37 @@ public class ATMUI extends ATM {
 
     protected JPanel createLoginPanel() {
         loginGUI = new LoginGUI(true);
-        JPanel panel = loginGUI.createMainMenuPanels();
-        panel.setName(LOGIN_PANEL);
+        loginGUI.createMainMenuPanels();
+        loginGUI.getMainPanel().setName(LOGIN_PANEL);
 
-        JButton confirmButton = new JButton();
-        confirmButton.setName("Confirm");
-        confirmButton = new JButton("Confirm");
-        confirmButton.setName(test);
-        return panel;
+        return loginGUI.getMainPanel();
     }
 
     protected JPanel createMainMenuPanel() {
-        mainMenuGUI = new MainMenuGUI(true, 21111);
-        JPanel panel = mainMenuGUI.getMainP();
-        panel.setName(MAIN_MENU_PANEL);
-        return panel;
+        mainMenuGUI = new MainMenuGUI();
+        mainMenuGUI.createMainMenuGUI(true, loginGUI.getAccountNumber());
+        mainMenuGUI.getMainP().setName(MAIN_MENU_PANEL);
+        return mainMenuGUI.getMainP();
     }
 
-    // method of createBalancePanel
     protected JPanel createBalancePanel() {
-        BalanceInquiryUI balancePanel = new BalanceInquiryUI(getCurrentAccountNumber());
-        balancePanel.setName(BALANCE_PANEL);
-        return balancePanel;
+        balance = new BalanceInquiryUI(loginGUI.getAccountNumber());
+        balance.getMainPanel().setName(BALANCE_PANEL);
+        return balance.getMainPanel();
     }
 
     public JPanel createHistoryPanel() {
-        JPanel panel = new JPanel(new FlowLayout());
-        return panel;
+        historyGUI = new TransactionHistoryUI();
+        historyGUI.createTransactionHistoryUI(loginGUI.getAccountNumber());
+        historyGUI.getMainPanel().setName(HISTORY_PANEL);
+        return historyGUI.getMainPanel();
     }
 
     protected JPanel createWithdrawPanel() {
-        JPanel panel = new JPanel(new FlowLayout());
-        panel.setName(WITHDRAW_PANEL);
-        panel.add(new JLabel("Amount:"));
-        panel.add(new JTextField(10));
-        panel.add(new JButton("Confirm"));
-        panel.add(new JButton("Cancel"));
-        return panel;
+        withdrawGUI = new WithdrawalUI();
+        withdrawGUI.createWithdrawalUI(loginGUI.getAccountNumber());
+        withdrawGUI.getMainPanel().setName(WITHDRAW_PANEL);
+        return withdrawGUI.getMainPanel();
     }
 
     protected JPanel createTransferPanel() {
