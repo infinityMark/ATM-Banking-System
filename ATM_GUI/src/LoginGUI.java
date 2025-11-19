@@ -15,7 +15,7 @@ public class LoginGUI {
     private BankDatabase bankDatabase;
     private JLabel reminderL;
     private JPanel mainP;
-    private static int passedAccount, passedPIN;
+    public static int passedAccount, passedPIN;
     
     // Track which field is currently focused
     private boolean accountFieldFocused = true;

@@ -49,7 +49,7 @@ public class ATMUI extends ATM {
 
     private static int currentAccountNumber;
 
-    public void setCurrentAccountNumber(int currentAccountNumber1) {
+    static public void setCurrentAccountNumberATMUI(int currentAccountNumber1) {
         currentAccountNumber = currentAccountNumber1;
     }
 
@@ -331,7 +331,8 @@ public class ATMUI extends ATM {
     }
 
     protected JPanel createTransferPanel() {
-        TransferUI transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase, atmKeypad,
+        System.out.println("99"+LoginGUI.passedAccount);
+        TransferUI transferUI = new TransferUI(LoginGUI.passedAccount, screen, bankDatabase, atmKeypad,
                 atmCashDispenser);
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
