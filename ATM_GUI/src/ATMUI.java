@@ -18,7 +18,7 @@ public class ATMUI extends ATM {
     protected static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
     protected static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 
-    private String currentPanelName;
+    private String currentPanelName = GREETING_PANEL;
 
     // ------------- Instance GUI --------------------
     public LoginGUI loginGUI;
@@ -49,11 +49,11 @@ public class ATMUI extends ATM {
 
     private static int currentAccountNumber;
 
-    static public void setCurrentAccountNumberATMUI(int currentAccountNumber1){
+    public void setCurrentAccountNumber(int currentAccountNumber1) {
         currentAccountNumber = currentAccountNumber1;
     }
 
-    public int getCurrentAccountNumber(){
+    public int getCurrentAccountNumber() {
         return currentAccountNumber;
     }
 

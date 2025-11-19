@@ -61,6 +61,8 @@ public class ATMListenerRegistrar {
         addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.goToPanel(ATMUI.BALANCE_PANEL);
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", view Balance");
                 controller.showInfo();
@@ -70,6 +72,8 @@ public class ATMListenerRegistrar {
         addButtonListener("leftButtonPanel", "Left2", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.goToPanel(ATMUI.WITHDRAW_PANEL);
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", withdraw");
                 controller.showInfo();
@@ -80,6 +84,8 @@ public class ATMListenerRegistrar {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 // controller.goToPanel(ATMUI.LOGIN_PANEL);
                 controller.goToPanel(ATMUI.GREETING_PANEL);
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", withdraw");
                 controller.showInfo();
@@ -89,6 +95,8 @@ public class ATMListenerRegistrar {
         addButtonListener("rightButtonPanel", "Right1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.goToPanel(ATMUI.TRANSFER_PANEL);
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", transfer");
                 controller.showInfo();
@@ -98,13 +106,21 @@ public class ATMListenerRegistrar {
         addButtonListener("rightButtonPanel", "Right2", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.goToPanel(ATMUI.HISTORY_PANEL);
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", transactionHistory");
                 controller.showInfo();
             }
         });
 
-        addButtonListener("rightButtonPanel", "Right3", e -> controller.goToPanel("mainMenu"));
+        addButtonListener("rightButtonPanel", "Right3", e -> {
+            if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
+            } else {
+                controller.goToPanel("mainMenu");
+            }
+        });
 
         // Keypad number buttons (0-9)
         for (int i = 0; i <= 9; i++) {
