@@ -27,7 +27,7 @@ public class ATMUI extends ATM {
     public MainMenuGUI mainMenuGUI;
     public TransactionHistoryUI historyGUI;
     public WithdrawalUI withdrawGUI;
-    public BalanceInquiryUI balance;
+    public BalanceInquiryUI balanceGUI;
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -280,6 +280,14 @@ public class ATMUI extends ATM {
         }
     }
 
+    public void disposePanel() {
+        mainMenuGUI.getMainPanel().removeAll();
+        balanceGUI.getMainPanel().removeAll();
+        historyGUI.getMainPanel().removeAll();
+        withdrawGUI.getMainPanel().removeAll();
+        // transferGUI.getMainPanel().removeAll();
+    }
+
     // -------------functional panels creation methods-------------
 
     protected JPanel createGreetingPanel() {
@@ -305,9 +313,9 @@ public class ATMUI extends ATM {
     }
 
     protected JPanel createBalancePanel() {
-        balance = new BalanceInquiryUI(loginGUI.getAccountNumber());
-        balance.getMainPanel().setName(BALANCE_PANEL);
-        return balance.getMainPanel();
+        balanceGUI = new BalanceInquiryUI(loginGUI.getAccountNumber());
+        balanceGUI.getMainPanel().setName(BALANCE_PANEL);
+        return balanceGUI.getMainPanel();
     }
 
     public JPanel createHistoryPanel() {

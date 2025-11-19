@@ -6,9 +6,9 @@ public class ATMCaseStudy {
    public static void main(String[] args) {
       // EnhancedATMUI atmUI = new EnhancedATMUI();
       ATMUI atmUI = new ATMUI();
-      ATM atm = new ATM();
+      // ATM atm = new ATM();
       // atm.run();
-      ATMUIController controller = new ATMUIController(atmUI, atm);
+      ATMUIController controller = new ATMUIController(atmUI);
       controller.run();
    } // end main
 } // end class ATMCaseStudy

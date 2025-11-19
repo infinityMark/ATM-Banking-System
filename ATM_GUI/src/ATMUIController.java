@@ -1,21 +1,29 @@
-import java.awt.CardLayout;
-import java.awt.Container;
+
+//import java.awt.CardLayout;
+//import java.awt.Container;
 import javax.swing.*;
 
 /**
  * controller class for ATMUI
  */
 public class ATMUIController {
-    private Container mainContainer;
-    private CardLayout cardLayout;
+    // private Container mainContainer;
+    // private CardLayout cardLayout;
     private ATMUI atmUI;
-    private ATM atm;
+    // private ATM atm;
     private ATMListenerRegistrar listenerRegistrar;
     private int accountNumber;
 
-    public ATMUIController(ATMUI atmUI, ATM atm) {
+    /*
+     * public ATMUIController(ATMUI atmUI, ATM atm) {
+     * this.atmUI = atmUI;
+     * this.atm = atm;
+     * this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
+     * }
+     */
+
+    public ATMUIController(ATMUI atmUI) {
         this.atmUI = atmUI;
-        this.atm = atm;
         this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
     }
 
@@ -73,7 +81,6 @@ public class ATMUIController {
     }
 
     public void setup() {
-        System.out.println("Registering listeners...");
         listenerRegistrar.registerAllListeners();
     }
 
@@ -90,24 +97,20 @@ public class ATMUIController {
         switchToLoginPanel();
     }
 
-    public void handleLogin() {
-        switchToLoginPanel();
-        // switchToMainMenuPanel();
-    }
-
     public void exitSystem() {
         switchToGreetingPanel();
+        atmUI.disposePanel();
     }
 
     public void showInfo() {
-        JOptionPane.showMessageDialog(atmUI.getMainFrame(), "啊哦，Listener出问题咯！");
+        // JOptionPane.showMessageDialog(atmUI.getMainFrame(), "啊哦，Listener出问题咯！");
+        System.out.println("跳转失败！！");
     }
 
     public void loginSuccess(int accountNunber) {
         this.accountNumber = accountNunber;
     }
-    
-    
+
     // update balance inquiry
     public void updateBalancePanel(int accountNumber) {
         JPanel balancePanel = atmUI.getPanel(ATMUI.BALANCE_PANEL);

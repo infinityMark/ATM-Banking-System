@@ -1,11 +1,3 @@
-
-/**
- * ATMListenerRegistrar ：统一管理所有UI组件的监听器注册
- * 
- * 使用方法：
- * 调用addButtonListener()添加按钮监听器配置
- */
-
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -117,6 +109,8 @@ public class ATMListenerRegistrar {
         addButtonListener("rightButtonPanel", "Right3", e -> {
             if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
                 controller.goToPanel("mainMenu");
             }
@@ -126,61 +120,61 @@ public class ATMListenerRegistrar {
         for (int i = 0; i <= 9; i++) {
             final int number = i;
             addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
-                if (atmUI.getLoginGUI() != null) {
+                if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                     atmUI.getLoginGUI().handleNumberInput(String.valueOf(number));
+                } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                    controller.switchToLoginPanel();
                 }
             });
         }
 
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
-            if (atmUI.getLoginGUI() != null) {
+            if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 // atmUI.getLoginGUI().checkInput();
                 if (atmUI.loginGUI.confirmBT() == true) {
                     atmUI.createPanelAfterLogin();
                     controller.loginSuccess(atmUI.loginGUI.getAccountNumber());
                     controller.switchToMainMenuPanel();
                 }
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
-                System.out.println("LoginGUI is null");
+                // System.out.println("LoginGUI is null");
             }
         });
 
         addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
-            if (atmUI.getLoginGUI() != null) {
+            if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleDelete();
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
-                System.out.println("LoginGUI is null");
+                // System.out.println("LoginGUI is null");
             }
         });
 
         addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
-            if (atmUI.getLoginGUI() != null) {
+            if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleClear();
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             } else {
-                System.out.println("LoginGUI is null");
+                // System.out.println("LoginGUI is null");
             }
         });
 
         // Double zero button
         addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
-            if (atmUI.getLoginGUI() != null) {
+            if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput(".");
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
             }
-        });
-
-        // Double zero button
-        addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
-            if (atmUI.getLoginGUI() != null) {
-                atmUI.getLoginGUI().handleNumberInput("00");
-            }
-        });
-        addButtonListener(ATMUI.GREETING_PANEL, ATMUI.GREETING_PANEL, e -> {
-            controller.switchToLoginPanel();
         });
     }
 
     /**
-     * 添加按钮Listener
+     * 添加Listener
      * 
      * @param panelName  面板名称（需与ATMUI中的面板名称常量一致）
      * @param buttonName 按钮名称（用于查找按钮）
