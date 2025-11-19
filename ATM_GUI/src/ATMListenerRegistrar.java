@@ -34,36 +34,7 @@ public class ATMListenerRegistrar {
         initBaseActionConfigs();
     }
 
-    /**
-     * 在此可以加入你想要的Listener配置
-     */
     private void initBaseActionConfigs() {
-        // Login Panel
-        // addButtonListener(ATMUI.GREETING_PANEL, "greeting", e ->
-        // controller.handleGreeting());
-        // System.out.println("Login button listener added.");
-
-        // addButtonListener(ATMUI.LOGIN_PANEL, "Login", e -> controller.handleLogin());
-        // System.out.println("Login button listener added.");
-
-        // Main Menu
-        /*
-         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "View Balance",
-         * e -> controller.switchToBalancePanel());
-         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Withdraw Cash",
-         * e -> controller.switchToWithdrawPanel());
-         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transfer Funds",
-         * e -> controller.switchToTransferPanel());
-         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Account Info",
-         * e -> controller.showAccountInfo());
-         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Transaction History",
-         * e -> controller.showTransactionHistory());
-         * addButtonListener(ATMUI.MAIN_MENU_PANEL, "Exit",
-         * e -> controller.switchToGreetingPanel());
-         * // addButtonListener(ATMUI.test, "test",
-         * // e -> controller.switchToMainMenuPanel());
-         */
-
         addMouseListener(
                 GreetingUI.GREETING_PANEL,
                 GreetingUI.GREETING_PANEL,
@@ -137,7 +108,11 @@ public class ATMListenerRegistrar {
 
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (atmUI.getLoginGUI() != null) {
-                atmUI.getLoginGUI().confirmBT();
+                // atmUI.getLoginGUI().checkInput();
+                if (atmUI.loginGUI.confirmBT() == true) {
+                    controller.loginSuccess(atmUI.loginGUI.getAccountNumber());
+                    controller.switchToMainMenuPanel();
+                }
             } else {
                 System.out.println("LoginGUI is null");
             }
@@ -222,20 +197,22 @@ public class ATMListenerRegistrar {
     }
 
     // 辅助方法：按组件名称查找（组件需用setName设置名称）
-    /*private Component findComponentByName(Container container, String name) {
-        for (Component comp : container.getComponents()) {
-            if (name.equals(comp.getName())) {
-                return comp;
-            }
-            // 递归找子组件（如果组件里还有面板）
-            if (comp instanceof Container) {
-                Component child = findComponentByName((Container) comp, name);
-                if (child != null)
-                    return child;
-            }
-        }
-        return null;
-    }*/
+    /*
+     * private Component findComponentByName(Container container, String name) {
+     * for (Component comp : container.getComponents()) {
+     * if (name.equals(comp.getName())) {
+     * return comp;
+     * }
+     * // 递归找子组件（如果组件里还有面板）
+     * if (comp instanceof Container) {
+     * Component child = findComponentByName((Container) comp, name);
+     * if (child != null)
+     * return child;
+     * }
+     * }
+     * return null;
+     * }
+     */
 
     private Component findComponentByName(Container container, String name) {
         // 先检查容器本身是否匹配名称

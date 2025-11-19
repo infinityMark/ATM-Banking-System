@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ATMUI extends ATM{
+public class ATMUI extends ATM {
     // ------------- Panel name constants -------------
     public static final String GREETING_PANEL = "greeting";
     public static final String LOGIN_PANEL = "login";
@@ -21,9 +21,10 @@ public class ATMUI extends ATM{
     private String currentPanelName;
 
     // ------------- Instance GUI --------------------
-    private LoginGUI loginGUI;
+    public LoginGUI loginGUI;
     private MainMenuGUI mainMenuGUI;
     private GreetingUI greetingGUI;
+    private JPanel keypadPanel;
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -335,7 +336,8 @@ public class ATMUI extends ATM{
     }
 
     protected JPanel createTransferPanel() {
-        TransferUI transferUI = new TransferUI(super.getCurrentAccountNumber(), screen, bankDatabase, atmKeypad, atmCashDispenser);
+        TransferUI transferUI = new TransferUI(super.getCurrentAccountNumber(), screen, bankDatabase, atmKeypad,
+                atmCashDispenser);
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();
@@ -343,19 +345,18 @@ public class ATMUI extends ATM{
     }
 
     protected JPanel createKeypadPanel() {
-        JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5)); // 4行3列网格
-        panel.setName(KEYPAD_PANEL);
-        registerPanel(panel);
+        keypadPanel = new JPanel(new GridLayout(4, 4, 5, 5)); // 4行3列网格
+        keypadPanel.setName(KEYPAD_PANEL);
+        registerPanel(keypadPanel);
 
-        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00",
-                "" };
+        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00" };
         for (String key : keys) {
             RoundedButton btn = new RoundedButton(key);
             btn.setFont(ATMUI.NORMAL_FONT);
             btn.setName(key.toLowerCase());
-            panel.add(btn);
+            keypadPanel.add(btn);
         }
-        return panel;
+        return keypadPanel;
     }
 
     // ------------- Waiting for improvement -------------

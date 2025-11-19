@@ -11,6 +11,7 @@ public class ATMUIController {
     private ATMUI atmUI;
     private ATM atm;
     private ATMListenerRegistrar listenerRegistrar;
+    private int accountNumber;
 
     public ATMUIController(ATMUI atmUI, ATM atm) {
         this.atmUI = atmUI;
@@ -80,6 +81,10 @@ public class ATMUIController {
         return atmUI.getCurrentPanelName();
     }
 
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
     // ------------- Handle logic parts for listeners -------------
     public void handleGreeting() {
         switchToLoginPanel();
@@ -96,5 +101,9 @@ public class ATMUIController {
 
     public void showInfo() {
         JOptionPane.showMessageDialog(atmUI.getMainFrame(), "啊哦，Listener出问题咯！");
+    }
+
+    public void loginSuccess(int accountNunber) {
+        this.accountNumber = accountNunber;
     }
 }

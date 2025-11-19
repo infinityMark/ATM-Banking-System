@@ -4,7 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LoginGUI extends ATMUI{
+public class LoginGUI {
     private JTextField accounTF;
     private JPanel centerPanel;
     private JPasswordField passwordF;
@@ -39,9 +39,7 @@ public class LoginGUI extends ATMUI{
         }
     }
 
-    public LoginGUI(boolean showLoginGUI)
-
-    { // 測試借用的frame
+    public LoginGUI(boolean showLoginGUI) { // 測試借用的frame
 
         mainP = new JPanel();
         mainPanel();
@@ -69,23 +67,6 @@ public class LoginGUI extends ATMUI{
         confirmButton.setFocusable(false);
         delButton.setFocusable(false);
         cancelButton.setFocusable(false);
-
-        confirmButton.addActionListener(e -> {
-            confirmBT();
-        });
-        delButton.addActionListener(e -> {
-            delBT();
-        });
-        cancelButton.addActionListener(e -> {
-            if (!invalidinput)
-                clearInput();
-        });
-
-        // 只是用來測試的，這裏是keypad的三個按鈕。
-         mainP.add(confirmButton,BorderLayout.WEST);
-         mainP.add(delButton,BorderLayout.EAST);
-         mainP.add(cancelButton,BorderLayout.NORTH);
-        // buttin with keypad!!!
 
         if (showLoginGUI) {
             SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
@@ -174,13 +155,13 @@ public class LoginGUI extends ATMUI{
         return false;
     }
 
-    private void checkInput() {
-        if (accounTF.hasFocus()) {
+    public void checkInput() {
+        if (!accountGot) {
             try {
-                currentAccountNumber = Integer.parseInt(savedAccount);
+                currentAccountNumber = Integer.parseInt(accounTF.getText().trim());
                 accountPass = true;
             } catch (NumberFormatException e) {
-                reminderL.setText("Invalid account number format!!!,press Confirm to continous");
+                reminderL.setText("Invalid account number format!!!,press Confirm to continue");
                 reminderL.setForeground(Color.RED);
                 System.out.println("Invalid account number format");
                 isinvalidinput();
@@ -195,13 +176,13 @@ public class LoginGUI extends ATMUI{
                 if (authenticated) {
                     pwPass = true;
                 } else {
-                    reminderL.setText("Invalid account number or PIN!!! Please try again,press Confirm to continous");
+                    reminderL.setText("Invalid account number or PIN!!! Please try again,press Confirm to continue");
                     reminderL.setForeground(Color.RED);
                     isinvalidinput();
                     System.out.println("Invalid account number or PIN");
                 }
             } catch (NumberFormatException e) {
-                reminderL.setText("Invalid PIN format!!! Please try again,press Confirm to continous");
+                reminderL.setText("Invalid PIN format!!! Please try again,press Confirm to continue");
                 reminderL.setForeground(Color.RED);
                 isinvalidinput();
                 System.out.println("Invalid PIN format");
@@ -215,17 +196,18 @@ public class LoginGUI extends ATMUI{
         invalidinput = true;
     }
 
-    public void confirmBT() {
+    public boolean confirmBT() {
         if (invalidinput) {
             reminderL.setText("Please Enter your Account number and PIN number ");
             reminderL.setForeground(Color.YELLOW);
             invalidinput = false;
             clearInput();
             System.out.println("reset input");
+            return false;
         } else {
             if (!accountGot) {
-                savedAccount = accounTF.getText();
-                if (!ifisEmpty(savedAccount)) {
+                String accountText = accounTF.getText().trim();
+                if (!ifisEmpty(accountText)) {
                     checkInput();
                     if (accountPass) {
                         accountGot = true;
@@ -238,23 +220,20 @@ public class LoginGUI extends ATMUI{
                 if (!ifisEmpty(password)) {
                     checkInput();
                     if (pwPass) {
-                        passedAccount = Integer.parseInt(accounTF.getText());
+                        passedAccount = Integer.parseInt(accounTF.getText().trim());
                         currentAccountNumber = passedAccount;
-                        // MainMenuGUI temp = new MainMenuGUI(false, currentAccountNumber);
                         passedPIN = Integer.parseInt(new String(passwordF.getPassword()));
                         pwPass = false;
                         accountGot = false;
                         clearInput();
                         System.out.println(currentAccountNumber);
                         System.out.println(passedPIN);
-                        super.setCurrentAccountNumber(currentAccountNumber);
-                        System.out.println(super.getCurrentAccountNumber());
-                        goToPanel(ATMUI.MAIN_MENU_PANEL);
+                        return true;
                     }
                 }
             }
         }
-
+        return false;
     }
 
     public void delBT() {
