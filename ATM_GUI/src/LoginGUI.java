@@ -16,7 +16,7 @@ public class LoginGUI {
     private JLabel reminderL;
     private JPanel mainP;
     private static int passedAccount, passedPIN;
-    
+
     // Track which field is currently focused
     private boolean accountFieldFocused = true;
 
@@ -62,7 +62,7 @@ public class LoginGUI {
         invalidinput = false;
         currentAccountNumber = 0;
         currentPin = 0;
-        
+
         // Set initial focus to account field
         accountFieldFocused = true;
 
@@ -72,7 +72,7 @@ public class LoginGUI {
                 accountFieldFocused = true;
             }
         });
-        
+
         passwordF.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 accountFieldFocused = false;
@@ -94,7 +94,7 @@ public class LoginGUI {
     }
 
     // NEW METHODS FOR KEYPAD INTEGRATION
-    
+
     /**
      * Handles number input from keypad
      */
@@ -107,7 +107,7 @@ public class LoginGUI {
             passwordF.setText(currentText + number);
         }
     }
-    
+
     /**
      * Handles delete action from keypad - deletes last character
      */
@@ -124,21 +124,21 @@ public class LoginGUI {
             }
         }
     }
-    
+
     /**
      * Handles clear action from keypad - clears all input
      */
     public void handleClear() {
         clearInput();
     }
-    
+
     /**
      * Handles confirm action from keypad - attempts login
      */
     public void handleConfirm() {
         confirmBT();
     }
-    
+
     /**
      * Switches focus between account and password fields
      */
@@ -268,8 +268,6 @@ public class LoginGUI {
         }
     }
 
-    
-    
     private void isinvalidinput() {
         System.out.println("Invalid input detected");
         reminderL.requestFocusInWindow();
@@ -307,9 +305,9 @@ public class LoginGUI {
                         pwPass = false;
                         accountGot = false;
                         clearInput();
-                        System.out.println(currentAccountNumber);
-                        System.out.println(passedPIN);
-                        ATMUI.setCurrentAccountNumberATMUI(passedAccount);
+                        //System.out.println(currentAccountNumber);
+                        //System.out.println(passedPIN);
+                        ATMUI.setCurrentAccountNumber(passedAccount);
                         return true;
                     }
                 }
@@ -365,6 +363,7 @@ public class LoginGUI {
     }
 
     public int getAccountNumber() {
+        System.out.println(passedAccount);
         return passedAccount;
     }
 }

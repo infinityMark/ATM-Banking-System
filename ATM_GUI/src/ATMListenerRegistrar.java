@@ -136,6 +136,7 @@ public class ATMListenerRegistrar {
             if (atmUI.getLoginGUI() != null) {
                 // atmUI.getLoginGUI().checkInput();
                 if (atmUI.loginGUI.confirmBT() == true) {
+                    atmUI.createPanelAfterLogin();
                     controller.loginSuccess(atmUI.loginGUI.getAccountNumber());
                     controller.switchToMainMenuPanel();
                 }
@@ -235,24 +236,6 @@ public class ATMListenerRegistrar {
         }
     }
 
-    // 辅助方法：按组件名称查找（组件需用setName设置名称）
-    /*
-     * private Component findComponentByName(Container container, String name) {
-     * for (Component comp : container.getComponents()) {
-     * if (name.equals(comp.getName())) {
-     * return comp;
-     * }
-     * // 递归找子组件（如果组件里还有面板）
-     * if (comp instanceof Container) {
-     * Component child = findComponentByName((Container) comp, name);
-     * if (child != null)
-     * return child;
-     * }
-     * }
-     * return null;
-     * }
-     */
-
     private Component findComponentByName(Container container, String name) {
         // 先检查容器本身是否匹配名称
         if (name.equals(container.getName())) {
@@ -274,9 +257,3 @@ public class ATMListenerRegistrar {
         return null;
     }
 }
-/*
- * Some part is done by AI, Will improve later, do not judge me :)
- * change if needed
- * using AI because I don't want to spend too much time on designing listeners
- * it may cause we can't get the work done on time
- */

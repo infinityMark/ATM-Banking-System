@@ -47,13 +47,13 @@ public class ATMUI extends ATM {
     private JButton Button2;
     private JButton Button3;
 
-    private static int currentAccountNumber;
+    static private int currentAccountNumber;
 
-    public void setCurrentAccountNumber(int currentAccountNumber1) {
+    static public void setCurrentAccountNumber(int currentAccountNumber1) {
         currentAccountNumber = currentAccountNumber1;
     }
 
-    public int getCurrentAccountNumber() {
+    static public int getCurrentAccountNumber() {
         return currentAccountNumber;
     }
 
@@ -251,6 +251,10 @@ public class ATMUI extends ATM {
         centerPanel.add(loginPanel, LOGIN_PANEL);
         registerPanel(loginPanel);
 
+        // createPanelAfterLogin();
+    }
+
+    public void createPanelAfterLogin() {
         JPanel mainMenuPanel = createMainMenuPanel();
         centerPanel.add(mainMenuPanel, MAIN_MENU_PANEL);
         registerPanel(mainMenuPanel);
@@ -270,6 +274,7 @@ public class ATMUI extends ATM {
         JPanel historyPanel = createHistoryPanel();
         centerPanel.add(historyPanel, HISTORY_PANEL);
         registerPanel(historyPanel);
+
     }
 
     // Method to register panels
