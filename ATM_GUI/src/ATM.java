@@ -54,13 +54,13 @@ public class ATM {
       } // end while
    } // end method run
 
-   public synchronized void setCurrentAccountNumber(int currentAccountNumbers){
-      this.currentAccountNumber = currentAccountNumbers;
-   }
+   // public synchronized void setCurrentAccountNumber(int currentAccountNumbers){
+   //    this.currentAccountNumber = currentAccountNumbers;
+   // }
 
-   public int getCurrentAccountNumber(){
-      return currentAccountNumber;
-   }
+   // public int getCurrentAccountNumber(){
+   //    return currentAccountNumber;
+   // }
 
    // attempts to authenticate user against database
    private void authenticateUser() {

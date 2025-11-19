@@ -309,6 +309,7 @@ public class LoginGUI {
                         clearInput();
                         System.out.println(currentAccountNumber);
                         System.out.println(passedPIN);
+                        ATMUI.setCurrentAccountNumberATMUI(passedAccount);
                         return true;
                     }
                 }
@@ -319,7 +320,6 @@ public class LoginGUI {
 
     public void delBT() {
         if (!invalidinput) {
-            /*
             if (accounTF.hasFocus()) {
                 String text = accounTF.getText();
                 if (!text.isEmpty())
@@ -331,7 +331,6 @@ public class LoginGUI {
                     passwordF.setText(text.substring(0, text.length() - 1));
                 passwordF.requestFocusInWindow();
             }
-             */
             handleDelete();
         }
     }
