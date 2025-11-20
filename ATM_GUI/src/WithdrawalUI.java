@@ -37,10 +37,6 @@ public class WithdrawalUI extends JPanel {
 
     public void createWithdrawalUI(int accountNumber) {
         this.currentAccountNumber = accountNumber;
-        this.bankDatabase = new BankDatabase();
-        this.cashDispenser = new CashDispenser();
-        this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(), bankDatabase, new Keypad(), cashDispenser);
-
         initializeUI();
     }
 
