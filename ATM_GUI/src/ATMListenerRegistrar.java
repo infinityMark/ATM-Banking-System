@@ -116,7 +116,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Keypad number buttons (0-9) - Add transfer panel handling
+        // Keypad number buttons (0-9) - Add withdrawal panel handling
         for (int i = 0; i <= 9; i++) {
             final int number = i;
             addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
@@ -127,13 +127,18 @@ public class ATMListenerRegistrar {
                     if (atmUI.transferUI != null) {
                         atmUI.transferUI.handleNumberInput(String.valueOf(number));
                     }
+                } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                    // Handle withdrawal panel number input
+                    if (atmUI.withdrawGUI != null) {
+                        atmUI.withdrawGUI.handleNumberInput(String.valueOf(number));
+                    }
                 } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                     controller.switchToLoginPanel();
                 }
             });
         }
         
-        // Confirm button - Add transfer panel handling
+        // Confirm button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 if (atmUI.loginGUI.confirmBT() == true) {
@@ -146,12 +151,17 @@ public class ATMListenerRegistrar {
                 if (atmUI.transferUI != null) {
                     atmUI.transferUI.handleConfirm();
                 }
+            } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle withdrawal panel confirm
+                if (atmUI.withdrawGUI != null) {
+                    atmUI.withdrawGUI.handleConfirm();
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
             }
         });
         
-        // Delete button - Add transfer panel handling
+        // Delete button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleDelete();
@@ -160,12 +170,17 @@ public class ATMListenerRegistrar {
                 if (atmUI.transferUI != null) {
                     atmUI.transferUI.handleDelete();
                 }
+            } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle withdrawal panel delete
+                if (atmUI.withdrawGUI != null) {
+                    atmUI.withdrawGUI.handleDelete();
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
             }
         });
         
-        // Clear button - Add transfer panel handling
+        // Clear button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleClear();
@@ -174,12 +189,17 @@ public class ATMListenerRegistrar {
                 if (atmUI.transferUI != null) {
                     atmUI.transferUI.handleClear();
                 }
+            } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle withdrawal panel clear - 无论是否点击输入框都可用
+                if (atmUI.withdrawGUI != null) {
+                    atmUI.withdrawGUI.handleClear();
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
             }
         });
 
-        // Double zero button - Add transfer panel handling
+        // Double zero button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput("00");
@@ -188,12 +208,17 @@ public class ATMListenerRegistrar {
                 if (atmUI.transferUI != null) {
                     atmUI.transferUI.handleNumberInput("00");
                 }
+            } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle withdrawal panel double zero
+                if (atmUI.withdrawGUI != null) {
+                    atmUI.withdrawGUI.handleNumberInput("00");
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
             }
         });
         
-        // Decimal point button - Add transfer panel handling
+        // Decimal point button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, ".", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput(".");
@@ -201,6 +226,11 @@ public class ATMListenerRegistrar {
                 // Handle transfer panel decimal point
                 if (atmUI.transferUI != null) {
                     atmUI.transferUI.handleNumberInput(".");
+                }
+            } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle withdrawal panel decimal point (will be ignored in withdrawal)
+                if (atmUI.withdrawGUI != null) {
+                    atmUI.withdrawGUI.handleNumberInput(".");
                 }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();

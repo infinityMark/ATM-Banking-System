@@ -74,6 +74,10 @@ public class ATMUIController {
 
     public void showTransactionHistory() {
         atmUI.switchPanel("transactionHistory");
+        TransactionHistoryUI historyUI = atmUI.historyGUI;
+        if (historyUI == null) {
+            historyUI.refreshHistory(accountNumber);
+        }
     }
 
     public JFrame getMainFrame() {
