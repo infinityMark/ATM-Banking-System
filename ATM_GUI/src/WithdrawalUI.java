@@ -19,8 +19,8 @@ public class WithdrawalUI extends JPanel {
     // Withdrawal data
     private int selectedAmount;
     private int currentAccountNumber;
-    private BankDatabase bankDatabase = new BankDatabase();// 给你添加了个临时的，为了让代码能运行起来
-    private CashDispenser cashDispenser = new CashDispenser();// 给你添加了个临时的，为了让代码能运行起来
+    private BankDatabase bankDatabase;
+    private CashDispenser cashDispenser;
     private Withdrawal withdrawal;
 
     // UI Components
@@ -37,6 +37,10 @@ public class WithdrawalUI extends JPanel {
 
     public void createWithdrawalUI(int accountNumber) {
         this.currentAccountNumber = accountNumber;
+        this.bankDatabase = new BankDatabase();
+        this.cashDispenser = new CashDispenser();
+        this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(), bankDatabase, new Keypad(), cashDispenser);
+
         initializeUI();
     }
 
@@ -46,9 +50,9 @@ public class WithdrawalUI extends JPanel {
 
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
-        // Title 
+        // Title
         JLabel taskTitle = createStyledLabel("Withdrawal",
-                new Font(Font.SANS_SERIF, Font.BOLD, 48), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 48),
                 StandardColor.Blue.getColorMode());
         taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -253,9 +257,9 @@ public class WithdrawalUI extends JPanel {
 
         // Note breakdown 
         JLabel notesLabel = createStyledLabel(
-                String.format("You will receive:\n%d x HK$1000    \n%d x HK$500   \n%d x HK$100",
+                String.format("You will receive:\n   %d x HK$1000\n   %d x HK$500\n   %d x HK$100",
                         thousands, fiveHundreds, hundreds),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 22), // 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 22), 
                 StandardColor.Blue.getColorMode());
         notesLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -291,7 +295,7 @@ public class WithdrawalUI extends JPanel {
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 15, 10, 15);
 
-        // Result message
+        // Result message 
         JLabel resultLabel = createStyledLabel("Withdrawal Successful!",
                 new Font(Font.SANS_SERIF, Font.BOLD, 36), 
                 StandardColor.Green.getColorMode());
@@ -319,7 +323,7 @@ public class WithdrawalUI extends JPanel {
         int hundreds = cashDispenser.getNumberOfOneHundred();
         
         JLabel breakdownLabel = createStyledLabel(
-                String.format("Banknotes dispensed:\nHK$1000:%d   \nHK$500:%d   \nHK$100: %d",
+                String.format("Banknotes dispensed:\n   HK$1000: %d\n   HK$500: %d\n   HK$100: %d",
                         thousands, fiveHundreds, hundreds),
                 new Font(Font.SANS_SERIF, Font.PLAIN, 22), 
                 StandardColor.Blue.getColorMode());
@@ -468,9 +472,8 @@ public class WithdrawalUI extends JPanel {
         cardLayout.show(cardPanel, cardName);
     }
 
-
+ 
     private void showConfirmationCard() {
-
         Component[] components = cardPanel.getComponents();
         for (Component comp : components) {
             if (comp instanceof JPanel && CARD_CONFIRMATION.equals(((JPanel) comp).getName())) {
@@ -486,8 +489,9 @@ public class WithdrawalUI extends JPanel {
         cardLayout.show(cardPanel, CARD_CONFIRMATION);
     }
 
-
+    
     private void showResultCard() {
+        
         Component[] components = cardPanel.getComponents();
         for (Component comp : components) {
             if (comp instanceof JPanel && CARD_RESULT.equals(((JPanel) comp).getName())) {
