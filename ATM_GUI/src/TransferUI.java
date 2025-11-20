@@ -684,7 +684,7 @@ public class TransferUI extends Transfer {
         bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
         System.out.println("Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
         System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(getAccountNumber()));
-        new TransactionHistory(0, getAccountNumber(), getReceiverAccount(), 0, 0, getAmount());
+        new TransactionHistory(0, getAccountNumber(), getReceiverAccounts(), 0, 0, getAmount());
 
     }
 
