@@ -45,6 +45,18 @@ public enum StandardColor {
     }),
     GreyLower(new Color[]{
             new Color(209,209,214) ,new Color(58,58,60)
+    }),
+    DarkBlue(new Color[]{
+            new Color(0,0,139), new Color(0,0,160)  
+    }),
+    White(new Color[]{
+            new Color(255,255,255), new Color(255,255,255)
+    }),
+    Black(new Color[]{
+            new Color(0,0,0), new Color(0,0,0)
+    }),
+    Gray(new Color[]{
+            new Color(128,128,128), new Color(128,128,128)
     });
 
     private static boolean isLightMode = true;
