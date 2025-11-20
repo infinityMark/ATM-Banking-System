@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class ATMUI extends ATM {
     // ------------- Panel name constants -------------
@@ -217,19 +218,34 @@ public class ATMUI extends ATM {
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-        Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+//        Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+//        Button1.setName("Left1");
+//        Button2 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+//        Button2.setName("Left2");
+//        Button3 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+//        Button3.setName("Left3");
+//
+//        // initialize right buttons, change if needed
+//        Button5 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+//        Button5.setName("Right1");
+//        Button6 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+//        Button6.setName("Right2");
+//        Button7 = new RoundedButton("回到Menu",new Dimension(Integer.MAX_VALUE, 50));
+//        Button7.setName("Right3");
+
+        Button1 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),new Dimension(Integer.MAX_VALUE, 50));
         Button1.setName("Left1");
-        Button2 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button2 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),new Dimension(Integer.MAX_VALUE, 50));
         Button2.setName("Left2");
-        Button3 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button3 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),new Dimension(Integer.MAX_VALUE, 50));
         Button3.setName("Left3");
 
         // initialize right buttons, change if needed
-        Button5 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button5 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),new Dimension(Integer.MAX_VALUE, 50));
         Button5.setName("Right1");
-        Button6 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button6 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),new Dimension(Integer.MAX_VALUE, 50));
         Button6.setName("Right2");
-        Button7 = new RoundedButton("回到Menu",new Dimension(Integer.MAX_VALUE, 50));
+        Button7 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),new Dimension(Integer.MAX_VALUE, 50));
         Button7.setName("Right3");
 
         // left buttons
@@ -459,6 +475,39 @@ public class ATMUI extends ATM {
             // return Button8;
             default:
                 return null;
+        }
+    }
+
+    // Function
+
+    static public ImageIcon setImageSafety(String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            ImageIcon icon = new ImageIcon(url);
+
+            return icon;
+
+        } catch (java.net.MalformedURLException e) {
+            System.out.println("URL invalid: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Image failure: " + e.getMessage());
+        }
+        return null;
+    }
+
+    static public void setImageSafety(JPanel panel, GridBagConstraints gbc, String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            ImageIcon icon = new ImageIcon(url);
+            JLabel imageLabel = new JLabel(icon);
+            panel.add(imageLabel, gbc);
+
+            System.out.println("Successful");
+
+        } catch (java.net.MalformedURLException e) {
+            System.out.println("URL invalid: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Image failure: " + e.getMessage());
         }
     }
 

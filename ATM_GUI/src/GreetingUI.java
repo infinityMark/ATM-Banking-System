@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URL;
 
 public class GreetingUI extends ATMUI{
     public static final String GREETING_PANEL = "greeting";
@@ -45,7 +47,8 @@ public class GreetingUI extends ATMUI{
         label.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(label, gbc);
 
-        setImageSafety(panel,gbc,new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
+        setImageSafety(panel,gbc,"https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/atm.png");
+//        setImageSafety(panel,gbc,new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
 
         return panel;
     }
@@ -60,7 +63,7 @@ public class GreetingUI extends ATMUI{
         label.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(label, gbc);
 
-        setImageSafety(panel,gbc,new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png")));
+        setImageSafety(panel, gbc, "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png");
 
         return panel;
     }
