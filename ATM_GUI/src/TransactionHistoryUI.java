@@ -18,7 +18,6 @@ public class TransactionHistoryUI {
         initializeMainPanel();
         createHistory(accountNumber);
 
-        String historyText = TransactionHistory.getHistoryAsString(accountNumber);
         cardLayout.show(cardPanel, CARD_HISTORY);
 
     }
