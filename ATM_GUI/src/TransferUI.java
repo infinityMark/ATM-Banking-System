@@ -231,7 +231,7 @@ public class TransferUI extends Transfer {
 
         JPanel continueMenu = createSelectionMenu("Do you want transfer to another?",
                 "Yes, go back transfer", "No, go back ATM menu",
-                30, font, CARD_INFO, "mainMenu");
+                35, font, CARD_INFO, "mainMenu");
         gbc.gridy = 2;
         gbc.weighty = 0.8;
         panel.add(continueMenu, gbc);
@@ -566,7 +566,7 @@ public class TransferUI extends Transfer {
         cardPanel = new JPanel(cardLayout);
 
         JPanel menuCard = createSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
-                new Font(Font.SANS_SERIF, Font.PLAIN, 30), CARD_INFO, "mainMenu");
+                new Font(Font.SANS_SERIF, Font.PLAIN, 35), CARD_INFO, "mainMenu");
 
         cardPanel.add(menuCard, CARD_MENU);
 

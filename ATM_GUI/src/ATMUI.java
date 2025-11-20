@@ -13,7 +13,7 @@ public class ATMUI extends ATM {
     public static final String KEYPAD_PANEL = "keypad";
     public static final String test = "test";
 
-    protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
+    protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     protected static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
     protected static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
     protected static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
@@ -66,6 +66,10 @@ public class ATMUI extends ATM {
     private JButton Button5;
     private JButton Button6;
     private JButton Button7;
+
+    protected JButton getButton1(){
+        return Button1;
+    }
 
     public boolean isAutoSize = false;
 
@@ -213,19 +217,19 @@ public class ATMUI extends ATM {
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-        Button1 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_right.png")),new Dimension(Integer.MAX_VALUE, 50));
+        Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button1.setName("Left1");
-        Button2 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_right.png")),new Dimension(Integer.MAX_VALUE, 50));
+        Button2 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button2.setName("Left2");
-        Button3 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_right.png")),new Dimension(Integer.MAX_VALUE, 50));
+        Button3 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button3.setName("Left3");
 
         // initialize right buttons, change if needed
-        Button5 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_left.png")),new Dimension(Integer.MAX_VALUE, 50));
+        Button5 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button5.setName("Right1");
-        Button6 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_left.png")),new Dimension(Integer.MAX_VALUE, 50));
+        Button6 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button6.setName("Right2");
-        Button7 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_left.png")),new Dimension(Integer.MAX_VALUE, 50));
+        Button7 = new RoundedButton("回到Menu",new Dimension(Integer.MAX_VALUE, 50));
         Button7.setName("Right3");
 
         // left buttons
@@ -238,6 +242,7 @@ public class ATMUI extends ATM {
         rightButtonPanel.add(Button6);
         rightButtonPanel.add(Button7);
     }
+
 
     private void insertToCenterPanel() {
         JPanel greetingPanel = createGreetingPanel();
