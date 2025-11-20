@@ -11,17 +11,6 @@ public class GreetingUI extends ATMUI{
         createGreetingPanel();
     }
 
-    static protected void setImageSafety(JPanel panel, GridBagConstraints gbc,ImageIcon imageIcon){
-        try {
-            JLabel imageLabel = new JLabel(imageIcon);
-            panel.add(imageLabel, gbc);
-        }catch (RuntimeException e) {
-            System.out.println("ATM image not found or failed to load: " + e.getMessage());
-        }catch (Exception e) {
-            System.out.println("Invalid image path");
-        }
-    }
-
     static protected GridBagConstraints createDefaultGridBagConstraints() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -48,22 +37,57 @@ public class GreetingUI extends ATMUI{
         panel.add(label, gbc);
 
         setImageSafety(panel,gbc,"https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/atm.png");
-//        setImageSafety(panel,gbc,new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
 
         return panel;
     }
 
-    static protected JPanel createGreetingUI() {
+    /**
+     * Creates a welcome interface panel for the ATM system.
+     * This panel includes a welcome message and an ATM machine image.
+     *
+     * @return JPanel Returns a configured welcome interface panel containing welcome text and ATM image
+     *
+     * Features:
+     * - Uses GridBagLayout for flexible component arrangement
+     * - Displays welcome message text
+     * - Loads ATM machine image from GitHub repository
+     * - Automatically handles image loading failures with fallback
+     *
+     * Layout Structure:
+     * - Welcome message label at the top
+     * - ATM image displayed below the message
+     * - Proper spacing and alignment using GridBagConstraints
+     *
+     * Image Source:
+     * - Loads from GitHub raw content URL
+     * - Includes error handling for network issues or invalid URLs
+     * - Provides fallback display if image fails to load
+     *
+     * Styling:
+     * - Uses predefined fonts and colors from ATMUI class
+     * - Centers all content horizontally
+     * - Applies consistent spacing with insets
+     */
+    static protected JPanel createWelcomeATMUI() {
+        // Create main panel with GridBagLayout for precise component positioning
         JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createDefaultGridBagConstraints();
-        gbc.insets = new Insets(10, 15, 10, 15);
 
+        // Configure layout constraints for consistent spacing and alignment
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+        gbc.insets = new Insets(10, 15, 10, 15); // Add padding around components
+
+        // Create and configure welcome message label
         JLabel label = createStyledLabel("Welcome to use ATM system", ATMUI.NORMAL_FONT,
                 StandardColor.GreyHighest.getColor(1));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setHorizontalAlignment(SwingConstants.CENTER); // Center align the text
+
+        // Add welcome label to panel at position (0,0)
         panel.add(label, gbc);
 
-        setImageSafety(panel, gbc, "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png");
+        // Load and display ATM image from GitHub repository
+        // URL points to raw image file in the project repository
+        setImageSafety(panel, gbc, "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_" +
+                "Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png");
 
         return panel;
     }
@@ -97,7 +121,7 @@ public class GreetingUI extends ATMUI{
 
         mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
-        JPanel atmPhoto = createGreetingUI();
+        JPanel atmPhoto = createWelcomeATMUI();
         JPanel reminderPanel = reminderUI();
 
         gbc.gridy = 1;
