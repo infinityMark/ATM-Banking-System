@@ -116,57 +116,92 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Keypad number buttons (0-9)
+        // Keypad number buttons (0-9) - Add transfer panel handling
         for (int i = 0; i <= 9; i++) {
             final int number = i;
             addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
                 if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                     atmUI.getLoginGUI().handleNumberInput(String.valueOf(number));
+                } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
+                    // Handle transfer panel number input
+                    if (atmUI.transferUI != null) {
+                        atmUI.transferUI.handleNumberInput(String.valueOf(number));
+                    }
                 } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                     controller.switchToLoginPanel();
                 }
             });
         }
-
+        
+        // Confirm button - Add transfer panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
-                // atmUI.getLoginGUI().checkInput();
                 if (atmUI.loginGUI.confirmBT() == true) {
                     atmUI.createPanelAfterLogin();
                     controller.loginSuccess(atmUI.loginGUI.getAccountNumber());
                     controller.switchToMainMenuPanel();
                 }
+            } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle transfer panel confirm
+                if (atmUI.transferUI != null) {
+                    atmUI.transferUI.handleConfirm();
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
-            } else {
-                // System.out.println("LoginGUI is null");
             }
         });
-
+        
+        // Delete button - Add transfer panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleDelete();
+            } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle transfer panel delete
+                if (atmUI.transferUI != null) {
+                    atmUI.transferUI.handleDelete();
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
-            } else {
-                // System.out.println("LoginGUI is null");
             }
         });
-
+        
+        // Clear button - Add transfer panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleClear();
+            } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle transfer panel clear
+                if (atmUI.transferUI != null) {
+                    atmUI.transferUI.handleClear();
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
-            } else {
-                // System.out.println("LoginGUI is null");
             }
         });
 
-        // Double zero button
+        // Double zero button - Add transfer panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
+                atmUI.getLoginGUI().handleNumberInput("00");
+            } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle transfer panel double zero
+                if (atmUI.transferUI != null) {
+                    atmUI.transferUI.handleNumberInput("00");
+                }
+            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToLoginPanel();
+            }
+        });
+        
+        // Decimal point button - Add transfer panel handling
+        addButtonListener(ATMUI.KEYPAD_PANEL, ".", e -> {
+            if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput(".");
+            } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
+                // Handle transfer panel decimal point
+                if (atmUI.transferUI != null) {
+                    atmUI.transferUI.handleNumberInput(".");
+                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
             }
