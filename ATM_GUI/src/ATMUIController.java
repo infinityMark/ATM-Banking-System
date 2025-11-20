@@ -80,6 +80,16 @@ public class ATMUIController {
         }
     }
 
+    public void refreshHistoryPanel() {
+        if (atmUI.historyGUI != null) {
+            atmUI.historyGUI.refreshHistory(accountNumber);
+        }
+    }
+
+    public void onShowHistoryPanel() {
+        refreshHistoryPanel();
+    }
+
     public JFrame getMainFrame() {
         return atmUI.getMainFrame();
     }

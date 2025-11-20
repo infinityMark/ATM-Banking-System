@@ -98,6 +98,7 @@ public class ATMListenerRegistrar {
         addButtonListener("rightButtonPanel", "Right2", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.goToPanel(ATMUI.HISTORY_PANEL);
+                controller.onShowHistoryPanel();
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
             } else {

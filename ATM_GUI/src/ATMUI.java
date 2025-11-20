@@ -354,6 +354,12 @@ public class ATMUI extends ATM {
         return historyGUI.getMainPanel();
     }
 
+    public void refreshHistoryPanel() {
+        if (historyGUI != null) {
+            historyGUI.refreshHistory(getCurrentAccountNumber());
+        }
+    }
+
     protected JPanel createWithdrawPanel() {
         withdrawGUI = new WithdrawalUI(this);
         withdrawGUI.createWithdrawalUI(loginGUI.getAccountNumber());

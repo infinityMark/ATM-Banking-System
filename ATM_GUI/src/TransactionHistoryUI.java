@@ -6,6 +6,7 @@ public class TransactionHistoryUI {
     private JPanel mainPanel;
     private JPanel cardPanel;
     private CardLayout cardLayout;
+    private int currentAccountNumber;
 
     private static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
     private static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
@@ -15,6 +16,7 @@ public class TransactionHistoryUI {
     private static final String CARD_HISTORY = "HISTORY";
 
     public void createTransactionHistoryUI(int accountNumber) {
+        this.currentAccountNumber = accountNumber;
         initializeMainPanel();
         createHistory(accountNumber);
 
@@ -89,8 +91,7 @@ public class TransactionHistoryUI {
         JScrollPane scrollPane = new JScrollPane(history);
         scrollPane.setBorder(BorderFactory.createLineBorder(StandardColor.GreyHighest.getColorMode(), 1));
 
-        String historyText = TransactionHistory.getHistoryAsString(accountNumber);
-        history.setText(historyText);
+        refreshHistory();
 
         gbc.gridy = 1;
         gbc.weighty = 0.8;// 80%
@@ -100,9 +101,18 @@ public class TransactionHistoryUI {
         cardPanel.add(historyPanel, CARD_HISTORY);
     }
 
+    public void refreshHistory() {
+        if (history != null) {
+            String historyText = TransactionHistory.getHistoryAsString(currentAccountNumber);
+            history.setText(historyText);
+            history.revalidate();
+            history.repaint();
+        }
+    }
+
     public void refreshHistory(int accountNumber) {
-        String historyText = TransactionHistory.getHistoryAsString(accountNumber);
-        history.setText(historyText);
+        this.currentAccountNumber = accountNumber;
+        refreshHistory();
     }
 
     public void goBackToMainPanel() {
