@@ -52,6 +52,9 @@ public class ATMUI extends ATM {
     private JButton Button2;
     private JButton Button3;
 
+    private JButton[] rightButton = new JButton[3];
+    private JButton[] leftButton = new JButton[3];
+
     static private int currentAccountNumber;
 
     static public void setCurrentAccountNumber(int currentAccountNumber1) {
@@ -258,6 +261,10 @@ public class ATMUI extends ATM {
         rightButtonPanel.add(Button5);
         rightButtonPanel.add(Button6);
         rightButtonPanel.add(Button7);
+
+        rightButton[0] = Button1;
+        rightButton[1] = Button2;
+        rightButton[2] = Button3;
     }
 
 
@@ -356,7 +363,7 @@ public class ATMUI extends ATM {
 
     protected JPanel createTransferPanel() {
         transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase, 
-        atmKeypad, atmCashDispenser);
+        atmKeypad, atmCashDispenser, leftButton,rightButton);
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();

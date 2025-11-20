@@ -42,14 +42,24 @@ public class TransferUI extends Transfer {
     private JLabel receiverLabel;
     private JLabel amountLabel;
 
+    private JButton[] leftButton = new JButton[3];
+    private JButton[] rightButton = new JButton[3];
+
     BankDatabase bankDatabase = getBankDatabase();
 
     public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
-                      Keypad atmKeypad, CashDispenser atmCashDispenser) {
+                      Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[]) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
 //        JPanel panel = this.transferLayout();
 //        showCard(CARD_MENU);
+        leftButton[0] = left[0];
+        leftButton[1] = left[1];
+        leftButton[2] = left[2];
+
+        rightButton[0] = right[0];
+        rightButton[1] = right[1];
+        rightButton[2] = right[2];
     }
 
     /**
@@ -225,6 +235,10 @@ public class TransferUI extends Transfer {
 
         selectionOneBtn.setName(BUTTON_FIRST);
         selectionTwoBtn.setName(BUTTON_SECOND);
+
+//        button[0].addActionListener(e -> showCard(nextPageForButtonOne));
+//        button[1].addActionListener(e -> showCard(nextPageForButtonOne));
+//        button[2].addActionListener(e -> showCard(nextPageForButtonOne));
 
         selectionOneBtn.addActionListener(e -> showCard(nextPageForButtonOne));
         selectionTwoBtn.addActionListener(e -> {
