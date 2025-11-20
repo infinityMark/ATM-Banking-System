@@ -73,21 +73,23 @@ public class ATMUIController {
     }
 
     public void showTransactionHistory() {
-        atmUI.switchPanel("transactionHistory");
         TransactionHistoryUI historyUI = atmUI.historyGUI;
         if (historyUI == null) {
             historyUI.refreshHistory(accountNumber);
         }
+        atmUI.switchPanel("transactionHistory");
     }
 
     public void refreshHistoryPanel() {
-        if (atmUI.historyGUI != null) {
-            atmUI.historyGUI.refreshHistory(accountNumber);
-        }
+        atmUI.historyGUI.refreshHistory(accountNumber);
     }
 
     public void onShowHistoryPanel() {
         refreshHistoryPanel();
+        //atmUI.historyGUI.getMainPanel().removeAll();
+        //atmUI.createHistoryPanel();
+        //System.out.println("666");
+        atmUI.switchPanel("transactionHistory");
     }
 
     public JFrame getMainFrame() {
