@@ -213,19 +213,19 @@ public class ATMUI extends ATM {
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-        Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button1 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_right.png")),new Dimension(Integer.MAX_VALUE, 50));
         Button1.setName("Left1");
-        Button2 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button2 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_right.png")),new Dimension(Integer.MAX_VALUE, 50));
         Button2.setName("Left2");
-        Button3 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button3 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_right.png")),new Dimension(Integer.MAX_VALUE, 50));
         Button3.setName("Left3");
 
         // initialize right buttons, change if needed
-        Button5 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button5 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_left.png")),new Dimension(Integer.MAX_VALUE, 50));
         Button5.setName("Right1");
-        Button6 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        Button6 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_left.png")),new Dimension(Integer.MAX_VALUE, 50));
         Button6.setName("Right2");
-        Button7 = new RoundedButton("回到Menu",new Dimension(Integer.MAX_VALUE, 50));
+        Button7 = new RoundedButton(new ImageIcon(ClassLoader.getSystemResource("resources/arrow_circle_left.png")),new Dimension(Integer.MAX_VALUE, 50));
         Button7.setName("Right3");
 
         // left buttons

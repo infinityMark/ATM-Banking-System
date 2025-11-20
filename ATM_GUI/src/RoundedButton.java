@@ -78,7 +78,7 @@ public class RoundedButton extends JButton{
         setroundedStatus(true);
     }
 
-    public RoundedButton(String content, Dimension dimension){
+    public RoundedButton(ImageIcon content, Dimension dimension){
         super(content);
         setOpaque(false);
         setContentAreaFilled(false);
