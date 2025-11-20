@@ -86,8 +86,10 @@ public class ATMUIController {
     }
 
     public void refrshPanel(String name) {
+        if (atmUI.balanceGUI == null || atmUI.withdrawGUI == null || atmUI.historyGUI == null) {
+            System.err.println("Panels not initialized. ");
+        }
         switch (name) {
-
             case "balance":
                 atmUI.balanceGUI.refreshBalance(accountNumber);
                 System.out.println("refresh balance");

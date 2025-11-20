@@ -13,6 +13,8 @@ public class WithdrawalUI extends JPanel {
     private static final String CARD_RESULT = "RESULT";
     private static final String CARD_CUSTOM = "CUSTOM";
 
+    private String currentCardName = CARD_MENU;
+
     // Layout components
     private CardLayout cardLayout;
     private JPanel cardPanel;
@@ -30,19 +32,24 @@ public class WithdrawalUI extends JPanel {
     private TextFields customAmountField;
     private JLabel balanceLabel;
 
+    private JButton[] leftButton = new JButton[3];
+    private JButton[] rightButton = new JButton[3];
+
+    private ATMUIController controller;
+
     // Keypad integration
     private boolean isCustomAmountPanelActive = false;
-    private ATMUI atmUI;
+    // private ATMUI atmUI;
 
     // Constants for preset amounts
     private final int[] PRESET_AMOUNTS = { 200, 400, 800, 1000 };
     private final int CANCELED = 6;
 
-    public WithdrawalUI(ATMUI atmUI) {
-        this.atmUI = atmUI;
-    }
-
-    public void createWithdrawalUI(int accountNumber) {
+    public WithdrawalUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
+            ATMUIController controller) {
+        this.leftButton = leftButton;
+        this.rightButton = rightButton;
+        this.controller = controller;
         this.currentAccountNumber = accountNumber;
         this.bankDatabase = BankDatabase.getInstance();
         this.cashDispenser = new CashDispenser();
@@ -189,22 +196,6 @@ public class WithdrawalUI extends JPanel {
                 new Font(Font.SANS_SERIF, Font.BOLD, 36));
         customAmountField.setHorizontalAlignment(JTextField.RIGHT);
         customAmountField.setEditable(false); // Make non-editable to force keypad use
-
-        /*
-         * // Add focus listener to track when this field is active
-         * customAmountField.addFocusListener(new FocusListener() {
-         * 
-         * @Override
-         * public void focusGained(FocusEvent e) {
-         * activateCustomAmountField();
-         * }
-         * 
-         * @Override
-         * public void focusLost(FocusEvent e) {
-         * // Don't deactivate immediately to allow keypad interaction
-         * }
-         * });
-         */
 
         inputPanel.add(amountLabel);
         inputPanel.add(customAmountField);
@@ -401,6 +392,7 @@ public class WithdrawalUI extends JPanel {
             resetToInitialState();
             showCard(CARD_MENU);
             deactivateCustomAmountPanel();
+            goBackToMainPanel();
 
             // Update balance inquiry
             // updateBalanceInquiry();
@@ -542,19 +534,42 @@ public class WithdrawalUI extends JPanel {
         return amount % 100 == 0 || amount % 500 == 0 || amount % 1000 == 0;
     }
 
-    private void executeWithdrawal() {
-        double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+    private boolean withdrawalInProgress = false;
 
-        if (selectedAmount <= availableBalance) {
-            bankDatabase.debit(currentAccountNumber, selectedAmount);
-            cashDispenser.precheckNumberOfAmountType(selectedAmount);
-            cashDispenser.dispenseCash();
-            new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double) selectedAmount);
-            showResultCard();
-        } else {
-            statusLabel.setText("Withdrawal failed - insufficient funds");
-            statusLabel.setForeground(StandardColor.Red.getColorMode());
-            showCard(CARD_CUSTOM);
+    private void executeWithdrawal() {
+
+        /*
+         * double availableBalance =
+         * bankDatabase.getAvailableBalance(currentAccountNumber);
+         * 
+         * if (selectedAmount <= availableBalance) {
+         * bankDatabase.debit(currentAccountNumber, selectedAmount);
+         * cashDispenser.precheckNumberOfAmountType(selectedAmount);
+         * cashDispenser.dispenseCash();
+         * new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double)
+         * selectedAmount);
+         * showResultCard();
+         * } else {
+         * statusLabel.setText("Withdrawal failed - insufficient funds");
+         * statusLabel.setForeground(StandardColor.Red.getColorMode());
+         * showCard(CARD_CUSTOM);
+         * }
+         */
+
+        if (withdrawalInProgress)
+            return; // 防止重复执行
+        withdrawalInProgress = true;
+
+        try {
+            double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+            if (selectedAmount <= availableBalance) {
+                bankDatabase.debit(currentAccountNumber, selectedAmount);
+                cashDispenser.dispenseCash();
+                new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double) selectedAmount);
+                showResultCard();
+            }
+        } finally {
+            withdrawalInProgress = false;
         }
     }
 
@@ -569,15 +584,38 @@ public class WithdrawalUI extends JPanel {
      */
 
     private void showCard(String cardName) {
-        cardLayout.show(cardPanel, cardName);
-        if (CARD_CUSTOM.equals(cardName)) {
-            activateCustomAmountPanel();
-        } else {
-            deactivateCustomAmountPanel();
+        /*
+         * cardLayout.show(cardPanel, cardName);
+         * if (CARD_CUSTOM.equals(cardName)) {
+         * activateCustomAmountPanel();
+         * } else {
+         * deactivateCustomAmountPanel();
+         * }
+         */
+        if (cardLayout != null && cardPanel != null) {
+            cardLayout.show(cardPanel, cardName);
+            this.currentCardName = cardName;
         }
     }
 
     private void showConfirmationCard() {
+        /*
+         * Component[] components = cardPanel.getComponents();
+         * for (Component comp : components) {
+         * if (comp instanceof JPanel && CARD_CONFIRMATION.equals(((JPanel)
+         * comp).getName())) {
+         * cardPanel.remove(comp);
+         * break;
+         * }
+         * }
+         * 
+         * JPanel confirmationCard = createConfirmationCard();
+         * confirmationCard.setName(CARD_CONFIRMATION);
+         * cardPanel.add(confirmationCard, CARD_CONFIRMATION);
+         * 
+         * cardLayout.show(cardPanel, CARD_CONFIRMATION);
+         * deactivateCustomAmountPanel();
+         */
         Component[] components = cardPanel.getComponents();
         for (Component comp : components) {
             if (comp instanceof JPanel && CARD_CONFIRMATION.equals(((JPanel) comp).getName())) {
@@ -590,7 +628,7 @@ public class WithdrawalUI extends JPanel {
         confirmationCard.setName(CARD_CONFIRMATION);
         cardPanel.add(confirmationCard, CARD_CONFIRMATION);
 
-        cardLayout.show(cardPanel, CARD_CONFIRMATION);
+        showCard(CARD_CONFIRMATION); // 使用统一方法
         deactivateCustomAmountPanel();
     }
 
@@ -608,22 +646,13 @@ public class WithdrawalUI extends JPanel {
         cardPanel.add(resultCard, CARD_RESULT);
 
         cardLayout.show(cardPanel, CARD_RESULT);
+
+        currentCardName = CARD_RESULT;
         deactivateCustomAmountPanel();
     }
 
     public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, "mainMenu");
-            }
-        }
+        controller.switchToMainMenuPanel();
     }
 
     // Helper methods
@@ -684,6 +713,64 @@ public class WithdrawalUI extends JPanel {
             this.currentAccountNumber = account;
             double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
             balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
+        }
+    }
+
+    public void selectAmount200() {
+        selectedAmount = 200;
+        showConfirmationCard();
+    }
+
+    public void selectAmount400() {
+        selectedAmount = 400;
+        showConfirmationCard();
+    }
+
+    public void cancelWithdrawal() {
+        goBackToMainPanel();
+    }
+
+    public void selectAmount800() {
+        selectedAmount = 800;
+        showConfirmationCard();
+    }
+
+    public void selectAmount1000() {
+        selectedAmount = 1000;
+        showConfirmationCard();
+    }
+
+    public void selectCustomAmount() {
+        showCard(CARD_CUSTOM);
+    }
+
+    public boolean isOnConfirmationScreen() {
+        return CARD_CONFIRMATION.equals(currentCardName);
+    }
+
+    public void confirmWithdrawalFromSideButton() {
+        if (isOnConfirmationScreen()) {
+            executeWithdrawal();
+        }
+    }
+
+    public void cancelWithdrawalFromSideButton() {
+        if (isOnConfirmationScreen()) {
+            showCard(CARD_MENU);
+            deactivateCustomAmountPanel();
+        }
+    }
+
+    public boolean isOnResultScreen() {
+        return CARD_RESULT.equals(currentCardName);
+    }
+
+    public void continueFromResultScreen() {
+        if (isOnResultScreen()) {
+            resetToInitialState();
+            System.out.println("6666");
+            goBackToMainPanel();
+            System.out.println("main");
         }
     }
 }

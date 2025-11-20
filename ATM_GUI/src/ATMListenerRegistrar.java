@@ -27,6 +27,7 @@ public class ATMListenerRegistrar {
     }
 
     private void initBaseActionConfigs() {
+        // 1. 只保留 Greeting 面板的点击事件（因为它不是按钮，而是整个面板）
         addMouseListener(
                 GreetingUI.GREETING_PANEL,
                 GreetingUI.GREETING_PANEL,
@@ -34,27 +35,26 @@ public class ATMListenerRegistrar {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         controller.switchToLoginPanel();
-                        System.out.println("Clicked");
                     }
 
                     @Override
                     public void mouseEntered(MouseEvent e) {
                         ((Component) e.getSource()).setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-                        System.out.println("Entred");
                     }
 
                     @Override
                     public void mouseExited(MouseEvent e) {
                         ((Component) e.getSource()).setCursor(java.awt.Cursor.getDefaultCursor());
-                        System.out.println("Exited");
                     }
                 });
-
+        // ... 其他鼠标事件
         addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.goToPanel(ATMUI.BALANCE_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
+            } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToMainMenuPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", view Balance");
                 controller.showInfo();
@@ -66,6 +66,8 @@ public class ATMListenerRegistrar {
                 controller.goToPanel(ATMUI.WITHDRAW_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
+            } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToMainMenuPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", withdraw");
                 controller.showInfo();
@@ -74,10 +76,11 @@ public class ATMListenerRegistrar {
 
         addButtonListener("leftButtonPanel", "Left3", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                // controller.goToPanel(ATMUI.LOGIN_PANEL);
                 controller.goToPanel(ATMUI.GREETING_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
+            } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToMainMenuPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", withdraw");
                 controller.showInfo();
@@ -89,6 +92,8 @@ public class ATMListenerRegistrar {
                 controller.goToPanel(ATMUI.TRANSFER_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
+            } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToMainMenuPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", transfer");
                 controller.showInfo();
@@ -101,6 +106,8 @@ public class ATMListenerRegistrar {
                 controller.onShowHistoryPanel();
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
+            } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToMainMenuPanel();
             } else {
                 System.out.println(controller.getCurrentPanelName() + ", transactionHistory");
                 controller.showInfo();
@@ -110,33 +117,24 @@ public class ATMListenerRegistrar {
         addButtonListener("rightButtonPanel", "Right3", e -> {
             if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
+            } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
+                controller.switchToMainMenuPanel();
             } else {
                 controller.goToPanel("mainMenu");
             }
         });
 
-        // Keypad number buttons (0-9) - Add withdrawal panel handling
-        for (int i = 0; i <= 9; i++) {
-            final int number = i;
-            addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
-                if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
-                    atmUI.getLoginGUI().handleNumberInput(String.valueOf(number));
-                } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
-                    // Handle transfer panel number input
-                    if (atmUI.transferUI != null) {
-                        atmUI.transferUI.handleNumberInput(String.valueOf(number));
-                    }
-                } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
-                    // Handle withdrawal panel number input
-                    if (atmUI.withdrawGUI != null) {
-                        atmUI.withdrawGUI.handleNumberInput(String.valueOf(number));
-                    }
-                } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
-                    controller.switchToLoginPanel();
-                }
-            });
-        }
+        // 2. 配置 Keypad 按钮（数字键、确认、删除等）
+        configureKeypadButtons();
 
+        // 3. 配置 WithdrawalUI 侧边按钮（删除其他面板的通用配置）
+        configureWithdrawalSideButtons();
+
+        // 4. 为其他面板（如 Balance、Transfer 等）按需添加专用配置
+
+    }
+
+    private void configureKeypadButtons() {
         // Confirm button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
@@ -222,19 +220,116 @@ public class ATMListenerRegistrar {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput(".");
             } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
-                // Handle transfer panel decimal point
-                if (atmUI.transferUI != null) {
+                if (atmUI.transferUI != null)
                     atmUI.transferUI.handleNumberInput(".");
-                }
             } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
-                // Handle withdrawal panel decimal point (will be ignored in withdrawal)
-                if (atmUI.withdrawGUI != null) {
+                if (atmUI.withdrawGUI != null)
                     atmUI.withdrawGUI.handleNumberInput(".");
-                }
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
             }
         });
+
+        // Keypad number buttons (0-9) - Add withdrawal panel handling
+        for (int i = 0; i <= 9; i++) {
+            final int number = i;
+            addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
+                if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
+                    atmUI.getLoginGUI().handleNumberInput(String.valueOf(number));
+                } else if (ATMUI.TRANSFER_PANEL.equals(controller.getCurrentPanelName())) {
+                    // Handle transfer panel number input
+                    if (atmUI.transferUI != null) {
+                        atmUI.transferUI.handleNumberInput(String.valueOf(number));
+                    }
+                } else if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                    // Handle withdrawal panel number input
+                    if (atmUI.withdrawGUI != null) {
+                        atmUI.withdrawGUI.handleNumberInput(String.valueOf(number));
+                    }
+                } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
+                    controller.switchToLoginPanel();
+                }
+            });
+        }
+    }
+
+    private void configureWithdrawalSideButtons() {
+        // 在通用逻辑中，先检查当前面板是否为 WITHDRAW_PANEL
+        // 如果是，则直接返回，不执行通用逻辑
+        ActionListener withdrawalAwareListener = e -> {
+            if (ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName())) {
+                // 如果在 WithdrawalUI 面板，不执行任何操作
+                // 让专用监听器处理
+                return;
+            }
+        };
+        // 否则执行原逻辑
+        // 为每个侧边按钮配置 WithdrawalUI 专用逻辑
+        String[] leftButtons = { "Left1", "Left2", "Left3" };
+        String[] rightButtons = { "Right1", "Right2", "Right3" };
+
+        for (String btnName : leftButtons) {
+            addButtonListener("leftButtonPanel", btnName,
+                    e -> handleWithdrawalPanel(btnName));
+        }
+
+        for (String btnName : rightButtons) {
+            addButtonListener("rightButtonPanel", btnName,
+                    e -> handleWithdrawalPanel(btnName));
+        }
+    }
+
+    private void handleWithdrawalPanel(String buttonName) {
+        // 检查是否在 WithdrawalUI 面板
+        if (!ATMUI.WITHDRAW_PANEL.equals(controller.getCurrentPanelName()) || atmUI.withdrawGUI == null) {
+            return; // 不在正确的面板，直接返回
+        }
+
+        // 检查是否在结果页面
+        if (atmUI.withdrawGUI.isOnResultScreen()) {
+            atmUI.withdrawGUI.continueFromResultScreen();
+            controller.refrshPanel("balance");
+            controller.refreshHistoryPanel();
+            controller.switchToMainMenuPanel();
+            System.out.println("onResultScreen");
+            return;
+        }
+
+        // 检查是否在确认页面（关键修复：防止重复扣款）
+        if (atmUI.withdrawGUI.isOnConfirmationScreen()) {
+            // 确保只执行一次提款操作
+            if (buttonName.startsWith("Left")) {
+                atmUI.withdrawGUI.confirmWithdrawalFromSideButton();
+            } else {
+                atmUI.withdrawGUI.cancelWithdrawalFromSideButton();
+            }
+            return;
+        }
+
+        // 在菜单页面，根据按钮选择功能
+        // 确保在切换卡片前停用自定义金额面板
+        atmUI.withdrawGUI.deactivateCustomAmountPanel();
+
+        switch (buttonName) {
+            case "Left1":
+                atmUI.withdrawGUI.selectAmount200();
+                break;
+            case "Left2":
+                atmUI.withdrawGUI.selectAmount800();
+                break;
+            case "Left3":
+                atmUI.withdrawGUI.selectCustomAmount();
+                break;
+            case "Right1":
+                atmUI.withdrawGUI.selectAmount400();
+                break;
+            case "Right2":
+                atmUI.withdrawGUI.selectAmount1000();
+                break;
+            case "Right3":
+                atmUI.withdrawGUI.cancelWithdrawal();
+                break;
+        }
     }
 
     /**

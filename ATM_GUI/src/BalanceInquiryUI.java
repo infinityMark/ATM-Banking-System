@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.*;
+import java.awt.event.*;
 
 public class BalanceInquiryUI extends JPanel {
     // Card names
@@ -23,9 +25,27 @@ public class BalanceInquiryUI extends JPanel {
     private JLabel interestLabel;
     private JLabel chequeLimitLabel;
 
-    public BalanceInquiryUI(int accountNumber) {
+    private JButton[] leftButton = new JButton[3];
+    private JButton[] rightButton = new JButton[3];
+
+    private ATMUIController controller;
+
+    /*
+     * public BalanceInquiryUI(int accountNumber) {
+     * this.currentAccountNumber = accountNumber;
+     * this.bankDatabase = BankDatabase.getInstance();
+     * initializeUI();
+     * updateBalanceInfo();
+     * }
+     */
+
+    public BalanceInquiryUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
+            ATMUIController controller) {
         this.currentAccountNumber = accountNumber;
         this.bankDatabase = BankDatabase.getInstance();
+        this.leftButton = leftButton;
+        this.rightButton = rightButton;
+        this.controller = controller;
         initializeUI();
         updateBalanceInfo();
     }
@@ -104,13 +124,20 @@ public class BalanceInquiryUI extends JPanel {
         RoundedButton backButton = createActionButton("Back to Main Menu",
                 StandardColor.Blue.getColorMode());
         backButton.addActionListener(e -> goBackToMainPanel());
-
+        // sideButtonRegistrar();
         gbc.gridy = 3;
         gbc.weighty = 0.1;
         gbc.insets = new Insets(20, 15, 10, 15);
         panel.add(backButton, gbc);
 
         return panel;
+    }
+
+    private void sideButtonRegistrar() {
+        for (int i = 0; i < 3; i++) {
+            leftButton[i].addActionListener(e -> goBackToMainPanel());
+            rightButton[i].addActionListener(e -> goBackToMainPanel());
+        }
     }
 
     private JPanel createInfoPanel() {
@@ -278,18 +305,7 @@ public class BalanceInquiryUI extends JPanel {
     }
 
     public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, "mainMenu");
-            }
-        }
+        controller.switchToMainMenuPanel();
     }
 
     // Helper methods
