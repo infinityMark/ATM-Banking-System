@@ -34,9 +34,16 @@ public class GreetingUI {
         JLabel label = createStyledLabel("Take out your card after operation", ATMUI.NORMAL_FONT,
                 StandardColor.GreyHighest.getColor(1));
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
         panel.add(label, gbc);
-        panel.add(imageLabel, gbc);
+
+        try {
+            JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
+            panel.add(imageLabel, gbc);
+        }catch (RuntimeException e) {
+            System.out.println("ATM image not found or failed to load: " + e.getMessage());
+        }catch (Exception e) {
+            System.out.println("Invalid image path");
+        }
 
         return panel;
     }
@@ -49,9 +56,15 @@ public class GreetingUI {
         JLabel label = createStyledLabel("Welcome to use ATM system", ATMUI.NORMAL_FONT,
                 StandardColor.GreyHighest.getColor(1));
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png")));
         panel.add(label, gbc);
-        panel.add(imageLabel, gbc);
+        try {
+            JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png")));
+            panel.add(imageLabel, gbc);
+        }catch (RuntimeException e) {
+            System.out.println("ATM image not found or failed to load: " + e.getMessage());
+        }catch (Exception e) {
+            System.out.println("Invalid image path");
+        }
 
         return panel;
     }
