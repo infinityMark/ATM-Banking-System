@@ -72,7 +72,7 @@ public class ATMUI extends ATM {
     private JButton Button6;
     private JButton Button7;
 
-    protected JButton getButton1(){
+    protected JButton getButton1() {
         return Button1;
     }
 
@@ -81,6 +81,8 @@ public class ATMUI extends ATM {
     JPanel mainPanel = new JPanel(new GridBagLayout());
     JPanel contentPanel = new JPanel();
     JLabel taskTitle = new JLabel();
+
+    public BankDatabase uiDatabase;
 
     protected static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 40);
     public static final Font NORMAL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
@@ -222,34 +224,46 @@ public class ATMUI extends ATM {
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-//        Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
-//        Button1.setName("Left1");
-//        Button2 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
-//        Button2.setName("Left2");
-//        Button3 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
-//        Button3.setName("Left3");
-//
-//        // initialize right buttons, change if needed
-//        Button5 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
-//        Button5.setName("Right1");
-//        Button6 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
-//        Button6.setName("Right2");
-//        Button7 = new RoundedButton("回到Menu",new Dimension(Integer.MAX_VALUE, 50));
-//        Button7.setName("Right3");
+        // Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        // Button1.setName("Left1");
+        // Button2 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        // Button2.setName("Left2");
+        // Button3 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        // Button3.setName("Left3");
+        //
+        // // initialize right buttons, change if needed
+        // Button5 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        // Button5.setName("Right1");
+        // Button6 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
+        // Button6.setName("Right2");
+        // Button7 = new RoundedButton("回到Menu",new Dimension(Integer.MAX_VALUE, 50));
+        // Button7.setName("Right3");
 
-        Button1 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),new Dimension(Integer.MAX_VALUE, 50));
+        Button1 = new RoundedButton(setImageSafety(
+                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
+                new Dimension(Integer.MAX_VALUE, 50));
         Button1.setName("Left1");
-        Button2 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),new Dimension(Integer.MAX_VALUE, 50));
+        Button2 = new RoundedButton(setImageSafety(
+                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
+                new Dimension(Integer.MAX_VALUE, 50));
         Button2.setName("Left2");
-        Button3 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),new Dimension(Integer.MAX_VALUE, 50));
+        Button3 = new RoundedButton(setImageSafety(
+                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
+                new Dimension(Integer.MAX_VALUE, 50));
         Button3.setName("Left3");
 
         // initialize right buttons, change if needed
-        Button5 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),new Dimension(Integer.MAX_VALUE, 50));
+        Button5 = new RoundedButton(setImageSafety(
+                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),
+                new Dimension(Integer.MAX_VALUE, 50));
         Button5.setName("Right1");
-        Button6 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),new Dimension(Integer.MAX_VALUE, 50));
+        Button6 = new RoundedButton(setImageSafety(
+                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),
+                new Dimension(Integer.MAX_VALUE, 50));
         Button6.setName("Right2");
-        Button7 = new RoundedButton(setImageSafety("https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),new Dimension(Integer.MAX_VALUE, 50));
+        Button7 = new RoundedButton(setImageSafety(
+                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),
+                new Dimension(Integer.MAX_VALUE, 50));
         Button7.setName("Right3");
 
         // left buttons
@@ -266,7 +280,6 @@ public class ATMUI extends ATM {
         rightButton[1] = Button2;
         rightButton[2] = Button3;
     }
-
 
     private void insertToCenterPanel() {
         JPanel greetingPanel = createGreetingPanel();
@@ -368,13 +381,13 @@ public class ATMUI extends ATM {
     }
 
     protected JPanel createTransferPanel() {
-        transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase, 
-        atmKeypad, atmCashDispenser, leftButton,rightButton);
+        transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase,
+                atmKeypad, atmCashDispenser, leftButton, rightButton);
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();
         return panel;
-    } 
+    }
 
     protected JPanel createKeypadPanel() {
         keypadPanel = new JPanel(new GridLayout(4, 4, 5, 5)); // 4行3列网格
@@ -393,7 +406,7 @@ public class ATMUI extends ATM {
 
     // ------------- Waiting for improvement -------------
     Screen screen = new Screen();
-    BankDatabase bankDatabase = new BankDatabase();
+    BankDatabase bankDatabase = BankDatabase.getInstance();
     Keypad atmKeypad;
     CashDispenser atmCashDispenser;
 

@@ -110,8 +110,6 @@ public class ATMListenerRegistrar {
         addButtonListener("rightButtonPanel", "Right3", e -> {
             if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToLoginPanel();
-            } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.switchToLoginPanel();
             } else {
                 controller.goToPanel("mainMenu");
             }
@@ -138,7 +136,7 @@ public class ATMListenerRegistrar {
                 }
             });
         }
-        
+
         // Confirm button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
@@ -161,7 +159,7 @@ public class ATMListenerRegistrar {
                 controller.switchToLoginPanel();
             }
         });
-        
+
         // Delete button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
@@ -180,7 +178,7 @@ public class ATMListenerRegistrar {
                 controller.switchToLoginPanel();
             }
         });
-        
+
         // Clear button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
@@ -218,7 +216,7 @@ public class ATMListenerRegistrar {
                 controller.switchToLoginPanel();
             }
         });
-        
+
         // Decimal point button - Add withdrawal panel handling
         addButtonListener(ATMUI.KEYPAD_PANEL, ".", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {

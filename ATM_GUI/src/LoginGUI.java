@@ -254,7 +254,7 @@ public class LoginGUI {
             }
         } else {
             try {
-                bankDatabase = new BankDatabase();
+                bankDatabase = BankDatabase.getInstance();
                 currentPin = Integer.parseInt(new String(passwordF.getPassword()));
                 boolean authenticated = bankDatabase.authenticateUser(currentAccountNumber, currentPin);
                 System.out.println(currentAccountNumber + ", " + currentPin);
@@ -313,8 +313,8 @@ public class LoginGUI {
                         pwPass = false;
                         accountGot = false;
                         clearInput();
-                        //System.out.println(currentAccountNumber);
-                        //System.out.println(passedPIN);
+                        // System.out.println(currentAccountNumber);
+                        // System.out.println(passedPIN);
                         ATMUI.setCurrentAccountNumber(passedAccount);
                         return true;
                     }
