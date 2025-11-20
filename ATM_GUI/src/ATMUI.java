@@ -167,7 +167,7 @@ public class ATMUI extends ATM {
         centerCardLayout = new CardLayout();
         centerPanel = new JPanel(centerCardLayout);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        centerPanel.setMinimumSize(new Dimension(400, 400));
+        centerPanel.setPreferredSize(new Dimension(900, 400));
 
         // right button panel (small proportion)
         rightButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
