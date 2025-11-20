@@ -25,7 +25,7 @@ public class WithdrawalUI extends JPanel {
 
     // UI Components
     private JLabel statusLabel;
-    private JTextField customAmountField;
+    private TextFields customAmountField;
 
     // Constants for preset amounts
     private final int[] PRESET_AMOUNTS = { 200, 400, 800, 1000 };
