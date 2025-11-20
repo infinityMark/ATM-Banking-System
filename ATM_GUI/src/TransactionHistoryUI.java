@@ -100,6 +100,11 @@ public class TransactionHistoryUI {
         cardPanel.add(historyPanel, CARD_HISTORY);
     }
 
+    public void refreshHistory(int accountNumber) {
+        String historyText = TransactionHistory.getHistoryAsString(accountNumber);
+        history.setText(historyText);
+    }
+
     public void goBackToMainPanel() {
         Container parent = mainPanel.getParent();
         if (parent != null) {
