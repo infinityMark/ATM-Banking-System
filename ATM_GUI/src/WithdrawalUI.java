@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+//import java.awt.event.FocusEvent;
+//import java.awt.event.FocusListener;
 
 public class WithdrawalUI extends JPanel {
     // Card names
@@ -28,12 +30,16 @@ public class WithdrawalUI extends JPanel {
     private TextFields customAmountField;
     private JLabel balanceLabel; 
 
+    // Keypad integration
+    private boolean isCustomAmountPanelActive = false;
+    private ATMUI atmUI;
+    
     // Constants for preset amounts
     private final int[] PRESET_AMOUNTS = { 200, 400, 800, 1000 };
     private final int CANCELED = 6;
-
-    public WithdrawalUI() {
-        // 我仅仅是把你的constructor里的东西拆分，并没有改变你的logic
+    
+    public WithdrawalUI(ATMUI atmUI) {
+        this.atmUI = atmUI;
     }
 
     public void createWithdrawalUI(int accountNumber) {
@@ -182,7 +188,23 @@ public class WithdrawalUI extends JPanel {
                 StandardColor.GreyHighest.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 36));
         customAmountField.setHorizontalAlignment(JTextField.RIGHT);
+        customAmountField.setEditable(false); // Make non-editable to force keypad use
+        
+        /*
+        // Add focus listener to track when this field is active
+        customAmountField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                activateCustomAmountField();
+            }
 
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Don't deactivate immediately to allow keypad interaction
+            }
+        });
+        */
+        
         inputPanel.add(amountLabel);
         inputPanel.add(customAmountField);
 
@@ -190,6 +212,18 @@ public class WithdrawalUI extends JPanel {
         gbc.weighty = 0.1;
         panel.add(inputPanel, gbc);
 
+        // Keypad instruction
+        JLabel keypadInstruction = createStyledLabel(
+                "Use the keypad below to enter amount",
+                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
+                StandardColor.Blue.getColorMode());
+        keypadInstruction.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        gbc.gridy = 3;
+        gbc.weighty = 0.05;
+        panel.add(keypadInstruction, gbc);
+
+        
         // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
@@ -200,7 +234,10 @@ public class WithdrawalUI extends JPanel {
 
         RoundedButton backButton = createActionButton("Back",
                 StandardColor.Yellow.getColorMode());
-        backButton.addActionListener(e -> showCard(CARD_MENU));
+        backButton.addActionListener(e -> {
+            showCard(CARD_MENU);
+            deactivateCustomAmountPanel();
+        });
 
         buttonPanel.add(confirmButton);
         buttonPanel.add(backButton);
@@ -277,7 +314,10 @@ public class WithdrawalUI extends JPanel {
 
         RoundedButton cancelButton = createActionButton("Cancel",
                 StandardColor.Red.getColorMode());
-        cancelButton.addActionListener(e -> showCard(CARD_MENU));
+        cancelButton.addActionListener(e -> {
+            showCard(CARD_MENU);
+            deactivateCustomAmountPanel();
+        });
 
         buttonPanel.add(confirmButton);
         buttonPanel.add(cancelButton);
@@ -360,6 +400,10 @@ public class WithdrawalUI extends JPanel {
         continueButton.addActionListener(e -> {
             resetToInitialState();
             showCard(CARD_MENU);
+            deactivateCustomAmountPanel();
+            
+            // Update balance inquiry
+            //updateBalanceInquiry();
         });
 
         gbc.gridy = 5;
@@ -369,6 +413,54 @@ public class WithdrawalUI extends JPanel {
         return panel;
     }
 
+    // Keypad integration methods
+    public void activateCustomAmountPanel() {
+        isCustomAmountPanelActive = true;
+    }
+    
+    public void deactivateCustomAmountPanel() {
+        isCustomAmountPanelActive = false;
+    }
+    
+    public void handleNumberInput(String input) {
+        if (isCustomAmountPanelActive && customAmountField != null) {
+            String currentText = customAmountField.getText();
+            
+            if (input.equals(".")) {
+                customAmountField.setText(currentText + ".");
+                return;
+            } else if (input.equals("00")) {
+                // "00" button - append two zeros
+                customAmountField.setText(currentText + "00");
+            } else if (input.matches("[0-9]")) {
+                // Regular numbers
+                customAmountField.setText(currentText + input);
+            }
+        }
+    }
+
+    public void handleDelete() {
+        if (isCustomAmountPanelActive && customAmountField != null) {
+            String currentText = customAmountField.getText();
+            if (!currentText.isEmpty()) {
+                customAmountField.setText(currentText.substring(0, currentText.length() - 1));
+            }
+        }
+    }
+
+    public void handleClear() {
+        if (isCustomAmountPanelActive && customAmountField != null) {
+            customAmountField.setText("");
+        }
+    }
+
+    public void handleConfirm() {
+        if (isCustomAmountPanelActive && customAmountField != null) {
+            processCustomAmount();
+        }
+    }
+    
+    
     private RoundedButton createAmountButton(String text, int amount) {
         RoundedButton button = new RoundedButton(text, text,
                 StandardColor.GreyHighest.getColorMode(),
@@ -466,9 +558,24 @@ public class WithdrawalUI extends JPanel {
             showCard(CARD_CUSTOM);
         }
     }
-
+    
+    /*
+    private void updateBalanceInquiry() {
+        // Update balance inquiry panel
+        if (atmUI != null && atmUI.balanceGUI != null) {
+            atmUI.balanceGUI.setAccountNumber(currentAccountNumber);
+            atmUI.balanceGUI.refreshBalance();
+        }
+    }
+    */
+    
     private void showCard(String cardName) {
         cardLayout.show(cardPanel, cardName);
+        if (CARD_CUSTOM.equals(cardName)) {
+            activateCustomAmountPanel();
+        } else {
+            deactivateCustomAmountPanel();
+        }
     }
 
     private void showConfirmationCard() {
@@ -485,6 +592,7 @@ public class WithdrawalUI extends JPanel {
         cardPanel.add(confirmationCard, CARD_CONFIRMATION);
         
         cardLayout.show(cardPanel, CARD_CONFIRMATION);
+        deactivateCustomAmountPanel();
     }
 
     private void showResultCard() {
@@ -501,6 +609,7 @@ public class WithdrawalUI extends JPanel {
         cardPanel.add(resultCard, CARD_RESULT);
         
         cardLayout.show(cardPanel, CARD_RESULT);
+        deactivateCustomAmountPanel();
     }
 
     public void goBackToMainPanel() {
