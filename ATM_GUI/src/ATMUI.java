@@ -29,6 +29,7 @@ public class ATMUI extends ATM {
     public TransactionHistoryUI historyGUI;
     public WithdrawalUI withdrawGUI;
     public BalanceInquiryUI balanceGUI;
+    public TransferUI transferUI;
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -354,13 +355,13 @@ public class ATMUI extends ATM {
     }
 
     protected JPanel createTransferPanel() {
-        TransferUI transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase, atmKeypad,
-                atmCashDispenser);
+        transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase, 
+        atmKeypad, atmCashDispenser);
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();
         return panel;
-    }
+    } 
 
     protected JPanel createKeypadPanel() {
         keypadPanel = new JPanel(new GridLayout(4, 4, 5, 5)); // 4行3列网格

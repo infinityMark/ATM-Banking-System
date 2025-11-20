@@ -20,6 +20,7 @@ public class TransferUI extends Transfer {
     private static final String AMOUNT_LABEL = "AMOUNT";
     private static final String RECEIVER_LABEL = "RECEIVER";
     private static final String AMOUNT_TEXTFIELD = "RECEIVER_TEXTFIELDA";
+    private static final String RECEIVER_TEXTFIELD = "RECEIVER_TEXTFIELD";
     private static final String amountText = "Amount";
     private static final String receiverText = "Receiver account";
 
@@ -33,6 +34,13 @@ public class TransferUI extends Transfer {
     // Validation states
     private Boolean isReceiverValid = false;
     private Boolean isAmountValid = false;
+    
+    //keypad integration
+    private boolean isReceiverFieldActive = true;
+    private TextFields receiverAccountTextField;
+    private TextFields amountTextField;
+    private JLabel receiverLabel;
+    private JLabel amountLabel;
 
     BankDatabase bankDatabase = getBankDatabase();
 
@@ -74,6 +82,133 @@ public class TransferUI extends Transfer {
                 CardLayout layout = (CardLayout) current.getLayout();
                 layout.show(current, CARD_MENU);
                 layout.show(current, "mainMenu");
+            }
+        }
+    }
+    
+    // Keypad integration methods
+    public void handleNumberInput(String input) {
+        if (isReceiverFieldActive && receiverAccountTextField != null) {
+            // For receiver account, only allow numbers (no decimals)
+            handleReceiverAccountInput(input);
+        } else if (!isReceiverFieldActive && amountTextField != null) {
+            // For amount field, allow numbers, decimal point, and "00"
+            handleAmountInput(input);
+        }
+    }
+    
+    private void handleReceiverAccountInput(String input) {
+        String currentText = receiverAccountTextField.getText();
+        
+        if (input.equals(".")) {
+            // "." button - append .
+            receiverAccountTextField.setText(currentText + ".");
+            return;
+        } else if (input.equals("00")) {
+            // "00" button - append two zeros
+            receiverAccountTextField.setText(currentText + "00");
+        } else if (input.matches("[0-9]")) {
+            // Regular numbers
+            receiverAccountTextField.setText(currentText + input);
+        }
+    }
+    
+    private void handleAmountInput(String input) {
+        String currentText = amountTextField.getText();
+        
+        if (input.equals(".")) {
+            // Only allow one decimal point
+            if (!currentText.contains(".")) {
+                // If text is empty, add "0." first
+                if (currentText.isEmpty()) {
+                    amountTextField.setText("0.");
+                } else {
+                    amountTextField.setText(currentText + input);
+                }
+            }
+        } else if (input.equals("00")) {
+            if (currentText.isEmpty() || currentText.equals("0")) {
+                amountTextField.setText("0");
+            } else if (currentText.contains(".")) {
+                // If there's a decimal point, add zeros after it
+                String[] parts = currentText.split("\\.");
+                if (parts.length > 1 && parts[1].length() < 2) {
+                    // Add zeros but respect the 2 decimal limit
+                    int zerosToAdd = Math.min(2 - parts[1].length(), 2);
+                    amountTextField.setText(currentText + "0".repeat(zerosToAdd));
+                }
+            } else {
+                // If no decimal point, append "00"
+                amountTextField.setText(currentText + "00");
+            }
+        } else if (input.matches("[0-9]")) {
+            // Handle regular numbers
+            if (currentText.equals("0")) {
+                amountTextField.setText(input); // Replace "0" with the new number
+            } else if (currentText.contains(".")) {
+                // Check if we already have 2 decimal places
+                String[] parts = currentText.split("\\.");
+                if (parts.length > 1 && parts[1].length() < 2) {
+                    amountTextField.setText(currentText + input);
+                } else if (parts.length > 1 && parts[1].length() >= 2) {
+                    // Already have 2 decimal places, don't add more
+                    return;
+                } else {
+                    amountTextField.setText(currentText + input);
+                }
+            } else {
+                amountTextField.setText(currentText + input);
+            }
+        }
+    }
+
+    public void handleDelete() {
+        if (isReceiverFieldActive && receiverAccountTextField != null) {
+            String currentText = receiverAccountTextField.getText();
+            if (!currentText.isEmpty()) {
+                receiverAccountTextField.setText(currentText.substring(0, currentText.length() - 1));
+            }
+        } else if (!isReceiverFieldActive && amountTextField != null) {
+            String currentText = amountTextField.getText();
+            if (!currentText.isEmpty()) {
+                amountTextField.setText(currentText.substring(0, currentText.length() - 1));
+            }
+        }
+    }
+
+    public void handleClear() {
+        if (isReceiverFieldActive && receiverAccountTextField != null) {
+            receiverAccountTextField.setText("");
+        } else if (!isReceiverFieldActive && amountTextField != null) {
+            amountTextField.setText("");
+        }
+    }
+
+    public void handleConfirm() {
+        if (isReceiverFieldActive) {
+            // Validate receiver account and switch to amount field
+            if (validateReceiverAccount(receiverAccountTextField.getContent().trim(), receiverAccountTextField, receiverLabel)) {
+                isReceiverFieldActive = false;
+                highlightActiveField();
+            }
+        } else {
+            // Validate amount and proceed to confirmation
+            if (validateAmount(amountTextField.getContent().trim(), amountTextField, amountLabel)) {
+                if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+                    showCard(CARD_CONFIRMATION);
+                }
+            }
+        }
+    }
+    
+    private void highlightActiveField() {
+        if (receiverAccountTextField != null && amountTextField != null) {
+            if (isReceiverFieldActive) {
+                receiverAccountTextField.setBorderColor(StandardColor.Blue.getColorMode());
+                amountTextField.setBorderColor(StandardColor.GreyHighest.getColor(1));
+            } else {
+                receiverAccountTextField.setBorderColor(StandardColor.GreyHighest.getColor(1));
+                amountTextField.setBorderColor(StandardColor.Blue.getColorMode());
             }
         }
     }
@@ -133,13 +268,17 @@ public class TransferUI extends Transfer {
         RoundedButton confirmationButton = createActionButton("Confirm", StandardColor.Green.getColorMode());
         RoundedButton backButton = createActionButton("Back", StandardColor.Yellow.getColorMode());
 
-        TextFields receiverAccountTextField = createInputField(40);
-        TextFields amountTextField = createInputField(40);
+        receiverAccountTextField = createInputField(40);
+        receiverAccountTextField.setName(RECEIVER_TEXTFIELD);
+        receiverAccountTextField.setEditable(false); // Make non-editable to force keypad use
+        
+        amountTextField = createInputField(40);
         amountTextField.setName(AMOUNT_TEXTFIELD);
+        amountTextField.setEditable(false); // Make non-editable to force keypad use
 
-        JLabel receiverLabel = createStyledLabel(receiverText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        receiverLabel = createStyledLabel(receiverText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
         receiverLabel.setName(RECEIVER_LABEL);
-        JLabel amountLabel = createStyledLabel(amountText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        amountLabel = createStyledLabel(amountText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
         amountLabel.setName(AMOUNT_LABEL);
 
         setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
@@ -156,16 +295,33 @@ public class TransferUI extends Transfer {
         addComponentToPanel(panel, gbc, amountLabel, 3, 0.01);
         addComponentToPanel(panel, gbc, amountDisplay, 4, 0.01);
 
+        // Instructions for keypad usage
+        JLabel instructionLabel = createStyledLabel("Use keypad to input numbers. Press Confirm to proceed.", 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 16), 
+                StandardColor.Blue.getColorMode());
+        instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        gbc.gridy = 5;
+        gbc.weighty = 0.01;
+        panel.add(instructionLabel, gbc);
+
         // Add buttons
         JPanel buttonPanel = createButtonPanel(backButton, confirmationButton);
         setupConfirmationButtonListener(confirmationButton, receiverAccountTextField, amountTextField,
                 receiverLabel, amountLabel);
-        backButton.addActionListener(e -> showCard(CARD_MENU));
+        backButton.addActionListener(e -> {
+            showCard(CARD_MENU);
+            resetToInitialState();
+        });
 
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.weighty = 0.01;
         gbc.insets = new Insets(30, 10, 10, 10);
         panel.add(buttonPanel, gbc);
+
+        // Initialize field highlighting
+        isReceiverFieldActive = true;
+        highlightActiveField();
 
         return panel;
     }
@@ -179,7 +335,7 @@ public class TransferUI extends Transfer {
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
         // Create confirmation message
-        String confirmationMessage = String.format("The system is going to transfer %.2f to account number: %d",
+        String confirmationMessage = String.format("The system is going to transfer HK$ %.2f to account number: %d",
                 getAmount(), getReceiverAccounts());
         JLabel confirmationLabel = createStyledLabel(confirmationMessage, FONT_SMALL,
                 StandardColor.GreyHighest.getOppositeColorMode());
@@ -201,17 +357,41 @@ public class TransferUI extends Transfer {
 
         // Add transfer action to confirmation button
         RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
-        confirmButton.addActionListener(e -> executeTransfer());
+        confirmButton.addActionListener(e -> {
+            executeTransfer();
+            // Update balance inquiry for both accounts
+            updateBalanceInquiry();
+        });
         RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);
-        cancelButton.addActionListener(e -> showCard(CARD_MENU));
+        cancelButton.addActionListener(e -> {
+            showCard(CARD_MENU);
+            resetToInitialState();
+        });
 
         return panel;
     }
 
-    public void resetToInitialState() {
-        cardLayout.show(cardPanel, "MENU");
-        resetValidationFlags();
+    private void updateBalanceInquiry() {
+        // Update balance inquiry for current account
+        BankDatabase bankDatabase = getBankDatabase();
+        double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
+        double receiverBalance = bankDatabase.getAvailableBalance(getReceiverAccounts());
+        
+        System.out.printf("Transfer completed: Account %d balance: HK$ %.2f, Account %d balance: HK$ %.2f%n",
+                userAccountNumberInUI, currentBalance, getReceiverAccounts(), receiverBalance);
     }
+
+    public void resetToInitialState() {
+        cardLayout.show(cardPanel, CARD_MENU);
+        resetValidationFlags();
+        isReceiverFieldActive = true;
+        if (receiverAccountTextField != null) receiverAccountTextField.setText("");
+        if (amountTextField != null) amountTextField.setText("");
+        if (receiverLabel != null) receiverLabel.setText(receiverText);
+        if (amountLabel != null) amountLabel.setText(amountText);
+    }
+    
+    
     /**
      * Creates the post-transfer completion screen
      */
@@ -235,7 +415,6 @@ public class TransferUI extends Transfer {
         gbc.gridy = 2;
         gbc.weighty = 0.8;
         panel.add(continueMenu, gbc);
-        resetToInitialState();
 
         return panel;
     }
@@ -350,10 +529,11 @@ public class TransferUI extends Transfer {
 
             @Override
             public void focusLost(FocusEvent e) {
-
+                // Do nothing
             }
         });
     }
+    
     /**
      * Sets up the confirmation button validation and action logic
      */
@@ -377,7 +557,6 @@ public class TransferUI extends Transfer {
 
             if (isReceiverValid && isAmountValid) {
                 showCard(CARD_CONFIRMATION);
-                clearInputFields(receiverAccountTextField, amountTextField);
             }
         });
     }
@@ -431,8 +610,13 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
-            if (amountValue>bankDatabase.getTotalBalance(userAccountNumberInUI)){
+            if (amountValue > bankDatabase.getTotalBalance(userAccountNumberInUI)) {
                 showValidationError(textField, label, "Insufficient amount in your account");
+                return false;
+            }
+
+            if (amountValue <= 0) {
+                showValidationError(textField, label, "Amount must be greater than 0");
                 return false;
             }
 
@@ -484,6 +668,7 @@ public class TransferUI extends Transfer {
      */
     private void executeTransfer() {
         bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
+        System.out.println("Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
         System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(getAccountNumber()));
     }
 
@@ -491,14 +676,13 @@ public class TransferUI extends Transfer {
      * Switches between different card views with dynamic creation
      */
     private void showCard(String cardName) {
-        System.out.println("切换到卡片: " + cardName); // 调试信息
+        System.out.println("Switching to card: " + cardName);
         recreateCardIfNeeded(cardName);
 
-        // 确保切换到正确的卡片
         if (cardLayout != null && cardPanel != null) {
             cardLayout.show(cardPanel, cardName);
         } else {
-            System.err.println("CardLayout 或 cardPanel 为 null");
+            System.err.println("CardLayout or cardPanel is null");
         }
     }
 
