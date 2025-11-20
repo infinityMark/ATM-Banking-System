@@ -162,7 +162,7 @@ public class LoginGUI {
 
     private void mainPanel() {
         mainP.setLayout(new BorderLayout());
-        mainP.setBackground(new Color(0, 0, 139));
+        mainP.setBackground(StandardColor.DarkBlue.getColorMode());
     }
 
     protected JPanel createMainMenuPanels() {
@@ -171,36 +171,36 @@ public class LoginGUI {
 
     private void Toppanel() {
         JLabel timeL = new JLabel("DATE: " + getTime(), SwingConstants.CENTER);
-        font(timeL, 1, Color.WHITE, 20);
-        timeL.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        font(timeL, 1, StandardColor.White.getColorMode(), 20);
+        timeL.setBorder(BorderFactory.createLineBorder(StandardColor.Gray.getColorMode(), 1));
         timeL.setOpaque(true);
         backGroudColor(timeL);
         mainP.add(timeL, BorderLayout.NORTH);
     }
 
     private void Bottompanel() {
-        font(reminderL, 3, Color.YELLOW, 16);
-        reminderL.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        font(reminderL, 3, StandardColor.Yellow.getColorMode(), 16);
+        reminderL.setBorder(BorderFactory.createLineBorder(StandardColor.Gray.getColorMode(), 1));
         reminderL.setOpaque(true);
         backGroudColor(reminderL);
         mainP.add(reminderL, BorderLayout.SOUTH);
     }
 
     private void Centerpannel() {
-        centerPanel.setBackground(new Color(0, 0, 139));
+        centerPanel.setBackground(StandardColor.DarkBlue.getColorMode());
 
         GridBagConstraints gap = new GridBagConstraints();
         gap.insets = new Insets(20, 20, 20, 20);// the gap bettwen the field
         gap.anchor = GridBagConstraints.WEST;// 向左對齊
 
         JLabel accountL = new JLabel("ACCOUNT NUMBER: ");
-        font(accountL, 1, Color.WHITE, 18);
+        font(accountL, 1, StandardColor.White.getColorMode(), 18);
 
         accounTF.setPreferredSize(new Dimension(400, 50));
         accounTF.setFont(new Font("DEFAULT", Font.PLAIN, 18));
 
         JLabel passwordL = new JLabel("PASSWORD: ");
-        font(passwordL, 1, Color.WHITE, 18);
+        font(passwordL, 1, StandardColor.White.getColorMode(), 18);
 
         passwordF.setPreferredSize(new Dimension(400, 50));
         passwordF.setFont(new Font("DEFAULT", Font.PLAIN, 18));
@@ -234,7 +234,7 @@ public class LoginGUI {
     private Boolean ifisEmpty(String input) {
         if (input.isEmpty()) {
             reminderL.setText("Input cannot be empty!!!,press Confirm to continous");
-            reminderL.setForeground(Color.RED);
+            reminderL.setForeground(StandardColor.Red.getColorMode());
             isinvalidinput();
             return true;
         }
@@ -248,7 +248,7 @@ public class LoginGUI {
                 accountPass = true;
             } catch (NumberFormatException e) {
                 reminderL.setText("Invalid account number format!!!,press Confirm to continue");
-                reminderL.setForeground(Color.RED);
+                reminderL.setForeground(StandardColor.Red.getColorMode());
                 System.out.println("Invalid account number format");
                 isinvalidinput();
             }
@@ -263,13 +263,13 @@ public class LoginGUI {
                     pwPass = true;
                 } else {
                     reminderL.setText("Invalid account number or PIN!!! Please try again,press Confirm to continue");
-                    reminderL.setForeground(Color.RED);
+                    reminderL.setForeground(StandardColor.Red.getColorMode());
                     isinvalidinput();
                     System.out.println("Invalid account number or PIN");
                 }
             } catch (NumberFormatException e) {
                 reminderL.setText("Invalid PIN format!!! Please try again,press Confirm to continue");
-                reminderL.setForeground(Color.RED);
+                reminderL.setForeground(StandardColor.Red.getColorMode());
                 isinvalidinput();
                 System.out.println("Invalid PIN format");
             }
@@ -285,7 +285,7 @@ public class LoginGUI {
     public boolean confirmBT() {
         if (invalidinput) {
             reminderL.setText("Please Enter your Account number and PIN number ");
-            reminderL.setForeground(Color.YELLOW);
+            reminderL.setForeground(StandardColor.Yellow.getColorMode());
             invalidinput = false;
             clearInput();
             System.out.println("reset input");
@@ -358,7 +358,7 @@ public class LoginGUI {
     }
 
     private void backGroudColor(JLabel BGC) {
-        BGC.setBackground(new Color(0, 0, 139));
+        BGC.setBackground(StandardColor.DarkBlue.getColorMode());
     }
 
     public void resetlogin() {
