@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -25,11 +23,6 @@ public class TransferUI extends Transfer {
     private static final String amountText = "Amount";
     private static final String receiverText = "Receiver account";
 
-//    private TextFields receiverAccountTextField;
-//    private TextFields amountTextField;
-//    private JLabel receiverLabel;
-//    private JLabel amountLabel;
-
     // Layout components
     private static CardLayout cardLayout;
     private static JPanel cardPanel;
@@ -47,6 +40,8 @@ public class TransferUI extends Transfer {
                       Keypad atmKeypad, CashDispenser atmCashDispenser) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
+//        JPanel panel = this.transferLayout();
+//        showCard(CARD_MENU);
     }
 
     /**
@@ -67,10 +62,6 @@ public class TransferUI extends Transfer {
     /**
      * Navigates back to the main menu panel
      */
-
-    /**
-     * Creates a standardized selection menu with two options
-     */
     public void goBackToMainPanel() {
         Container parent = mainPanel.getParent();
         if (parent != null) {
@@ -88,7 +79,7 @@ public class TransferUI extends Transfer {
     }
 
     public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
-                                      int fontSize, Font font, String nextPage) {
+                                      int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 15, 10, 15);
@@ -100,9 +91,12 @@ public class TransferUI extends Transfer {
         selectionOneBtn.setName(BUTTON_FIRST);
         selectionTwoBtn.setName(BUTTON_SECOND);
 
-        selectionOneBtn.addActionListener(e -> showCard(nextPage));
+        selectionOneBtn.addActionListener(e -> showCard(nextPageForButtonOne));
         selectionTwoBtn.addActionListener(e -> {
-            showCard(nextPage);
+            showCard(nextPageForButtonTwo);
+            if (nextPageForButtonTwo.equals("mainMenu"))
+                showCard(CARD_MENU);
+            
             goBackToMainPanel();
         });
 
@@ -197,7 +191,7 @@ public class TransferUI extends Transfer {
 
         // Create selection menu
         JPanel selectionMenu = createSelectionMenu(title, firstSelection, secondSelection,
-                fontSize, font, CARD_AFTER_TRANSACTION);
+                fontSize, font, CARD_AFTER_TRANSACTION, CARD_MENU);
         selectionMenu.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         gbc.weighty = 0.4;
@@ -208,6 +202,8 @@ public class TransferUI extends Transfer {
         // Add transfer action to confirmation button
         RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
         confirmButton.addActionListener(e -> executeTransfer());
+        RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);
+        cancelButton.addActionListener(e -> showCard(CARD_MENU));
 
         return panel;
     }
@@ -235,7 +231,7 @@ public class TransferUI extends Transfer {
 
         JPanel continueMenu = createSelectionMenu("Do you want transfer to another?",
                 "Yes, go back transfer", "No, go back ATM menu",
-                30, font, CARD_INFO);
+                30, font, CARD_INFO, "mainMenu");
         gbc.gridy = 2;
         gbc.weighty = 0.8;
         panel.add(continueMenu, gbc);
@@ -297,18 +293,6 @@ public class TransferUI extends Transfer {
         label.setForeground(color);
         return label;
     }
-
-    /**
-     * Creates an input text field with consistent styling
-     */
-//    @Override
-//    private TextFields createInputField(int fontSize) {
-//        return new TextFields(200, 30,
-//                StandardColor.GreyHighest.getColor(0),
-//                StandardColor.Blue.getColor(0),
-//                StandardColor.GreyHighest.getColor(1),
-//                new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
-//    }
 
     /**
      * Creates the amount display panel with currency symbol
@@ -507,8 +491,15 @@ public class TransferUI extends Transfer {
      * Switches between different card views with dynamic creation
      */
     private void showCard(String cardName) {
+        System.out.println("切换到卡片: " + cardName); // 调试信息
         recreateCardIfNeeded(cardName);
-        cardLayout.show(cardPanel, cardName);
+
+        // 确保切换到正确的卡片
+        if (cardLayout != null && cardPanel != null) {
+            cardLayout.show(cardPanel, cardName);
+        } else {
+            System.err.println("CardLayout 或 cardPanel 为 null");
+        }
     }
 
     /**
@@ -575,7 +566,7 @@ public class TransferUI extends Transfer {
         cardPanel = new JPanel(cardLayout);
 
         JPanel menuCard = createSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
-                new Font(Font.SANS_SERIF, Font.PLAIN, 30), CARD_INFO);
+                new Font(Font.SANS_SERIF, Font.PLAIN, 30), CARD_INFO, "mainMenu");
 
         cardPanel.add(menuCard, CARD_MENU);
 

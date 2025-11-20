@@ -17,8 +17,7 @@ public class Passwords extends JPasswordField{
         setfocusBorderColor(focus);
         sethoverBorderColor(hover);
         setborderColor(bordercolor);
-
-//        setPreferredSize(new Dimension(widths, heights));
+        
         setOpaque(false);
         setFont(font);
         setForeground(Color.BLACK);

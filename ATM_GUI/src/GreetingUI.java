@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class GreetingUI {
     public static final String GREETING_PANEL = "greeting";
@@ -143,18 +141,4 @@ public class GreetingUI {
     public JPanel getMainPanel() {
         return mainPanel;
     }
-
-    // public static void main(String[] args) {
-    // JFrame jFrame = new JFrame();
-    // mainPanel = GreetingUI();
-    // jFrame.add(mainPanel);
-    //
-    // jFrame.setTitle("ATM 系统");
-    // jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // jFrame.setSize(1600, 1600);
-    // jFrame.setLocationRelativeTo(null);
-    // jFrame.setResizable(false);
-    //
-    // jFrame.setVisible(true);
-    // }
 }
