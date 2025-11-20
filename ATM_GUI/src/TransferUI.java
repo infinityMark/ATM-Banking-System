@@ -81,6 +81,7 @@ public class TransferUI extends Transfer {
 
             if (current != null) {
                 CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, CARD_MENU);
                 layout.show(current, "mainMenu");
             }
         }
@@ -300,13 +301,14 @@ public class TransferUI extends Transfer {
     /**
      * Creates an input text field with consistent styling
      */
-    private TextFields createInputField(int fontSize) {
-        return new TextFields(200, 30,
-                StandardColor.GreyHighest.getColor(0),
-                StandardColor.Blue.getColor(0),
-                StandardColor.GreyHighest.getColor(1),
-                new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
-    }
+//    @Override
+//    private TextFields createInputField(int fontSize) {
+//        return new TextFields(200, 30,
+//                StandardColor.GreyHighest.getColor(0),
+//                StandardColor.Blue.getColor(0),
+//                StandardColor.GreyHighest.getColor(1),
+//                new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
+//    }
 
     /**
      * Creates the amount display panel with currency symbol
@@ -575,7 +577,6 @@ public class TransferUI extends Transfer {
         JPanel menuCard = createSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
                 new Font(Font.SANS_SERIF, Font.PLAIN, 30), CARD_INFO);
 
-        cardPanel.add(menuCard, CARD_MENU);
         cardPanel.add(menuCard, CARD_MENU);
 
         addComponentToPanel(mainPanel, gbc, taskTitle, 0, 0.1);

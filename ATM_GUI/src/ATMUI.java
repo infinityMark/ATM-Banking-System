@@ -203,6 +203,14 @@ public class ATMUI extends ATM {
         lowerPanel.setPreferredSize(new Dimension(750, 200));
     }
 
+    protected TextFields createInputField(int fontSize) {
+        return new TextFields(200, 30,
+                StandardColor.GreyHighest.getColor(0),
+                StandardColor.Blue.getColor(0),
+                StandardColor.GreyHighest.getColor(1),
+                new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
+    }
+
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
         Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));

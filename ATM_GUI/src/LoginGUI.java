@@ -48,8 +48,16 @@ public class LoginGUI {
         mainPanel();
 
         centerPanel = new JPanel(new GridBagLayout());
-        passwordF = new JPasswordField();
-        accounTF = new JTextField();
+        passwordF = new Passwords(200, 30,
+                StandardColor.GreyHighest.getColor(0),
+                StandardColor.Green.getColor(0),
+                StandardColor.Green.getColor(1),
+                new Font(Font.SANS_SERIF, Font.BOLD, 30));
+        accounTF = new TextFields(200, 30,
+                StandardColor.GreyHighest.getColor(0),
+                StandardColor.Green.getColor(0),
+                StandardColor.Green.getColor(1),
+                new Font(Font.SANS_SERIF, Font.BOLD, 30));
         reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
 
         Toppanel();

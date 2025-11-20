@@ -181,8 +181,11 @@ public class WithdrawalUI extends JPanel {
                 new Font(Font.SANS_SERIF, Font.BOLD, 20),
                 StandardColor.GreyHighest.getOppositeColorMode());
 
-        customAmountField = new JTextField(10);
-        customAmountField.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+        customAmountField = new TextFields(200, 30,
+                StandardColor.GreyLower.getColor(0),
+                StandardColor.Blue.getColor(0),
+                StandardColor.GreyHighest.getColor(1),
+                new Font(Font.SANS_SERIF, Font.BOLD, 30));;
         customAmountField.setHorizontalAlignment(JTextField.RIGHT);
 
         inputPanel.add(amountLabel);
