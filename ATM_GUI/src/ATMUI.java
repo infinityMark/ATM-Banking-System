@@ -205,19 +205,19 @@ public class ATMUI extends ATM {
 
     protected void addButtonsToSidePanels() {
         // initialize left buttons, change if needed
-        Button1 = createFixedSizeButton(" ");
+        Button1 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button1.setName("Left1");
-        Button2 = createFixedSizeButton(" ");
+        Button2 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button2.setName("Left2");
-        Button3 = createFixedSizeButton(" ");
+        Button3 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button3.setName("Left3");
 
         // initialize right buttons, change if needed
-        Button5 = createFixedSizeButton(" ");
+        Button5 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button5.setName("Right1");
-        Button6 = createFixedSizeButton(" ");
+        Button6 = new RoundedButton(" ",new Dimension(Integer.MAX_VALUE, 50));
         Button6.setName("Right2");
-        Button7 = createFixedSizeButton("回到Menu");
+        Button7 = new RoundedButton("回到Menu",new Dimension(Integer.MAX_VALUE, 50));
         Button7.setName("Right3");
 
         // left buttons
@@ -229,14 +229,6 @@ public class ATMUI extends ATM {
         rightButtonPanel.add(Button5);
         rightButtonPanel.add(Button6);
         rightButtonPanel.add(Button7);
-    }
-
-    private JButton createFixedSizeButton(String text) {
-        JButton button = new JButton(text);
-        button.setMinimumSize(new Dimension(80, 50));
-        button.setPreferredSize(new Dimension(80, 50));
-        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        return button;
     }
 
     private void insertToCenterPanel() {

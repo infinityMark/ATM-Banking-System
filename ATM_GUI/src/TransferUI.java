@@ -445,6 +445,11 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
+            if (amountValue>bankDatabase.getTotalBalance(userAccountNumberInUI)){
+                showValidationError(textField, label, "Insufficient amount in your account");
+                return false;
+            }
+
             setAmount(amountValue);
             clearValidationError(label);
             return true;
@@ -513,7 +518,7 @@ public class TransferUI extends Transfer {
         switch (cardName) {
             case CARD_INFO:
                 JPanel infoCard = createReceiveTransferInformation(
-                        "Currently asset in your account HKD$" + bankDatabase.getAvailableBalance(((ATMUI) this).getCurrentAccountNumber()));
+                        "Currently asset in your account HKD$" + bankDatabase.getAvailableBalance(userAccountNumberInUI));
                 infoCard.setName(CARD_INFO);
                 cardPanel.add(infoCard, CARD_INFO);
                 break;
@@ -570,6 +575,7 @@ public class TransferUI extends Transfer {
         JPanel menuCard = createSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
                 new Font(Font.SANS_SERIF, Font.PLAIN, 30), CARD_INFO);
 
+        cardPanel.add(menuCard, CARD_MENU);
         cardPanel.add(menuCard, CARD_MENU);
 
         addComponentToPanel(mainPanel, gbc, taskTitle, 0, 0.1);

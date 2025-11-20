@@ -78,6 +78,36 @@ public class RoundedButton extends JButton{
         setroundedStatus(true);
     }
 
+    public RoundedButton(String content, Dimension dimension){
+        super(content);
+        setOpaque(false);
+        setContentAreaFilled(false);
+        setFocusPainted(false);
+        setBorderPainted(false);
+
+        setBackground(StandardColor.GreyHighest.getColorMode());
+        setForeground(StandardColor.GreyHighest.getOppositeColorMode());
+
+        setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        setMinimumSize(new Dimension(80, 50));
+        setPreferredSize(new Dimension(80, 50));
+        setMaximumSize(dimension);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setBackground(StandardColor.GreyLower.getColorMode());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setBackground(StandardColor.GreyHighest.getColorMode());
+            }
+        });
+
+        setroundedStatus(true);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
