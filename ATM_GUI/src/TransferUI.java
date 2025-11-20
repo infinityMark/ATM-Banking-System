@@ -96,7 +96,7 @@ public class TransferUI extends Transfer {
             showCard(nextPageForButtonTwo);
             if (nextPageForButtonTwo.equals("mainMenu"))
                 showCard(CARD_MENU);
-            
+
             goBackToMainPanel();
         });
 

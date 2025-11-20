@@ -1,12 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class GreetingUI {
+public class GreetingUI extends ATMUI{
     public static final String GREETING_PANEL = "greeting";
     private static JPanel mainPanel;
 
     public GreetingUI() {
         createGreetingPanel();
+    }
+
+    static protected void setImageSafety(JPanel panel, GridBagConstraints gbc,ImageIcon imageIcon){
+        try {
+            JLabel imageLabel = new JLabel(imageIcon);
+            panel.add(imageLabel, gbc);
+        }catch (RuntimeException e) {
+            System.out.println("ATM image not found or failed to load: " + e.getMessage());
+        }catch (Exception e) {
+            System.out.println("Invalid image path");
+        }
     }
 
     static protected GridBagConstraints createDefaultGridBagConstraints() {
@@ -34,14 +45,7 @@ public class GreetingUI {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(label, gbc);
 
-        try {
-            JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
-            panel.add(imageLabel, gbc);
-        }catch (RuntimeException e) {
-            System.out.println("ATM image not found or failed to load: " + e.getMessage());
-        }catch (Exception e) {
-            System.out.println("Invalid image path");
-        }
+        setImageSafety(panel,gbc,new ImageIcon(ClassLoader.getSystemResource("resources/atm.png")));
 
         return panel;
     }
@@ -55,14 +59,8 @@ public class GreetingUI {
                 StandardColor.GreyHighest.getColor(1));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(label, gbc);
-        try {
-            JLabel imageLabel = new JLabel(new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png")));
-            panel.add(imageLabel, gbc);
-        }catch (RuntimeException e) {
-            System.out.println("ATM image not found or failed to load: " + e.getMessage());
-        }catch (Exception e) {
-            System.out.println("Invalid image path");
-        }
+
+        setImageSafety(panel,gbc,new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png")));
 
         return panel;
     }
@@ -82,7 +80,8 @@ public class GreetingUI {
         }
     }
 
-    static public JPanel createGreetingPanel() {
+    @Override
+    public JPanel createGreetingPanel() {
         mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setName(GREETING_PANEL);
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
