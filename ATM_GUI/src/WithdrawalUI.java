@@ -727,4 +727,8 @@ public class WithdrawalUI extends JPanel {
         }
     }
 
+    public String getCurrentCardName() {
+        return currentCardName;
+    }
+
 }

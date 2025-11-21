@@ -597,7 +597,7 @@ public class ATMUI extends ATM {
         taskTitle.repaint();
     }
 
-    public void goBackToMainPanel() {
+    /*public void goBackToMainPanel() {
         Container parent = mainPanel.getParent();
         if (parent != null) {
             Container current = parent;
@@ -610,7 +610,7 @@ public class ATMUI extends ATM {
                 layout.show(current, "mainMenu");
             }
         }
-    }
+    }*/
 
     protected RoundedButton createStyledButton(String content, String changedContent, Color defaultBackgroundColor,
             Color changedBackgroundColor, Color defaultFontColor,
