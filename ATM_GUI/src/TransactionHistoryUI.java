@@ -11,7 +11,6 @@ public class TransactionHistoryUI {
     private static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
     private static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
     private static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
-    private static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 
     private static final String CARD_HISTORY = "HISTORY";
 
@@ -21,7 +20,6 @@ public class TransactionHistoryUI {
         createHistory(accountNumber);
 
         cardLayout.show(cardPanel, CARD_HISTORY);
-
     }
 
     public TransactionHistoryUI() {
@@ -88,6 +86,7 @@ public class TransactionHistoryUI {
         history.setLineWrap(true);
         history.setWrapStyleWord(true);
 
+        // scroll
         JScrollPane scrollPane = new JScrollPane(history);
         scrollPane.setBorder(BorderFactory.createLineBorder(StandardColor.GreyHighest.getColorMode(), 1));
 
@@ -115,38 +114,12 @@ public class TransactionHistoryUI {
         refreshHistory();
     }
 
-    public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, "mainMenu");
-            }
-        }
-    }
-
     private GridBagConstraints createDefaultGridBagConstraints() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         return gbc;
-    }
-
-    private RoundedButton createActionButton(String text, Color backgroundColor) {
-        return new RoundedButton(text, text,
-                backgroundColor,
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getOppositeColorMode(),
-                FONT_BUTTON,
-                FONT_BUTTON,
-                true, 200, 10);
     }
 
     private JLabel createStyledLabel(String text, Font font, Color color) {
