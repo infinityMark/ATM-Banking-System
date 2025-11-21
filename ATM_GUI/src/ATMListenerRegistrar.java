@@ -370,12 +370,13 @@ public class ATMListenerRegistrar {
                     break;
 
                 case TransferUI.CARD_INFO:
-                    // INFO 页面侧边按钮无功能（由界面内部确认/返回按钮处理）
+//                     INFO 页面侧边按钮无功能（由界面内部确认/返回按钮处理）
                     break;
 
                 case TransferUI.CARD_CONFIRMATION:
                     if (isLeftButton) {
                         // 左侧按钮：确认转账，执行并跳转到完成页面
+                        transferUI.executeTransfer();
                         transferUI.showCard(TransferUI.CARD_AFTER_TRANSACTION);
                     } else {
                         // 右侧按钮：取消，返回菜单

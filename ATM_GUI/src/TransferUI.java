@@ -381,6 +381,8 @@ public class TransferUI extends Transfer {
         gbc.weighty = 0.3;
         panel.add(buttonPanel, gbc);
 
+        setCurrentCardName(CARD_MENU);
+
         return panel;
     }
 
@@ -453,6 +455,8 @@ public class TransferUI extends Transfer {
 
         // removeAllButtonListenersCompletely();
 
+        setCurrentCardName(CARD_INFO);
+
         return panel;
     }
 
@@ -501,6 +505,8 @@ public class TransferUI extends Transfer {
             showCard(CARD_MENU);
             resetToInitialState();
         });
+
+        setCurrentCardName(CARD_CONFIRMATION);
 
         return panel;
     }
@@ -559,6 +565,8 @@ public class TransferUI extends Transfer {
         gbc.gridy = 2;
         gbc.weighty = 0.8;
         panel.add(continueMenu, gbc);
+
+        setCurrentCardName(CARD_AFTER_TRANSACTION);
 
         return panel;
     }
@@ -821,7 +829,7 @@ public class TransferUI extends Transfer {
     /**
      * Executes the actual transfer operation
      */
-    private void executeTransfer() {
+    protected void executeTransfer() {
         bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
         System.out.println(
                 "Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
@@ -923,12 +931,13 @@ public class TransferUI extends Transfer {
         return mainPanel;
     }
 
-    // 1. 跟踪当前卡片的字段
     private String currentCardName = CARD_MENU;
 
-    // 2. 获取当前卡片名称（供 ATMListenerRegistrar 查询）
+    public void setCurrentCardName(String name){
+        currentCardName = name;
+    }
+
     public String getCurrentCardName() {
         return currentCardName;
     }
-
 }
