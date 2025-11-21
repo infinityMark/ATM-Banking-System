@@ -86,32 +86,6 @@ public class TransferUI extends Transfer {
         return null;
     }
 
-    /**
-     * 彻底移除所有按钮的监听器
-     */
-    private void removeAllButtonListenersCompletely() {
-        for (int i = 0; i < leftButton.length; i++) {
-            if (leftButton[i] != null) {
-                ActionListener[] listeners = leftButton[i].getActionListeners();
-                for (ActionListener listener : listeners) {
-                    leftButton[i].removeActionListener(listener);
-                }
-                System.out.println("左侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-            }
-        }
-
-        // 清理右侧按钮
-        for (int i = 0; i < rightButton.length; i++) {
-            if (rightButton[i] != null) {
-                ActionListener[] listeners = rightButton[i].getActionListeners();
-                for (ActionListener listener : listeners) {
-                    rightButton[i].removeActionListener(listener);
-                }
-                System.out.println("右侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-            }
-        }
-        System.out.println("=== 清理完成 ===");
-    }
 
     /**
      * 设置第一页的按钮功能
@@ -144,7 +118,7 @@ public class TransferUI extends Transfer {
      * 设置确认页面的按钮功能
      */
     private void setupConfirmationPageButtons() {
-        removeAllButtonListenersCompletely();
+        super.removeAllButtonListenersCompletely(leftButton,rightButton);
 
         // 设置左侧按钮 - 执行转账
         for (int i = 0; i < leftButton.length; i++) {
@@ -173,7 +147,7 @@ public class TransferUI extends Transfer {
      * 设置接收者信息页面的按钮功能（无功能）
      */
     private void setupReceiverPageButtons() {
-        removeAllButtonListenersCompletely();
+        super.removeAllButtonListenersCompletely(leftButton,rightButton);
         System.out.println("接收者信息页面 - 侧边按钮无功能");
     }
 
@@ -445,7 +419,7 @@ public class TransferUI extends Transfer {
         isReceiverFieldActive = true;
         highlightActiveField();
 
-        removeAllButtonListenersCompletely();
+        super.removeAllButtonListenersCompletely(leftButton,rightButton);
 
         return panel;
     }
@@ -530,8 +504,7 @@ public class TransferUI extends Transfer {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
-        // 清理并设置按钮
-        removeAllButtonListenersCompletely();
+        removeAllButtonListenersCompletely(leftButton,rightButton);
         setupFirstPageButtons();
 
         JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
