@@ -21,10 +21,6 @@ public class LoginGUI {
 
     // Track which field is currently focused
     private boolean accountFieldFocused = true;
-    
-    //focus
-    private FocusManager focusManager;
-
 
     public void goToPanel(String name) {
         Container parent = mainP.getParent();
@@ -59,17 +55,15 @@ public class LoginGUI {
                 StandardColor.Green.getColor(0),
                 StandardColor.Green.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
+        passwordF.setEditable(false);
         accounTF = new TextFields(200, 30,
                 StandardColor.GreyHighest.getColor(0),
                 StandardColor.Green.getColor(0),
                 StandardColor.Green.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
+        accounTF.setEditable(false);
         reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
 
-        //keyboard are not allow to use.
-        strictlyDisableKeyboardInput(accounTF);
-        strictlyDisableKeyboardInput(passwordF);
-        
         Toppanel();
         Bottompanel();
         Centerpannel();
@@ -83,21 +77,17 @@ public class LoginGUI {
 
         // Set initial focus to account field
         accountFieldFocused = true;
-        //add focus
-        focusManager = new FocusManager();
 
         // Add focus listeners to track which field is focused
         accounTF.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 accountFieldFocused = true;
-                focusManager.setActiveField(accounTF);
             }
         });
 
         passwordF.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 accountFieldFocused = false;
-                focusManager.setActiveField(passwordF);
             }
         });
 
@@ -110,76 +100,11 @@ public class LoginGUI {
         cancelButton.setFocusable(false);
 
         if (showLoginGUI) {
-            SwingUtilities.invokeLater(() -> {
-                accounTF.requestFocusInWindow();
-                focusManager.setActiveField(accounTF);
-            });
+            SwingUtilities.invokeLater(() -> accounTF.requestFocusInWindow());
             mainP.setVisible(true);
         }
     }
 
-    // Methods to disable keyboard input
-    private void strictlyDisableKeyboardInput(JComponent component) {
-        // Settings cannot be edited
-        if (component instanceof JTextField) {
-            ((JTextField) component).setEditable(false);
-        } else if (component instanceof JPasswordField) {
-            ((JPasswordField) component).setEditable(false);
-        }
-
-        // Disable all keyboard events
-        component.setFocusTraversalKeysEnabled(false);
-        
-        // Add a keyboard listener to block all keyboard input.
-        component.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyPressed(java.awt.event.KeyEvent e) {
-                e.consume(); // Consume events and prevent processing.
-            }
-            
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent e) {
-                e.consume(); // Consume events and prevent processing.
-            }
-            
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent e) {
-                e.consume(); // Consume events and prevent processing.
-            }
-        });
-
-        // Set the transmission processor to null to further prevent input.
-        component.setFocusTraversalKeys(
-        KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, java.util.Collections.emptySet());
-        component.setFocusTraversalKeys(
-        KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, java.util.Collections.emptySet());
-        component.setFocusTraversalKeys(
-        KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, java.util.Collections.emptySet());
-        component.setFocusTraversalKeys(
-        KeyboardFocusManager.DOWN_CYCLE_TRAVERSAL_KEYS, java.util.Collections.emptySet());
-    }
-
-    //Focus Manager Inner Class
-    private class FocusManager {
-        private JComponent activeField;
-        
-        public void setActiveField(JComponent field) {
-            this.activeField = field;
-            
-            //Ensure the focus is set correctly.
-            if (field != null) {
-                field.requestFocusInWindow();
-                
-                //Disable keyboard input again
-                strictlyDisableKeyboardInput(field);
-            }
-        }
-        
-        public JComponent getActiveField() {
-            return activeField;
-        }
-    }
-    
     // NEW METHODS FOR KEYPAD INTEGRATION
 
     /**
