@@ -1,28 +1,15 @@
-
-//import java.awt.CardLayout;
-//import java.awt.Container;
 import javax.swing.*;
 
 /**
  * controller class for ATMUI
  */
 public class ATMUIController {
-    // private Container mainContainer;
-    // private CardLayout cardLayout;
     private ATMUI atmUI;
-    // private ATM atm;
     private ATMListenerRegistrar listenerRegistrar;
     private int accountNumber;
 
-    /*
-     * public ATMUIController(ATMUI atmUI, ATM atm) {
-     * this.atmUI = atmUI;
-     * this.atm = atm;
-     * this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);
-     * }
-     */
-
-    public ATMUIController(){}
+    public ATMUIController() {
+    }
 
     public ATMUIController(ATMUI atmUI) {
         this.atmUI = atmUI;
@@ -32,18 +19,13 @@ public class ATMUIController {
     public void run() {
         atmUI.initializeUI();
         setup(); // register all listeners
-        getMainFrame().setVisible(true); // show UI
-        // atm.run();
+        atmUI.getMainFrame().setVisible(true); // show UI
     }
 
     // ------------- General method for switching panels -------------
     public void switchToPanel(String panelName) {
         refreshPanel(panelName);
         atmUI.switchPanel(panelName);
-    }
-
-    public void refreshHistoryPanel() {
-        atmUI.historyGUI.refreshHistory(accountNumber);
     }
 
     public void refreshPanel(String name) {
@@ -72,10 +54,6 @@ public class ATMUIController {
         }
     }
 
-    public JFrame getMainFrame() {
-        return atmUI.getMainFrame();
-    }
-
     public void setup() {
         listenerRegistrar.registerAllListeners();
     }
@@ -84,33 +62,20 @@ public class ATMUIController {
         return atmUI.getCurrentPanelName();
     }
 
-    public int getAccountNumber() {
-        return accountNumber;
-    }
-
-    // ------------- Handle logic parts for listeners -------------
-    public void handleGreeting() {
-        switchToPanel(ATMUI.LOGIN_PANEL);
-    }
-
     public void exitSystem() {
         switchToPanel(ATMUI.GREETING_PANEL);
         atmUI.disposePanel();
     }
 
     public void showInfo() {
-        System.out.println("Unsuccessful Swich !!");
+        System.out.println("Unsuccessful Switch !!");
     }
 
     public void loginSuccess(int accountNunber) {
         this.accountNumber = accountNunber;
     }
 
-    /*public void updateBalancePanel(int accountNumber) {
-        JPanel balancePanel = atmUI.getPanel(ATMUI.BALANCE_PANEL);
-        if (balancePanel instanceof BalanceInquiryUI) {
-            ((BalanceInquiryUI) balancePanel).setAccountNumber(accountNumber);
-            ((BalanceInquiryUI) balancePanel).refreshBalance(accountNumber);
-        }
-    }*/
+    public int getAccountNumber() {
+        return accountNumber;
+    }
 }
