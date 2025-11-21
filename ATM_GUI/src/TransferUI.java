@@ -45,12 +45,13 @@ public class TransferUI extends Transfer {
     private JButton[] leftButton = new JButton[3];
     private JButton[] rightButton = new JButton[3];
 
-    BankDatabase bankDatabase = getBankDatabase();
+    BankDatabase bankDatabase;
 
     public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
                       Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[]) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
+        bankDatabase = atmBankDatabase;
 //        JPanel panel = this.transferLayout();
 //        showCard(CARD_MENU);
         leftButton[0] = left[0];
@@ -387,7 +388,7 @@ public class TransferUI extends Transfer {
 
     private void updateBalanceInquiry() {
         // Update balance inquiry for current account
-        BankDatabase bankDatabase = getBankDatabase();
+//        BankDatabase bankDatabase = getBankDatabase();
         double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
         double receiverBalance = bankDatabase.getAvailableBalance(getReceiverAccounts());
         
@@ -681,6 +682,7 @@ public class TransferUI extends Transfer {
      * Executes the actual transfer operation
      */
     private void executeTransfer() {
+//        setBankDatabase(bankDatabase);
         bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
         System.out.println("Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
         System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(getAccountNumber()));
@@ -752,6 +754,7 @@ public class TransferUI extends Transfer {
      * Creates and returns the main transfer layout panel
      */
     public JPanel transferLayout() {
+        System.out.println(userAccountNumberInUI);
         mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
