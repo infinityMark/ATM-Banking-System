@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -31,6 +32,8 @@ public class TransferUI extends Transfer {
 
     private int userAccountNumberInUI;
 
+    private BankDatabase bankDatabase;
+
     // Validation states
     private Boolean isReceiverValid = false;
     private Boolean isAmountValid = false;
@@ -45,13 +48,12 @@ public class TransferUI extends Transfer {
     private JButton[] leftButton = new JButton[3];
     private JButton[] rightButton = new JButton[3];
 
-    BankDatabase bankDatabase;
-
     public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
             Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[]) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
         // JPanel panel = this.transferLayout();
+        bankDatabase = atmBankDatabase;
         // showCard(CARD_MENU);
         leftButton[0] = left[0];
         leftButton[1] = left[1];
@@ -61,6 +63,8 @@ public class TransferUI extends Transfer {
         rightButton[1] = right[1];
         rightButton[2] = right[2];
     }
+
+    ActionListener rightButtonThirdPage = e -> goBackToMainPanel();
 
     /**
      * Recursively searches for a button by name within a panel hierarchy
@@ -76,6 +80,97 @@ public class TransferUI extends Transfer {
             }
         }
         return null;
+    }
+
+    /**
+     * 彻底移除所有按钮的监听器
+     */
+    private void removeAllButtonListenersCompletely() {
+        for (int i = 0; i < leftButton.length; i++) {
+            if (leftButton[i] != null) {
+                ActionListener[] listeners = leftButton[i].getActionListeners();
+                for (ActionListener listener : listeners) {
+                    leftButton[i].removeActionListener(listener);
+                }
+                System.out.println("左侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
+            }
+        }
+
+        // 清理右侧按钮
+        for (int i = 0; i < rightButton.length; i++) {
+            if (rightButton[i] != null) {
+                ActionListener[] listeners = rightButton[i].getActionListeners();
+                for (ActionListener listener : listeners) {
+                    rightButton[i].removeActionListener(listener);
+                }
+                System.out.println("右侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
+            }
+        }
+        System.out.println("=== 清理完成 ===");
+    }
+
+    /**
+     * 设置第一页的按钮功能
+     */
+    private void setupFirstPageButtons() {
+//        removeAllButtonListenersCompletely();
+
+        // 设置左侧按钮 - 跳转到信息页面
+        for (int i = 0; i < leftButton.length; i++) {
+            if (leftButton[i] != null) {
+                leftButton[i].addActionListener(e -> {
+                    System.out.println("左侧按钮点击 - 跳转到信息页面");
+                    showCard(CARD_INFO);
+                });
+            }
+        }
+
+        // 设置右侧按钮 - 返回主菜单
+        for (int i = 0; i < rightButton.length; i++) {
+            if (rightButton[i] != null) {
+                rightButton[i].addActionListener(e -> {
+                    System.out.println("右侧按钮点击 - 返回主菜单");
+                    goBackToMainPanel();
+                });
+            }
+        }
+    }
+
+    /**
+     * 设置确认页面的按钮功能
+     */
+    private void setupConfirmationPageButtons() {
+        removeAllButtonListenersCompletely();
+
+        // 设置左侧按钮 - 执行转账
+        for (int i = 0; i < leftButton.length; i++) {
+            if (leftButton[i] != null) {
+                leftButton[i].addActionListener(e -> {
+                    System.out.println("左侧按钮点击 - 执行转账");
+                    executeTransfer();
+                    updateBalanceInquiry();
+                    showCard(CARD_AFTER_TRANSACTION);
+                });
+            }
+        }
+
+        // 设置右侧按钮 - 返回菜单
+        for (int i = 0; i < rightButton.length; i++) {
+            if (rightButton[i] != null) {
+                rightButton[i].addActionListener(e -> {
+                    System.out.println("右侧按钮点击 - 返回菜单");
+                    showCard(CARD_MENU);
+                });
+            }
+        }
+    }
+
+    /**
+     * 设置接收者信息页面的按钮功能（无功能）
+     */
+    private void setupReceiverPageButtons() {
+        removeAllButtonListenersCompletely();
+        System.out.println("接收者信息页面 - 侧边按钮无功能");
     }
 
     /**
@@ -226,29 +321,27 @@ public class TransferUI extends Transfer {
     }
 
     public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
-            int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo) {
+                                      int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo) {
+
+        setupFirstPageButtons();
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 15, 10, 15);
 
         // Create selection buttons
         RoundedButton selectionOneBtn = createMenuButton(firstSelection, StandardColor.Green.getColorMode(), fontSize);
-        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(),
-                fontSize);
+        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(), fontSize);
 
         selectionOneBtn.setName(BUTTON_FIRST);
         selectionTwoBtn.setName(BUTTON_SECOND);
 
-        // this.button[0].addActionListener(e -> showCard(nextPageForButtonOne));
-        // this.button[1].addActionListener(e -> showCard(nextPageForButtonOne));
-        // this.button[2].addActionListener(e -> showCard(nextPageForButtonOne));
-
         selectionOneBtn.addActionListener(e -> showCard(nextPageForButtonOne));
         selectionTwoBtn.addActionListener(e -> {
             showCard(nextPageForButtonTwo);
-            if (nextPageForButtonTwo.equals("mainMenu"))
+            if (nextPageForButtonTwo.equals("mainMenu")) {
                 showCard(CARD_MENU);
-
+            }
             goBackToMainPanel();
         });
 
@@ -276,6 +369,8 @@ public class TransferUI extends Transfer {
      * Creates the receiver account and amount input form
      */
     public JPanel createReceiveTransferInformation(String remainAmount) {
+        setupReceiverPageButtons();
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -288,11 +383,11 @@ public class TransferUI extends Transfer {
 
         receiverAccountTextField = createInputField(40);
         receiverAccountTextField.setName(RECEIVER_TEXTFIELD);
-        receiverAccountTextField.setEditable(false); // Make non-editable to force keypad use
+        receiverAccountTextField.setEditable(false);
 
         amountTextField = createInputField(40);
         amountTextField.setName(AMOUNT_TEXTFIELD);
-        amountTextField.setEditable(false); // Make non-editable to force keypad use
+        amountTextField.setEditable(false);
 
         receiverLabel = createStyledLabel(receiverText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
         receiverLabel.setName(RECEIVER_LABEL);
@@ -341,6 +436,8 @@ public class TransferUI extends Transfer {
         isReceiverFieldActive = true;
         highlightActiveField();
 
+        removeAllButtonListenersCompletely();
+
         return panel;
     }
 
@@ -348,7 +445,10 @@ public class TransferUI extends Transfer {
      * Creates the transfer confirmation screen
      */
     public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
-            int fontSize, Font font) {
+                                         int fontSize, Font font) {
+
+        setupConfirmationPageButtons();
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
@@ -377,9 +477,9 @@ public class TransferUI extends Transfer {
         RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
         confirmButton.addActionListener(e -> {
             executeTransfer();
-            // Update balance inquiry for both accounts
             updateBalanceInquiry();
         });
+
         RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);
         cancelButton.addActionListener(e -> {
             showCard(CARD_MENU);
@@ -419,6 +519,10 @@ public class TransferUI extends Transfer {
     public JPanel createAfterTransaction(String transactionInformation, Font font) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
+
+        removeAllButtonListenersCompletely();
+
+        setupFirstPageButtons();
 
         JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
                 StandardColor.GreyHighest.getOppositeColorMode());
@@ -691,13 +795,11 @@ public class TransferUI extends Transfer {
      * Executes the actual transfer operation
      */
     private void executeTransfer() {
-//        setBankDatabase(bankDatabase);
         bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
         System.out.println(
                 "Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
         System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(getAccountNumber()));
         new TransactionHistory(0, getAccountNumber(), getReceiverAccounts(), 0, 0, getAmount());
-
     }
 
     /**

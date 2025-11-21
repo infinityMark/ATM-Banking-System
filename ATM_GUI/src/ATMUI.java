@@ -394,15 +394,15 @@ public class ATMUI extends ATM {
     }
 
     protected JPanel createWithdrawPanel() {
-        withdrawGUI = new WithdrawalUI(loginGUI.getAccountNumber(), getLeftButton(), getRightButton(),
+        withdrawGUI = new WithdrawalUI(loginGUI.getAccountNumber(), getLeftButton(), getLeftButton(),
                 getcController());
         withdrawGUI.getMainPanel().setName(WITHDRAW_PANEL);
         return withdrawGUI.getMainPanel();
     }
 
     protected JPanel createTransferPanel() {
-        transferUI = new TransferUI(getCurrentAccountNumber(), screen, bankDatabase,
-                atmKeypad, atmCashDispenser, leftButton, rightButton);
+        transferUI = new TransferUI(loginGUI.getAccountNumber(), screen, bankDatabase,
+                atmKeypad, atmCashDispenser, getLeftButton(), getRightButton());
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();
