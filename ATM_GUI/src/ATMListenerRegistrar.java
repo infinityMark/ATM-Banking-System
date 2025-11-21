@@ -267,7 +267,7 @@ public class ATMListenerRegistrar {
             System.out.println("Back to Main menu pressed from: " + currentPanel);
             if (ATMUI.GREETING_PANEL.equals(currentPanel)) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
-            } else if (!ATMUI.MAIN_MENU_PANEL.equals(currentPanel)) {
+            } else if (!ATMUI.MAIN_MENU_PANEL.equals(currentPanel) && !ATMUI.LOGIN_PANEL.equals(currentPanel)) {
                 controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
             }
         });
