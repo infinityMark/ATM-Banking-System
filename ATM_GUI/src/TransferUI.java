@@ -335,7 +335,7 @@ public class TransferUI extends Transfer {
             GridBagConstraints gridBagConstraints) {
 
         // System.out.println("create selection menu");
-        // setupFirstPageButtons();
+         setupFirstPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();

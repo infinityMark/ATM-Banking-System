@@ -46,7 +46,7 @@ public class WithdrawalUI extends JPanel {
     private final int CANCELED = 6;
 
     public WithdrawalUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
-            ATMUIController controller, ATMUI atmUI) {
+            ATMUIController controller) {
         this.leftButton = leftButton;
         this.rightButton = rightButton;
         this.controller = controller;
@@ -54,7 +54,7 @@ public class WithdrawalUI extends JPanel {
         this.bankDatabase = BankDatabase.getInstance();
         this.cashDispenser = new CashDispenser();
         this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(), bankDatabase, new Keypad(), cashDispenser);
-        this.atmUI = atmUI;
+//        this.atmUI = atmUI;
         initializeUI();
     }
 
@@ -471,7 +471,7 @@ public class WithdrawalUI extends JPanel {
     }
 
     private void processCustomAmount() {
-        isProcessing = true;
+//        isProcessing = true;
         try {
             String amountText = customAmountField.getText().trim();
 
