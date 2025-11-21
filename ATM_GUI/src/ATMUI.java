@@ -411,6 +411,17 @@ public class ATMUI extends ATMUIController {
     Keypad atmKeypad;
     CashDispenser atmCashDispenser;
 
+    static public RoundedButton createActionButton(String text, Color backgroundColor) {
+        return new RoundedButton(text, text,
+                backgroundColor,
+                StandardColor.GreyHighest.getColorMode(),
+                StandardColor.GreyHighest.getColorMode(),
+                StandardColor.GreyHighest.getOppositeColorMode(),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                true, 180, 50);
+    }
+
     protected JPanel createTransferPanel() {
         transferGUI = new TransferUI(loginGUI.getAccountNumber(),bankDatabase, getController());
         JPanel panel = transferGUI.transferLayout();
