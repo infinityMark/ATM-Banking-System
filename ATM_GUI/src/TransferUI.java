@@ -10,20 +10,20 @@ import java.awt.event.FocusListener;
  */
 public class TransferUI extends Transfer {
     // Constants for card names
-    private static final String CARD_MENU = "MENU";
-    private static final String CARD_INFO = "INFO";
-    private static final String CARD_CONFIRMATION = "CONFIRMATION";
-    private static final String CARD_AFTER_TRANSACTION = "AFTER_TRANSACTION";
+    public static final String CARD_MENU = "MENU";
+    public static final String CARD_INFO = "INFO";
+    public static final String CARD_CONFIRMATION = "CONFIRMATION";
+    public static final String CARD_AFTER_TRANSACTION = "AFTER_TRANSACTION";
 
     // Constants for button names
-    private static final String BUTTON_FIRST = "FIRST_BUTTON";
-    private static final String BUTTON_SECOND = "SECOND_BUTTON";
-    private static final String AMOUNT_LABEL = "AMOUNT";
-    private static final String RECEIVER_LABEL = "RECEIVER";
-    private static final String AMOUNT_TEXTFIELD = "RECEIVER_TEXTFIELDA";
-    private static final String RECEIVER_TEXTFIELD = "RECEIVER_TEXTFIELD";
-    private static final String amountText = "Amount";
-    private static final String receiverText = "Receiver account";
+    public static final String BUTTON_FIRST = "FIRST_BUTTON";
+    public static final String BUTTON_SECOND = "SECOND_BUTTON";
+    public static final String AMOUNT_LABEL = "AMOUNT";
+    public static final String RECEIVER_LABEL = "RECEIVER";
+    public static final String AMOUNT_TEXTFIELD = "RECEIVER_TEXTFIELDA";
+    public static final String RECEIVER_TEXTFIELD = "RECEIVER_TEXTFIELD";
+    public static final String amountText = "Amount";
+    public static final String receiverText = "Receiver account";
 
     // Layout components
     private static CardLayout cardLayout;
@@ -89,93 +89,99 @@ public class TransferUI extends Transfer {
     /**
      * 彻底移除所有按钮的监听器
      */
-    private void removeAllButtonListenersCompletely() {
-        for (int i = 0; i < leftButton.length; i++) {
-            if (leftButton[i] != null) {
-                ActionListener[] listeners = leftButton[i].getActionListeners();
-                for (ActionListener listener : listeners) {
-                    leftButton[i].removeActionListener(listener);
-                }
-                System.out.println("左侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-            }
-        }
-
-        // 清理右侧按钮
-        for (int i = 0; i < rightButton.length; i++) {
-            if (rightButton[i] != null) {
-                ActionListener[] listeners = rightButton[i].getActionListeners();
-                for (ActionListener listener : listeners) {
-                    rightButton[i].removeActionListener(listener);
-                }
-                System.out.println("右侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-            }
-        }
-        System.out.println("=== 清理完成 ===");
-    }
+    /*
+     * private void removeAllButtonListenersCompletely() {
+     * for (int i = 0; i < leftButton.length; i++) {
+     * if (leftButton[i] != null) {
+     * ActionListener[] listeners = leftButton[i].getActionListeners();
+     * for (ActionListener listener : listeners) {
+     * leftButton[i].removeActionListener(listener);
+     * }
+     * System.out.println("左侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
+     * }
+     * }
+     * 
+     * // 清理右侧按钮
+     * for (int i = 0; i < rightButton.length; i++) {
+     * if (rightButton[i] != null) {
+     * ActionListener[] listeners = rightButton[i].getActionListeners();
+     * for (ActionListener listener : listeners) {
+     * rightButton[i].removeActionListener(listener);
+     * }
+     * System.out.println("右侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
+     * }
+     * }
+     * System.out.println("=== 清理完成 ===");
+     * }
+     */
 
     /**
      * 设置第一页的按钮功能
      */
-    private void setupFirstPageButtons() {
-        // removeAllButtonListenersCompletely();
-
-        // 设置左侧按钮 - 跳转到信息页面
-        for (int i = 0; i < leftButton.length; i++) {
-            if (leftButton[i] != null) {
-                leftButton[i].addActionListener(e -> {
-                    System.out.println("左侧按钮点击 - 跳转到信息页面");
-                    showCard(CARD_INFO);
-                });
-            }
-        }
-
-        // 设置右侧按钮 - 返回主菜单
-        for (int i = 0; i < rightButton.length; i++) {
-            if (rightButton[i] != null) {
-                rightButton[i].addActionListener(e -> {
-                    System.out.println("右侧按钮点击 - 返回主菜单");
-                    goBackToMainPanel();
-                });
-            }
-        }
-    }
+    /*
+     * private void setupFirstPageButtons() {
+     * // removeAllButtonListenersCompletely();
+     * 
+     * // 设置左侧按钮 - 跳转到信息页面
+     * for (int i = 0; i < leftButton.length; i++) {
+     * if (leftButton[i] != null) {
+     * leftButton[i].addActionListener(e -> {
+     * System.out.println("左侧按钮点击 - 跳转到信息页面");
+     * showCard(CARD_INFO);
+     * });
+     * }
+     * }
+     * 
+     * // 设置右侧按钮 - 返回主菜单
+     * for (int i = 0; i < rightButton.length; i++) {
+     * if (rightButton[i] != null) {
+     * rightButton[i].addActionListener(e -> {
+     * System.out.println("右侧按钮点击 - 返回主菜单");
+     * goBackToMainPanel();
+     * });
+     * }
+     * }
+     * }
+     */
 
     /**
      * 设置确认页面的按钮功能
      */
-    private void setupConfirmationPageButtons() {
-        removeAllButtonListenersCompletely();
-
-        // 设置左侧按钮 - 执行转账
-        for (int i = 0; i < leftButton.length; i++) {
-            if (leftButton[i] != null) {
-                leftButton[i].addActionListener(e -> {
-                    System.out.println("左侧按钮点击 - 执行转账");
-                    executeTransfer();
-                    updateBalanceInquiry();
-                    showCard(CARD_AFTER_TRANSACTION);
-                });
-            }
-        }
-
-        // 设置右侧按钮 - 返回菜单
-        for (int i = 0; i < rightButton.length; i++) {
-            if (rightButton[i] != null) {
-                rightButton[i].addActionListener(e -> {
-                    System.out.println("右侧按钮点击 - 返回菜单");
-                    showCard(CARD_MENU);
-                });
-            }
-        }
-    }
+    /*
+     * private void setupConfirmationPageButtons() {
+     * // removeAllButtonListenersCompletely();
+     * 
+     * // 设置左侧按钮 - 执行转账
+     * for (int i = 0; i < leftButton.length; i++) {
+     * if (leftButton[i] != null) {
+     * leftButton[i].addActionListener(e -> {
+     * System.out.println("左侧按钮点击 - 执行转账");
+     * executeTransfer();
+     * updateBalanceInquiry();
+     * showCard(CARD_AFTER_TRANSACTION);
+     * });
+     * }
+     * }
+     * 
+     * // 设置右侧按钮 - 返回菜单
+     * for (int i = 0; i < rightButton.length; i++) {
+     * if (rightButton[i] != null) {
+     * rightButton[i].addActionListener(e -> {
+     * System.out.println("右侧按钮点击 - 返回菜单");
+     * showCard(CARD_MENU);
+     * });
+     * }
+     * }
+     * }
+     */
 
     /**
      * 设置接收者信息页面的按钮功能（无功能）
      */
-    private void setupReceiverPageButtons() {
-        removeAllButtonListenersCompletely();
+    /*private void setupReceiverPageButtons() {
+        // removeAllButtonListenersCompletely();
         System.out.println("接收者信息页面 - 侧边按钮无功能");
-    }
+    }*/
 
     /**
      * Navigates back to the main menu panel
@@ -196,7 +202,7 @@ public class TransferUI extends Transfer {
          * }
          * }
          */
-        controller.switchToMainMenuPanel();
+        controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
 
     // Keypad integration methods
@@ -335,7 +341,7 @@ public class TransferUI extends Transfer {
             GridBagConstraints gridBagConstraints) {
 
         // System.out.println("create selection menu");
-         setupFirstPageButtons();
+        // setupFirstPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -382,7 +388,7 @@ public class TransferUI extends Transfer {
      * Creates the receiver account and amount input form
      */
     public JPanel createReceiveTransferInformation(String remainAmount) {
-        setupReceiverPageButtons();
+        //setupReceiverPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -445,7 +451,7 @@ public class TransferUI extends Transfer {
         isReceiverFieldActive = true;
         highlightActiveField();
 
-        removeAllButtonListenersCompletely();
+        // removeAllButtonListenersCompletely();
 
         return panel;
     }
@@ -456,7 +462,7 @@ public class TransferUI extends Transfer {
     public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
             int fontSize, Font font) {
 
-        setupConfirmationPageButtons();
+        // setupConfirmationPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -531,8 +537,8 @@ public class TransferUI extends Transfer {
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
         // 清理并设置按钮
-        removeAllButtonListenersCompletely();
-        setupFirstPageButtons();
+        // removeAllButtonListenersCompletely();
+        // setupFirstPageButtons();
 
         JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
                 StandardColor.GreyHighest.getOppositeColorMode());
@@ -826,7 +832,7 @@ public class TransferUI extends Transfer {
     /**
      * Switches between different card views with dynamic creation
      */
-    private void showCard(String cardName) {
+    public void showCard(String cardName) {
         System.out.println("Switching to card: " + cardName);
         recreateCardIfNeeded(cardName);
 
@@ -916,4 +922,13 @@ public class TransferUI extends Transfer {
         cardLayout.show(cardPanel, CARD_MENU);
         return mainPanel;
     }
+
+    // 1. 跟踪当前卡片的字段
+    private String currentCardName = CARD_MENU;
+
+    // 2. 获取当前卡片名称（供 ATMListenerRegistrar 查询）
+    public String getCurrentCardName() {
+        return currentCardName;
+    }
+
 }

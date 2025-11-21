@@ -54,7 +54,7 @@ public class WithdrawalUI extends JPanel {
         this.bankDatabase = BankDatabase.getInstance();
         this.cashDispenser = new CashDispenser();
         this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(), bankDatabase, new Keypad(), cashDispenser);
-//        this.atmUI = atmUI;
+        // this.atmUI = atmUI;
         initializeUI();
     }
 
@@ -471,7 +471,7 @@ public class WithdrawalUI extends JPanel {
     }
 
     private void processCustomAmount() {
-        //isProcessing = true;
+        // isProcessing = true;
         try {
             String amountText = customAmountField.getText().trim();
 
@@ -654,13 +654,13 @@ public class WithdrawalUI extends JPanel {
         cardPanel.add(resultCard, CARD_RESULT);
 
         cardLayout.show(cardPanel, CARD_RESULT);
-
-        isOnResultScreen();
+        currentCardName = CARD_RESULT;
+        //isOnResultScreen();
         deactivateCustomAmountPanel();
     }
 
     public void goBackToMainPanel() {
-        controller.switchToMainMenuPanel();
+        controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
 
     // Helper methods

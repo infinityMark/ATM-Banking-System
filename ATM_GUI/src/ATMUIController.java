@@ -36,11 +36,12 @@ public class ATMUIController {
 
     // ------------- General method for switching panels -------------
     public void switchToPanel(String panelName) {
+        refrshPanel(panelName);
         atmUI.switchPanel(panelName);
     }
 
     // ------------- Convenience methods for switching panels -------------
-    public void switchToGreetingPanel() {
+    /*public void switchToGreetingPanel() {
         atmUI.switchPanel("greeting");
     }
 
@@ -66,7 +67,7 @@ public class ATMUIController {
 
     public void showAccountInfo() {
         atmUI.switchPanel("accountInfo");
-    }
+    }*/
 
     public void goToPanel(String panelName) {
         refrshPanel(panelName);
@@ -133,11 +134,11 @@ public class ATMUIController {
 
     // ------------- Handle logic parts for listeners -------------
     public void handleGreeting() {
-        switchToLoginPanel();
+        switchToPanel(ATMUI.LOGIN_PANEL);
     }
 
     public void exitSystem() {
-        switchToGreetingPanel();
+        switchToPanel(ATMUI.GREETING_PANEL);
         atmUI.disposePanel();
     }
 

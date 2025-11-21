@@ -305,7 +305,7 @@ public class BalanceInquiryUI extends JPanel {
     }
 
     public void goBackToMainPanel() {
-        controller.switchToMainMenuPanel();
+        controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
 
     // Helper methods
