@@ -366,6 +366,7 @@ public class ATMListenerRegistrar {
                     } else {
                         // 右侧按钮：返回主菜单（带刷新）
                         controller.refreshHistoryPanel();
+                        transferUI.showCard(TransferUI.CARD_MENU);
                         controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
                     }
                     break;
@@ -383,6 +384,10 @@ public class ATMListenerRegistrar {
                         // 右侧按钮：取消，返回菜单
                         transferUI.showCard(TransferUI.CARD_MENU);
                     }
+                    break;
+
+                default:
+                    controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
                     break;
             }
         };
