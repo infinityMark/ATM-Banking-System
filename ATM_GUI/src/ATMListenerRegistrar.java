@@ -129,6 +129,7 @@ public class ATMListenerRegistrar {
         // 3. 配置 WithdrawalUI 侧边按钮（删除其他面板的通用配置）
         configureWithdrawalSideButtons();
         configureTransferSideButtons();
+        configureHistorySideButtons();
 
         // 4. 为其他面板（如 Balance、Transfer 等）按需添加专用配置
 
@@ -376,6 +377,7 @@ public class ATMListenerRegistrar {
                     } else {
                         // 右侧按钮：返回主菜单（带刷新）
                         controller.refreshHistoryPanel();
+                        transferUI.showCard(TransferUI.CARD_MENU);
                         controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
                     }
                     break;
@@ -394,7 +396,42 @@ public class ATMListenerRegistrar {
                         transferUI.showCard(TransferUI.CARD_MENU);
                     }
                     break;
+
+                default:
+                    controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
+                    break;
             }
+        };
+
+        // 为所有侧边按钮注册统一的处理器
+        for (String btnName : leftButtons) {
+            addButtonListener("leftButtonPanel", btnName, transferButtonHandler);
+        }
+        for (String btnName : rightButtons) {
+            addButtonListener("rightButtonPanel", btnName, transferButtonHandler);
+        }
+    }
+
+    private void configureHistorySideButtons() {
+        String[] leftButtons = { "Left1", "Left2", "Left3" };
+        String[] rightButtons = { "Right1", "Right2", "Right3" };
+
+        // 统一的 TransferUI 按钮处理器
+        ActionListener transferButtonHandler = e -> {
+            // 检查当前是否在 Transfer 面板
+            if (!ATMUI.HISTORY_PANEL.equals(controller.getCurrentPanelName())) {
+                return; // 不在 Transfer 面板，直接返回
+            }
+
+            TransactionHistoryUI transactionHistoryUI = atmUI.historyGUI;
+            if (transactionHistoryUI == null)
+                return;
+
+            JButton sourceButton = (JButton) e.getSource();
+//            String buttonName = sourceButton.getName();
+
+            controller.refreshHistoryPanel();
+            controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
         };
 
         // 为所有侧边按钮注册统一的处理器
