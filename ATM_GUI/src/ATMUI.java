@@ -425,7 +425,7 @@ public class ATMUI extends ATMUIController {
     protected JPanel createTransferPanel() {
         transferGUI = new TransferUI(loginGUI.getAccountNumber(),bankDatabase, getController());
         transferGUI.getMainPanel().setName(TRANSFER_PANEL);
-//        transferGUI.resetToInitialState();
+        transferGUI.resetToInitialState();
         return transferGUI.getMainPanel();
     }
 

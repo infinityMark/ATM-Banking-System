@@ -9,6 +9,7 @@ import java.awt.event.FocusListener;
  */
 public class TransferUI extends JPanel {
     // Constants for card names
+    private String currentCardName = CARD_MENU;
     public static final String CARD_MENU = "MENU";
     public static final String CARD_INFO = "INFO";
     public static final String CARD_CONFIRMATION = "CONFIRMATION";
@@ -60,6 +61,18 @@ public class TransferUI extends JPanel {
         initializeUI();
     }
 
+    public void setCurrentCardName(String name){
+        currentCardName = name;
+    }
+
+    public String getCurrentCardName() {
+        return currentCardName;
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
     /**
      * Recursively searches for a button by name within a panel hierarchy
      */
@@ -76,7 +89,6 @@ public class TransferUI extends JPanel {
         return null;
     }
 
-
     /**
      * Navigates back to the main menu panel
      */
@@ -84,7 +96,7 @@ public class TransferUI extends JPanel {
         controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
 
-    // Keypad integration methods
+    // ============ Keypad integration methods ============
     public void handleNumberInput(String input) {
         if (isReceiverFieldActive && receiverAccountTextField != null) {
             // For receiver account, only allow numbers (no decimals)
@@ -215,247 +227,6 @@ public class TransferUI extends JPanel {
         }
     }
 
-    public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
-            int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo,
-            GridBagConstraints gridBagConstraints) {
-
-        setCurrentCardName(CARD_MENU);
-
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createDefaultGridBagConstraints();
-        gbc.insets = gridBagConstraints.insets;
-
-        // Create selection buttons
-        RoundedButton selectionOneBtn = createMenuButton(firstSelection, StandardColor.Green.getColorMode(), fontSize);
-        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(),
-                fontSize);
-
-        selectionOneBtn.setName(BUTTON_FIRST);
-        selectionTwoBtn.setName(BUTTON_SECOND);
-
-        selectionOneBtn.addActionListener(e -> showCard(nextPageForButtonOne));
-        selectionTwoBtn.addActionListener(e -> {
-            showCard(nextPageForButtonTwo);
-            if (nextPageForButtonTwo.equals("mainMenu")) {
-                showCard(CARD_MENU);
-            }
-            goBackToMainPanel();
-        });
-
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Add title
-        JLabel menuTitle = createStyledLabel(title, font, StandardColor.GreyHighest.getOppositeColorMode());
-        gbc.gridy = 0;
-        gbc.weighty = 0.1;
-        panel.add(menuTitle, gbc);
-
-        // Add buttons in a panel
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 50, 0));
-        buttonPanel.add(selectionOneBtn);
-        buttonPanel.add(selectionTwoBtn);
-
-        gbc.gridy = 1;
-        gbc.weighty = 0.3;
-        panel.add(buttonPanel, gbc);
-
-        //setCurrentCardName(CARD_MENU);
-
-        return panel;
-    }
-
-    /**
-     * Creates the receiver account and amount input form
-     */
-    public JPanel createReceiveTransferInformation(String remainAmount) {
-        //setupReceiverPageButtons();
-
-        setCurrentCardName(CARD_INFO);
-
-
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createDefaultGridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        // Create UI components
-        JLabel remainAmountTitle = createStyledLabel(remainAmount, ATMUI.FONT_SMALL,
-                StandardColor.GreyHighest.getOppositeColorMode());
-//        RoundedButton confirmationButton = ATMUI.createActionButton("Confirm", StandardColor.Green.getColorMode());
-//        RoundedButton backButton = ATMUI.createActionButton("Back", StandardColor.Yellow.getColorMode());
-
-        receiverAccountTextField = ATMUI.createInputField(40);
-        receiverAccountTextField.setName(RECEIVER_TEXTFIELD);
-        receiverAccountTextField.setEditable(false);
-
-        amountTextField = ATMUI.createInputField(40);
-        amountTextField.setName(AMOUNT_TEXTFIELD);
-        amountTextField.setEditable(false);
-
-        receiverLabel = createStyledLabel(receiverText, ATMUI.FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
-        receiverLabel.setName(RECEIVER_LABEL);
-        amountLabel = createStyledLabel(amountText, ATMUI.FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
-        amountLabel.setName(AMOUNT_LABEL);
-
-        setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
-        setupFieldListener(amountTextField, amountLabel, amountText);
-
-        JPanel amountDisplay = createAmountDisplayPanel(amountTextField);
-
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Layout components
-        addComponentToPanel(panel, gbc, remainAmountTitle, 0, 0.01);
-        addComponentToPanel(panel, gbc, receiverLabel, 1, 0.01);
-        addComponentToPanel(panel, gbc, receiverAccountTextField, 2, 0.01);
-        addComponentToPanel(panel, gbc, amountLabel, 3, 0.01);
-        addComponentToPanel(panel, gbc, amountDisplay, 4, 0.01);
-
-        // Instructions for keypad usage
-        JLabel instructionLabel = createStyledLabel("Use keypad to input numbers. Press Confirm to proceed.",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
-                StandardColor.Blue.getColorMode());
-        instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        gbc.gridy = 5;
-        gbc.weighty = 0.01;
-        panel.add(instructionLabel, gbc);
-
-//        backButton.addActionListener(e -> {
-//            showCard(CARD_MENU);
-//            resetToInitialState();
-//        });
-
-        gbc.gridy = 6;
-        gbc.weighty = 0.01;
-        gbc.insets = new Insets(30, 10, 10, 10);
-        // panel.add(buttonPanel, gbc);
-
-        // Initialize field highlighting
-        isReceiverFieldActive = true;
-        highlightActiveField();
-
-        // removeAllButtonListenersCompletely();
-
-        //setCurrentCardName(CARD_INFO);
-
-        return panel;
-    }
-
-    /**
-     * Creates the transfer confirmation screen
-     */
-    public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
-            int fontSize, Font font) {
-
-        // setupConfirmationPageButtons();
-        setCurrentCardName(CARD_CONFIRMATION);
-
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createDefaultGridBagConstraints();
-
-        // Create confirmation message
-        String confirmationMessage = String.format("The system is going to transfer HK$ %.2f to account number: %d",
-                transfer.getAmount(), transfer.getReceiverAccounts());
-        JLabel confirmationLabel = createStyledLabel(confirmationMessage, ATMUI.FONT_SMALL,
-                StandardColor.GreyHighest.getOppositeColorMode());
-
-        gbc.weighty = 0.0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(10, 15, 10, 15);
-        panel.add(confirmationLabel, gbc);
-
-        // Create selection menu
-        gbc.insets = new Insets(10, 15, 10, 15);
-        JPanel selectionMenu = createSelectionMenu(title, firstSelection, secondSelection,
-                fontSize, font, CARD_AFTER_TRANSACTION, CARD_MENU, gbc);
-        selectionMenu.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-        gbc.weighty = 0.4;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0, 0, 0, 0);
-        panel.add(selectionMenu, gbc);
-
-        // Add transfer action to confirmation button
-        RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
-        confirmButton.addActionListener(e -> {
-            executeTransfer();
-            updateBalanceInquiry();
-        });
-
-        RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);
-        cancelButton.addActionListener(e -> {
-            showCard(CARD_MENU);
-            resetToInitialState();
-        });
-
-        //setCurrentCardName(CARD_CONFIRMATION);
-
-        return panel;
-    }
-
-    private void updateBalanceInquiry() {
-        // Update balance inquiry for current account
-        // BankDatabase bankDatabase = getBankDatabase();
-        double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
-        double receiverBalance = bankDatabase.getAvailableBalance(transfer.getReceiverAccounts());
-
-        System.out.printf("Transfer completed: Account %d balance: HK$ %.2f, Account %d balance: HK$ %.2f%n",
-                userAccountNumberInUI, currentBalance, transfer.getReceiverAccounts(), receiverBalance);
-    }
-
-    public void resetToInitialState() {
-        cardLayout.show(cardPanel, CARD_MENU);
-        setCurrentCardName(CARD_MENU);
-        resetValidationFlags();
-        isReceiverFieldActive = true;
-        if (receiverAccountTextField != null)
-            receiverAccountTextField.setText("");
-        if (amountTextField != null)
-            amountTextField.setText("");
-        if (receiverLabel != null)
-            receiverLabel.setText(receiverText);
-        if (amountLabel != null)
-            amountLabel.setText(amountText);
-    }
-
-    /**
-     * Creates the post-transfer completion screen
-     */
-    public JPanel createAfterTransaction(String transactionInformation, Font font) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createDefaultGridBagConstraints();
-
-        setCurrentCardName(CARD_AFTER_TRANSACTION);
-
-        // 清理并设置按钮
-        // removeAllButtonListenersCompletely();
-        // setupFirstPageButtons();
-
-        JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
-                StandardColor.GreyHighest.getOppositeColorMode());
-        JLabel successLabel = createStyledLabel("The transfer successfully.", font,
-                StandardColor.GreyHighest.getOppositeColorMode());
-
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
-
-        addComponentToPanel(panel, gbc, transactionInfoLabel, 0, 0.1);
-        addComponentToPanel(panel, gbc, successLabel, 1, 0.1);
-
-        gbc.insets = new Insets(0, 0, 0, 0);
-        JPanel continueMenu = createSelectionMenu("Do you want transfer to another?",
-                "Yes, go back transfer", "No, go back ATM menu",
-                35, font, CARD_INFO, "mainMenu", gbc);
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-        gbc.gridy = 2;
-        gbc.weighty = 0.8;
-        panel.add(continueMenu, gbc);
-
-        //setCurrentCardName(CARD_AFTER_TRANSACTION);
-
-        return panel;
-    }
-
     // ============ PRIVATE HELPER METHODS ============
 
     /**
@@ -532,17 +303,6 @@ public class TransferUI extends JPanel {
         panel.add(component, gbc);
     }
 
-    /**
-     * Creates a panel containing action buttons
-     */
-    /*private JPanel createButtonPanel(JButton... buttons) {
-        JPanel panel = new JPanel(new FlowLayout());
-        for (JButton button : buttons) {
-            panel.add(button);
-        }
-        return panel;
-    }*/
-
     private void setupFieldListener(TextFields textField, JLabel label, String content) {
         textField.addFocusListener(new FocusListener() {
             @Override
@@ -555,6 +315,46 @@ public class TransferUI extends JPanel {
                 // Do nothing
             }
         });
+    }
+
+    /**
+     * Displays validation error message
+     */
+    private void showValidationError(TextFields field, JLabel label, String message) {
+        field.warning();
+        String originalText = label.getText().split("\\|")[0].trim();
+        label.setText(originalText + " | " + message);
+    }
+
+    /**
+     * Clears validation error message
+     */
+    private void clearValidationError(JLabel label, TextFields textFields) {
+        String originalText = label.getText().split("\\|")[0].trim();
+        label.setText(originalText);
+        textFields.normal();
+    }
+
+    /**
+     * Resets validation flags
+     */
+    private void resetValidationFlags() {
+        isReceiverValid = false;
+        isAmountValid = false;
+    }
+
+
+
+    // ============ CORE FUNCTION UNIT ============
+    /**
+     * Executes the actual transfer operation
+     */
+    protected void executeTransfer() {
+        bankDatabase.transfer(transfer.getAccountNumber(), transfer.getReceiverAccounts(), transfer.getAmount());
+        System.out.println(
+                "Transfer executed: " + transfer.getAmount() + " from " + transfer.getAccountNumber() + " to " + transfer.getReceiverAccounts());
+        System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(transfer.getAccountNumber()));
+        new TransactionHistory(0, transfer.getAccountNumber(), transfer.getReceiverAccounts(), 0, 0, transfer.getAmount());
     }
 
     /**
@@ -580,7 +380,7 @@ public class TransferUI extends JPanel {
             }
 
             transfer.setReceiverAccounts(accountNumber);
-            clearValidationError(label);
+            clearValidationError(label, textField);
             return true;
 
         } catch (NumberFormatException ex) {
@@ -617,7 +417,7 @@ public class TransferUI extends JPanel {
             }
 
             transfer.setAmount(amountValue);
-            clearValidationError(label);
+            clearValidationError(label, textField);
             return true;
 
         } catch (NumberFormatException ex) {
@@ -626,52 +426,9 @@ public class TransferUI extends JPanel {
         }
     }
 
-    /**
-     * Displays validation error message
-     */
-    private void showValidationError(TextFields field, JLabel label, String message) {
-        field.warning();
-        String originalText = label.getText().split("\\|")[0].trim();
-        label.setText(originalText + " | " + message);
-    }
 
-    /**
-     * Clears validation error message
-     */
-    private void clearValidationError(JLabel label) {
-        String originalText = label.getText().split("\\|")[0].trim();
-        label.setText(originalText);
-    }
 
-    /**
-     * Resets validation flags
-     */
-    private void resetValidationFlags() {
-        isReceiverValid = false;
-        isAmountValid = false;
-    }
-
-    /**
-     * Clears input fields
-     */
-    /*private void clearInputFields(TextFields field1, TextFields field2) {
-        if (field1 != null)
-            field1.setText("");
-        if (field2 != null)
-            field2.setText("");
-    }*/
-
-    /**
-     * Executes the actual transfer operation
-     */
-    protected void executeTransfer() {
-        bankDatabase.transfer(transfer.getAccountNumber(), transfer.getReceiverAccounts(), transfer.getAmount());
-        System.out.println(
-                "Transfer executed: " + transfer.getAmount() + " from " + transfer.getAccountNumber() + " to " + transfer.getReceiverAccounts());
-        System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(transfer.getAccountNumber()));
-        new TransactionHistory(0, transfer.getAccountNumber(), transfer.getReceiverAccounts(), 0, 0, transfer.getAmount());
-    }
-
+    // ============ CARD management ============
     /**
      * Switches between different card views with dynamic creation
      */
@@ -686,6 +443,22 @@ public class TransferUI extends JPanel {
             System.err.println("CardLayout or cardPanel is null");
         }
     }
+
+    public void resetToInitialState() {
+        cardLayout.show(cardPanel, CARD_MENU);
+        setCurrentCardName(CARD_MENU);
+        resetValidationFlags();
+        isReceiverFieldActive = true;
+        if (receiverAccountTextField != null)
+            receiverAccountTextField.setText("");
+        if (amountTextField != null)
+            amountTextField.setText("");
+        if (receiverLabel != null)
+            receiverLabel.setText(receiverText);
+        if (amountLabel != null)
+            amountLabel.setText(amountText);
+    }
+
 
     /**
      * Recreates card panels when needed to ensure fresh state
@@ -734,12 +507,25 @@ public class TransferUI extends JPanel {
         }
     }
 
+    private void updateBalanceInquiry() {
+        // Update balance inquiry for current account
+        // BankDatabase bankDatabase = getBankDatabase();
+        double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
+        double receiverBalance = bankDatabase.getAvailableBalance(transfer.getReceiverAccounts());
+
+        System.out.printf("Transfer completed: Account %d balance: HK$ %.2f, Account %d balance: HK$ %.2f%n",
+                userAccountNumberInUI, currentBalance, transfer.getReceiverAccounts(), receiverBalance);
+    }
+
+
+
+
+    // UI create
     /**
      * Creates and returns the main transfer layout panel
      */
     public void initializeUI() {
-        System.out.println("=== TransferUI.initializeUI() ===");
-        System.out.println("用户账户: " + userAccountNumberInUI);
+        System.out.println("=== TransferUI.initializeUI() 开始 ===");
 
         mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
@@ -765,25 +551,235 @@ public class TransferUI extends JPanel {
         gbc.weighty = 0.9;
         mainPanel.add(cardPanel, gbc);
 
-        // 关键修复：在显示卡片后立即设置当前卡片状态
+        // 关键：强制显示并设置状态
         cardLayout.show(cardPanel, CARD_MENU);
-        setCurrentCardName(CARD_MENU);  // 确保状态同步
+        setCurrentCardName(CARD_MENU);
 
-        System.out.println("初始化完成，当前卡片: " + getCurrentCardName());
+        System.out.println("UI初始化完成，当前卡片: " + getCurrentCardName());
+        System.out.println("卡片面板组件数: " + cardPanel.getComponentCount());
+
+        // 调试：确认菜单卡片确实存在
+        Component[] components = cardPanel.getComponents();
+        for (Component comp : components) {
+            if (comp instanceof JPanel) {
+                System.out.println("存在的卡片: " + ((JPanel) comp).getName());
+            }
+        }
         System.out.println("=== TransferUI.initializeUI() 结束 ===");
     }
 
-    private String currentCardName = CARD_MENU;
+    public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
+                                      int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo,
+                                      GridBagConstraints gridBagConstraints) {
 
-    public void setCurrentCardName(String name){
-        currentCardName = name;
+        setCurrentCardName(CARD_MENU);
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+        gbc.insets = gridBagConstraints.insets;
+
+        // Create selection buttons
+        RoundedButton selectionOneBtn = createMenuButton(firstSelection, StandardColor.Green.getColorMode(), fontSize);
+        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(),
+                fontSize);
+
+        selectionOneBtn.setName(BUTTON_FIRST);
+        selectionTwoBtn.setName(BUTTON_SECOND);
+
+        selectionOneBtn.addActionListener(e -> showCard(nextPageForButtonOne));
+        selectionTwoBtn.addActionListener(e -> {
+            showCard(nextPageForButtonTwo);
+            if (nextPageForButtonTwo.equals("mainMenu")) {
+                showCard(CARD_MENU);
+            }
+            goBackToMainPanel();
+        });
+
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Add title
+        JLabel menuTitle = createStyledLabel(title, font, StandardColor.GreyHighest.getOppositeColorMode());
+        gbc.gridy = 0;
+        gbc.weighty = 0.1;
+        panel.add(menuTitle, gbc);
+
+        // Add buttons in a panel
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 50, 0));
+        buttonPanel.add(selectionOneBtn);
+        buttonPanel.add(selectionTwoBtn);
+
+        gbc.gridy = 1;
+        gbc.weighty = 0.3;
+        panel.add(buttonPanel, gbc);
+
+        setCurrentCardName(CARD_MENU);
+
+        return panel;
     }
 
-    public String getCurrentCardName() {
-        return currentCardName;
+    /**
+     * Creates the transfer confirmation screen
+     */
+    public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
+                                         int fontSize, Font font) {
+
+        // setupConfirmationPageButtons();
+        setCurrentCardName(CARD_CONFIRMATION);
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+
+        // Create confirmation message
+        String confirmationMessage = String.format("The system is going to transfer HK$ %.2f to account number: %d",
+                transfer.getAmount(), transfer.getReceiverAccounts());
+        JLabel confirmationLabel = createStyledLabel(confirmationMessage, ATMUI.FONT_SMALL,
+                StandardColor.GreyHighest.getOppositeColorMode());
+
+        gbc.weighty = 0.0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 15, 10, 15);
+        panel.add(confirmationLabel, gbc);
+
+        // Create selection menu
+        gbc.insets = new Insets(10, 15, 10, 15);
+        JPanel selectionMenu = createSelectionMenu(title, firstSelection, secondSelection,
+                fontSize, font, CARD_AFTER_TRANSACTION, CARD_MENU, gbc);
+        selectionMenu.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        gbc.weighty = 0.4;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        panel.add(selectionMenu, gbc);
+
+        // Add transfer action to confirmation button
+        RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
+        confirmButton.addActionListener(e -> {
+            executeTransfer();
+            updateBalanceInquiry();
+        });
+
+        RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);
+        cancelButton.addActionListener(e -> {
+            showCard(CARD_MENU);
+            resetToInitialState();
+        });
+
+        setCurrentCardName(CARD_CONFIRMATION);
+
+        return panel;
     }
-   
-    public JPanel getMainPanel() {
-        return mainPanel;
+    /**
+     * Creates the receiver account and amount input form
+     */
+    public JPanel createReceiveTransferInformation(String remainAmount) {
+        //setupReceiverPageButtons();
+
+        setCurrentCardName(CARD_INFO);
+
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        // Create UI components
+        JLabel remainAmountTitle = createStyledLabel(remainAmount, ATMUI.FONT_SMALL,
+                StandardColor.GreyHighest.getOppositeColorMode());
+//        RoundedButton confirmationButton = ATMUI.createActionButton("Confirm", StandardColor.Green.getColorMode());
+//        RoundedButton backButton = ATMUI.createActionButton("Back", StandardColor.Yellow.getColorMode());
+
+        receiverAccountTextField = ATMUI.createInputField(40);
+        receiverAccountTextField.setName(RECEIVER_TEXTFIELD);
+        receiverAccountTextField.setEditable(false);
+
+        amountTextField = ATMUI.createInputField(40);
+        amountTextField.setName(AMOUNT_TEXTFIELD);
+        amountTextField.setEditable(false);
+
+        receiverLabel = createStyledLabel(receiverText, ATMUI.FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        receiverLabel.setName(RECEIVER_LABEL);
+        amountLabel = createStyledLabel(amountText, ATMUI.FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        amountLabel.setName(AMOUNT_LABEL);
+
+        setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
+        setupFieldListener(amountTextField, amountLabel, amountText);
+
+        JPanel amountDisplay = createAmountDisplayPanel(amountTextField);
+
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Layout components
+        addComponentToPanel(panel, gbc, remainAmountTitle, 0, 0.01);
+        addComponentToPanel(panel, gbc, receiverLabel, 1, 0.01);
+        addComponentToPanel(panel, gbc, receiverAccountTextField, 2, 0.01);
+        addComponentToPanel(panel, gbc, amountLabel, 3, 0.01);
+        addComponentToPanel(panel, gbc, amountDisplay, 4, 0.01);
+
+        // Instructions for keypad usage
+        JLabel instructionLabel = createStyledLabel("Use keypad to input numbers. Press Confirm to proceed.",
+                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
+                StandardColor.Blue.getColorMode());
+        instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        gbc.gridy = 5;
+        gbc.weighty = 0.01;
+        panel.add(instructionLabel, gbc);
+
+//        backButton.addActionListener(e -> {
+//            showCard(CARD_MENU);
+//            resetToInitialState();
+//        });
+
+        gbc.gridy = 6;
+        gbc.weighty = 0.01;
+        gbc.insets = new Insets(30, 10, 10, 10);
+        // panel.add(buttonPanel, gbc);
+
+        // Initialize field highlighting
+        isReceiverFieldActive = true;
+        highlightActiveField();
+
+        // removeAllButtonListenersCompletely();
+
+        setCurrentCardName(CARD_INFO);
+
+        return panel;
+    }
+
+    /**
+     * Creates the post-transfer completion screen
+     */
+    public JPanel createAfterTransaction(String transactionInformation, Font font) {
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+
+        setCurrentCardName(CARD_AFTER_TRANSACTION);
+
+        // 清理并设置按钮
+        // removeAllButtonListenersCompletely();
+        // setupFirstPageButtons();
+
+        JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
+                StandardColor.GreyHighest.getOppositeColorMode());
+        JLabel successLabel = createStyledLabel("The transfer successfully.", font,
+                StandardColor.GreyHighest.getOppositeColorMode());
+
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+
+        addComponentToPanel(panel, gbc, transactionInfoLabel, 0, 0.1);
+        addComponentToPanel(panel, gbc, successLabel, 1, 0.1);
+
+        gbc.insets = new Insets(0, 0, 0, 0);
+        JPanel continueMenu = createSelectionMenu("Do you want transfer to another?",
+                "Yes, go back transfer", "No, go back ATM menu",
+                35, font, CARD_INFO, "mainMenu", gbc);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        gbc.gridy = 2;
+        gbc.weighty = 0.8;
+        panel.add(continueMenu, gbc);
+
+        setCurrentCardName(CARD_AFTER_TRANSACTION);
+
+        return panel;
     }
 }
