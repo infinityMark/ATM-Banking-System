@@ -1,19 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 //import java.awt.event.FocusEvent;
 //import java.awt.event.FocusListener;
 
 public class WithdrawalUI extends JPanel {
     // Card names
     private static final String CARD_MENU = "MENU";
-    private static final String CARD_AMOUNT = "AMOUNT";
+    //private static final String CARD_AMOUNT = "AMOUNT";
     private static final String CARD_CONFIRMATION = "CONFIRMATION";
     private static final String CARD_RESULT = "RESULT";
     private static final String CARD_CUSTOM = "CUSTOM";
 
-    private String currentCardName = CARD_MENU;
+    //private String currentCardName = CARD_MENU;
 
     // Layout components
     private CardLayout cardLayout;
@@ -32,23 +32,24 @@ public class WithdrawalUI extends JPanel {
     private TextFields customAmountField;
     private JLabel balanceLabel;
 
-    private JButton[] leftButton = new JButton[3];
-    private JButton[] rightButton = new JButton[3];
+    //private JButton[] leftButton = new JButton[3];
+    //private JButton[] rightButton = new JButton[3];
 
     private ATMUIController controller;
 
     // Keypad integration
     private boolean isCustomAmountPanelActive = false;
-    private ATMUI atmUI;
+    //private ATMUI atmUI;
 
     // Constants for preset amounts
     private final int[] PRESET_AMOUNTS = { 200, 400, 800, 1000 };
-    private final int CANCELED = 6;
+    //private final int CANCELED = 6;
 
-    public WithdrawalUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
+    public WithdrawalUI(int accountNumber, 
+                //JButton[] leftButton, JButton[] rightButton,
             ATMUIController controller) {
-        this.leftButton = leftButton;
-        this.rightButton = rightButton;
+        //this.leftButton = leftButton;
+        //this.rightButton = rightButton;
         this.controller = controller;
         this.currentAccountNumber = accountNumber;
         this.bankDatabase = BankDatabase.getInstance();
@@ -448,6 +449,7 @@ public class WithdrawalUI extends JPanel {
 
     public void handleConfirm() {
         if (isCustomAmountPanelActive && customAmountField != null) {
+            System.out.println("成功调用handleConfirm");
             processCustomAmount();
         }
     }
@@ -471,14 +473,14 @@ public class WithdrawalUI extends JPanel {
     }
 
     private void processCustomAmount() {
-        // isProcessing = true;
-        currentCardName = CARD_AMOUNT;
+        //currentCardName = CARD_AMOUNT;
         try {
             String amountText = customAmountField.getText().trim();
 
             if (amountText.isEmpty()) {
                 statusLabel.setText("Please enter an amount");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
+                //currentCardName = CARD_AMOUNT;
                 return;
             }
 
@@ -488,6 +490,7 @@ public class WithdrawalUI extends JPanel {
             if (!isMultiplesCondition(amount)) {
                 statusLabel.setText("Amount must be multiples of HK$ 100, 500, or 1000 - WITHDRAWAL FAILED");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
+                //currentCardName = CARD_AMOUNT;
                 return;
             }
 
@@ -495,6 +498,7 @@ public class WithdrawalUI extends JPanel {
             if (amount <= 0) {
                 statusLabel.setText("Amount must be greater than 0");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
+                //currentCardName = CARD_AMOUNT;
                 return;
             }
 
@@ -503,6 +507,7 @@ public class WithdrawalUI extends JPanel {
             if (amount > availableBalance) {
                 statusLabel.setText("Insufficient funds in your account");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
+                //currentCardName = CARD_AMOUNT;
                 return;
             }
 
@@ -510,6 +515,7 @@ public class WithdrawalUI extends JPanel {
             if (!cashDispenser.isSufficientCashAvailable(amount)) {
                 statusLabel.setText("Insufficient cash available in ATM");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
+                //currentCardName = CARD_AMOUNT;
                 return;
             }
 
@@ -517,12 +523,14 @@ public class WithdrawalUI extends JPanel {
             if (withdrawal.isLimitAccountConditionCheckerHappen(amount, "withdrawal")) {
                 statusLabel.setText("Transaction exceeds account limit");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
+                //currentCardName = CARD_AMOUNT;
                 return;
             }
 
             selectedAmount = amount;
             customAmountField.setText("");
             statusLabel.setText("");
+            //currentCardName = CARD_CONFIRMATION;
             showConfirmationCard();
 
         } catch (NumberFormatException ex) {
@@ -561,7 +569,7 @@ public class WithdrawalUI extends JPanel {
     private void showCard(String cardName) {
         if (cardLayout != null && cardPanel != null) {
             cardLayout.show(cardPanel, cardName);
-            this.currentCardName = cardName;
+            //this.currentCardName = cardName;
             if (CARD_CUSTOM.equals(cardName)) {
                 activateCustomAmountPanel();
             } else {
@@ -601,7 +609,7 @@ public class WithdrawalUI extends JPanel {
         cardPanel.add(resultCard, CARD_RESULT);
 
         cardLayout.show(cardPanel, CARD_RESULT);
-        currentCardName = CARD_RESULT;
+        //currentCardName = CARD_RESULT;
         // isOnResultScreen();
         deactivateCustomAmountPanel();
     }
@@ -642,6 +650,13 @@ public class WithdrawalUI extends JPanel {
     }
 
     public void resetToInitialState() {
+        Component[] components = cardPanel.getComponents();
+        for (Component comp : components) {
+            if (comp instanceof JPanel && CARD_RESULT.equals(((JPanel) comp).getName())) {
+                cardPanel.remove(comp);
+                break;
+            }
+        }
         cardLayout.show(cardPanel, CARD_MENU);
         selectedAmount = 0;
         if (customAmountField != null) {
@@ -654,14 +669,16 @@ public class WithdrawalUI extends JPanel {
             double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
             balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
         }
+        deactivateCustomAmountPanel();
+        //currentCardName = CARD_MENU;
     }
 
-    public void refreshBalance() {
+    /*public void refreshBalance() {
         if (balanceLabel != null) {
             double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
             balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
         }
-    }
+    }*/
 
     public void refreshBalancePanel(int account) {
         if (balanceLabel != null) {
@@ -671,7 +688,7 @@ public class WithdrawalUI extends JPanel {
         }
     }
 
-    public void selectAmount200() {
+    /*public void selectAmount200() {
         selectedAmount = 200;
         showConfirmationCard();
     }
@@ -725,10 +742,10 @@ public class WithdrawalUI extends JPanel {
             resetToInitialState();
             goBackToMainPanel();
         }
-    }
+    }*/
 
-    public String getCurrentCardName() {
+    /*public String getCurrentCardName() {
         return currentCardName;
-    }
+    }*/
 
 }

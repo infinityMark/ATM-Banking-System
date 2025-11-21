@@ -32,7 +32,7 @@ public class TransferUI extends Transfer {
 
     private int userAccountNumberInUI;
 
-    private BankDatabase bankDatabase;
+
 
     // Validation states
     private Boolean isReceiverValid = false;
@@ -47,11 +47,19 @@ public class TransferUI extends Transfer {
 
     ATMUIController controller;
 
-    private JButton[] leftButton = new JButton[3];
-    private JButton[] rightButton = new JButton[3];
+   // private JButton[] leftButton = new JButton[3];
+   //private JButton[] rightButton = new JButton[3];
 
-    public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
-            Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[],
+    Screen screen = new Screen();
+    BankDatabase bankDatabase = BankDatabase.getInstance();
+    Keypad atmKeypad;
+    CashDispenser atmCashDispenser;
+
+
+    public TransferUI(int userAccountNumber
+        , Screen atmScreen, BankDatabase atmBankDatabase,
+            Keypad atmKeypad, CashDispenser atmCashDispenser,
+                    //JButton[] left, JButton right[],
             ATMUIController controller) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
@@ -59,14 +67,16 @@ public class TransferUI extends Transfer {
         this.controller = controller;
         bankDatabase = atmBankDatabase;
         // showCard(CARD_MENU);
-        leftButton[0] = left[0];
+        /*leftButton[0] = left[0];
         leftButton[1] = left[1];
         leftButton[2] = left[2];
-
+        
         rightButton[0] = right[0];
         rightButton[1] = right[1];
-        rightButton[2] = right[2];
+        rightButton[2] = right[2];*/
     }
+    
+
 
     ActionListener rightButtonThirdPage = e -> goBackToMainPanel();
 
@@ -187,21 +197,6 @@ public class TransferUI extends Transfer {
      * Navigates back to the main menu panel
      */
     public void goBackToMainPanel() {
-        /*
-         * Container parent = mainPanel.getParent();
-         * if (parent != null) {
-         * Container current = parent;
-         * while (current != null && !(current.getLayout() instanceof CardLayout)) {
-         * current = current.getParent();
-         * }
-         * 
-         * if (current != null) {
-         * CardLayout layout = (CardLayout) current.getLayout();
-         * layout.show(current, CARD_MENU);
-         * layout.show(current, "mainMenu");
-         * }
-         * }
-         */
         controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
 
@@ -381,7 +376,7 @@ public class TransferUI extends Transfer {
         gbc.weighty = 0.3;
         panel.add(buttonPanel, gbc);
 
-        setCurrentCardName(CARD_MENU);
+        //setCurrentCardName(CARD_MENU);
 
         return panel;
     }
@@ -455,7 +450,7 @@ public class TransferUI extends Transfer {
 
         // removeAllButtonListenersCompletely();
 
-        setCurrentCardName(CARD_INFO);
+        //setCurrentCardName(CARD_INFO);
 
         return panel;
     }
@@ -506,7 +501,7 @@ public class TransferUI extends Transfer {
             resetToInitialState();
         });
 
-        setCurrentCardName(CARD_CONFIRMATION);
+        //setCurrentCardName(CARD_CONFIRMATION);
 
         return panel;
     }
@@ -566,7 +561,7 @@ public class TransferUI extends Transfer {
         gbc.weighty = 0.8;
         panel.add(continueMenu, gbc);
 
-        setCurrentCardName(CARD_AFTER_TRANSACTION);
+        //setCurrentCardName(CARD_AFTER_TRANSACTION);
 
         return panel;
     }
@@ -664,13 +659,13 @@ public class TransferUI extends Transfer {
     /**
      * Creates a panel containing action buttons
      */
-    private JPanel createButtonPanel(JButton... buttons) {
+    /*private JPanel createButtonPanel(JButton... buttons) {
         JPanel panel = new JPanel(new FlowLayout());
         for (JButton button : buttons) {
             panel.add(button);
         }
         return panel;
-    }
+    }*/
 
     private void setupFieldListener(TextFields textField, JLabel label, String content) {
         textField.addFocusListener(new FocusListener() {
@@ -819,12 +814,12 @@ public class TransferUI extends Transfer {
     /**
      * Clears input fields
      */
-    private void clearInputFields(TextFields field1, TextFields field2) {
+    /*private void clearInputFields(TextFields field1, TextFields field2) {
         if (field1 != null)
             field1.setText("");
         if (field2 != null)
             field2.setText("");
-    }
+    }*/
 
     /**
      * Executes the actual transfer operation
@@ -931,13 +926,17 @@ public class TransferUI extends Transfer {
         return mainPanel;
     }
 
-    private String currentCardName = CARD_MENU;
+    //private String currentCardName = CARD_MENU;
 
-    public void setCurrentCardName(String name){
+    /*public void setCurrentCardName(String name){
         currentCardName = name;
     }
-
-    public String getCurrentCardName() {
+    
+    /*public String getCurrentCardName() {
         return currentCardName;
+    }*/
+   
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 }

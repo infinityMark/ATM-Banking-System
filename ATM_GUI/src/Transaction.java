@@ -1,9 +1,10 @@
 // Transaction.java
 // Abstract superclass Transaction represents an ATM transaction
 
-import java.awt.*;
+//import java.awt.*;
 
-public abstract class Transaction extends ATMUI {
+public abstract class Transaction extends ATMUI 
+{
    private int accountNumber; // indicates account involved
    private Screen screen; // ATM's screen
    private BankDatabase bankDatabase; // account info database

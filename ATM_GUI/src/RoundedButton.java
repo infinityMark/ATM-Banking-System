@@ -5,11 +5,11 @@ import java.awt.event.*;
 
 public class RoundedButton extends JButton{
 //    private int borderWidth = 50;
-    private boolean isroundedStatus;
+    //private boolean isroundedStatus;
     private int cornerRadius = 15;
 
     public void setroundedStatus(boolean roundedStatuss){
-        isroundedStatus = roundedStatuss;
+        //isroundedStatus = roundedStatuss;
     }
 
     public RoundedButton(String content,String changedContent,Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,

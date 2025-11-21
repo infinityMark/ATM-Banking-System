@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.security.NoSuchAlgorithmException;
+//import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,13 +9,15 @@ public class LoginGUI {
     private JPanel centerPanel;
     private JPasswordField passwordF;
     private JButton confirmButton, delButton, cancelButton;
-    private String savedAccount;
+  //  private String savedAccount;
     private boolean accountGot, accountPass, pwPass, invalidinput;
     private int currentAccountNumber, currentPin;
     private BankDatabase bankDatabase;
     private JLabel reminderL;
     private JPanel mainP;
-    private static int passedAccount, passedPIN;
+    private static int passedAccount
+           // , passedPIN
+    ;
 
     // Track which field is currently focused
     private boolean accountFieldFocused = true;
@@ -226,7 +228,7 @@ public class LoginGUI {
         passwordF.setText("");
         accounTF.setText("");
         accountGot = false;
-        savedAccount = null;
+        //savedAccount = null;
         accounTF.requestFocusInWindow();
         accountFieldFocused = true;
     }
@@ -309,7 +311,7 @@ public class LoginGUI {
                     if (pwPass) {
                         passedAccount = Integer.parseInt(accounTF.getText().trim());
                         currentAccountNumber = passedAccount;
-                        passedPIN = Integer.parseInt(new String(passwordF.getPassword()));
+                        //passedPIN = Integer.parseInt(new String(passwordF.getPassword()));
                         pwPass = false;
                         accountGot = false;
                         clearInput();
@@ -363,7 +365,7 @@ public class LoginGUI {
 
     public void resetlogin() {
         passedAccount = 0;
-        passedPIN = 0;
+        //passedPIN = 0;
     }
 
     public JPanel getMainPanel() {

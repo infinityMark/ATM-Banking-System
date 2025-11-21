@@ -97,18 +97,18 @@ public class ATMUIController {
     }
 
     public void showInfo() {
-        System.out.println("Unsuccessful Swich ！！");
+        System.out.println("Unsuccessful Swich !!");
     }
 
     public void loginSuccess(int accountNunber) {
         this.accountNumber = accountNunber;
     }
 
-    public void updateBalancePanel(int accountNumber) {
+    /*public void updateBalancePanel(int accountNumber) {
         JPanel balancePanel = atmUI.getPanel(ATMUI.BALANCE_PANEL);
         if (balancePanel instanceof BalanceInquiryUI) {
             ((BalanceInquiryUI) balancePanel).setAccountNumber(accountNumber);
             ((BalanceInquiryUI) balancePanel).refreshBalance(accountNumber);
         }
-    }
+    }*/
 }

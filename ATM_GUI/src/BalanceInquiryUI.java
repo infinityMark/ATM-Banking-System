@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.*;
-import java.awt.event.*;
+//import javax.swing.*;
+//import java.awt.event.*;
 
 public class BalanceInquiryUI extends JPanel {
     // Card names
@@ -25,8 +25,8 @@ public class BalanceInquiryUI extends JPanel {
     private JLabel interestLabel;
     private JLabel chequeLimitLabel;
 
-    private JButton[] leftButton = new JButton[3];
-    private JButton[] rightButton = new JButton[3];
+    //private JButton[] leftButton = new JButton[3];
+    //private JButton[] rightButton = new JButton[3];
 
     private ATMUIController controller;
 
@@ -39,12 +39,13 @@ public class BalanceInquiryUI extends JPanel {
      * }
      */
 
-    public BalanceInquiryUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
+    public BalanceInquiryUI(int accountNumber,
+                //JButton[] leftButton, JButton[] rightButton,
             ATMUIController controller) {
         this.currentAccountNumber = accountNumber;
         this.bankDatabase = BankDatabase.getInstance();
-        this.leftButton = leftButton;
-        this.rightButton = rightButton;
+        //this.leftButton = leftButton;
+        //this.rightButton = rightButton;
         this.controller = controller;
         initializeUI();
         updateBalanceInfo();
@@ -133,12 +134,12 @@ public class BalanceInquiryUI extends JPanel {
         return panel;
     }
 
-    private void sideButtonRegistrar() {
+    /*private void sideButtonRegistrar() {
         for (int i = 0; i < 3; i++) {
             leftButton[i].addActionListener(e -> goBackToMainPanel());
             rightButton[i].addActionListener(e -> goBackToMainPanel());
         }
-    }
+    }*/
 
     private JPanel createInfoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -344,10 +345,10 @@ public class BalanceInquiryUI extends JPanel {
         return mainPanel;
     }
 
-    public void setAccountNumber(int accountNumber) {
+    /*public void setAccountNumber(int accountNumber) {
         this.currentAccountNumber = accountNumber;
         updateBalanceInfo();
-    }
+    }*/
 
     public void refreshBalance(int accountNumber) {
         this.currentAccountNumber = accountNumber;

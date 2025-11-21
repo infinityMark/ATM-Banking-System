@@ -2,18 +2,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+//import org.w3c.dom.events.MouseEvent;
 
 public class MainMenuGUI {
     private JLabel timeL, bottomL;
     private JPanel mainP, centerP, leftP, rightP;
     private int currentAccountNumberMMG;
     private BankDatabase bankDatabase;
+    private ATMUIController controller;
 
     public MainMenuGUI() {
 
     }
 
-    public void createMainMenuGUI(boolean showMainMenu, int currentAccountNumber) {
+    public void createMainMenuGUI(boolean showMainMenu, int currentAccountNumber, ATMUIController controller) {
         mainP = new JPanel();
         mainPanel();
         currentAccountNumberMMG = currentAccountNumber;
@@ -23,7 +28,7 @@ public class MainMenuGUI {
         leftP = new JPanel(new GridLayout(3, 1));
         rightP = new JPanel(new GridLayout(3, 1));
         bankDatabase = BankDatabase.getInstance();
-
+        this.controller = controller;
         TopPanel();
         LeftPanel();
         RightPanel();
@@ -57,6 +62,11 @@ public class MainMenuGUI {
         String[] labels = { "<html><center>View</center>Balance</html>",
                 "<html>Withdraw<br><center>Cash</center></html>",
                 "Exit" };
+        String[] targetPanels = {
+                ATMUI.BALANCE_PANEL,
+                ATMUI.WITHDRAW_PANEL,
+                ATMUI.GREETING_PANEL
+        };
         for (int i = 0; i < 3; i++) {
             JLabel LL = new JLabel(labels[i], SwingConstants.CENTER);
             font(LL, 0, StandardColor.White.getColorMode(), 18);
@@ -64,17 +74,52 @@ public class MainMenuGUI {
             LL.setBackground(StandardColor.DarkBlue.getColorMode());
             LL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
             leftP.add(LL);
+
+            // 添加鼠标监听器
+            final int index = i;
+            LL.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    // 调用控制器切换到目标面板
+                    if (controller != null) {
+                        controller.switchToPanel(targetPanels[index]);
+                    }
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    LL.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    LL.setBackground(StandardColor.Blue.getColorMode().darker()); // 加深背景色提示
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    // 鼠标离开时恢复默认
+                    LL.setCursor(Cursor.getDefaultCursor());
+                    LL.setBackground(StandardColor.DarkBlue.getColorMode());
+                }
+            });
+
+            leftP.add(LL);
         }
+
         leftP.setPreferredSize(new Dimension(100, 0));
         mainP.add(leftP, BorderLayout.WEST);
     }
 
     private void RightPanel() {
+
         rightP.setBackground(StandardColor.DarkBlue.getColorMode());
         rightP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
         String[] labels = { "<html>Transfer<br><center>Funds</center></html>",
                 "<html>Transaction<br><center>history</center></html>"
         };
+
+        String[] targetPanels = {
+                ATMUI.TRANSFER_PANEL,
+                ATMUI.HISTORY_PANEL
+        };
+
         for (int i = 0; i < 2; i++) {
             JLabel RL = new JLabel(labels[i], SwingConstants.CENTER);
             font(RL, 0, StandardColor.White.getColorMode(), 18);
@@ -82,7 +127,39 @@ public class MainMenuGUI {
             RL.setBackground(StandardColor.DarkBlue.getColorMode());
             RL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
             rightP.add(RL);
+
+            final int index = i;
+            RL.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    // 调用控制器切换到目标面板
+                    if (controller != null) {
+                        controller.switchToPanel(targetPanels[index]);
+                    }
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    RL.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    RL.setBackground(StandardColor.Blue.getColorMode().darker());
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    RL.setCursor(Cursor.getDefaultCursor());
+                    RL.setBackground(StandardColor.DarkBlue.getColorMode());
+                }
+            });
+
+            rightP.add(RL);
+
         }
+        JLabel emptyLabel = new JLabel("", SwingConstants.CENTER);
+        emptyLabel.setOpaque(true);
+        emptyLabel.setBackground(StandardColor.DarkBlue.getColorMode());
+        emptyLabel.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
+        rightP.add(emptyLabel);
+
         rightP.setPreferredSize(new Dimension(100, 0));
         mainP.add(rightP, BorderLayout.EAST);
     }

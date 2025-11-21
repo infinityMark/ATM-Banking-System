@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.net.URI;
-import java.net.URL;
+//import java.net.URI;
+//import java.net.URL;
 
 public class GreetingUI extends ATMUI{
     public static final String GREETING_PANEL = "greeting";
@@ -92,7 +92,7 @@ public class GreetingUI extends ATMUI{
         return panel;
     }
 
-    static public void goToPanel(String name) {
+    /*static public void goToPanel(String name) {
         Container parent = mainPanel.getParent();
         if (parent != null) {
             Container current = parent;
@@ -105,7 +105,7 @@ public class GreetingUI extends ATMUI{
                 layout.show(current, name);
             }
         }
-    }
+    }*/
 
     @Override
     public JPanel createGreetingPanel() {

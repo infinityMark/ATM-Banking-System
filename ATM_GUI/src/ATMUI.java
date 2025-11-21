@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionListener;
 import java.net.URL;
 
 public class ATMUI extends ATM {
@@ -29,7 +29,7 @@ public class ATMUI extends ATM {
     public TransactionHistoryUI historyGUI;
     public WithdrawalUI withdrawGUI;
     public BalanceInquiryUI balanceGUI;
-    public TransferUI transferUI;
+    public TransferUI transferGUI;
 
     // Array to store all panels
     private JPanel[] allPanels = new JPanel[20];
@@ -39,14 +39,14 @@ public class ATMUI extends ATM {
 
     private CardLayout centerCardLayout;
     private JPanel mainUpperPanel;
-    private JPanel leftButtonPanel;
+    //private JPanel leftButtonPanel;
     private JPanel centerPanel;
-    private JPanel rightButtonPanel;
+    //private JPanel rightButtonPanel;
     private JPanel lowerPanel;
     private JFrame mainframe;
 
     // ------------- Side panel buttons -------------
-
+/* 
     // left side panel buttons
     private JButton Button1;
     private JButton Button2;
@@ -67,7 +67,7 @@ public class ATMUI extends ATM {
     public JButton[] getRightButton() {
         return rightButton;
     }
-
+*/
     private ATMUIController controller;
 
     public ATMUIController getController() {
@@ -133,11 +133,11 @@ public class ATMUI extends ATM {
     public void initializeUI() {
         baseSetup();
 
-        mainframe.setLocationRelativeTo(null);
+        
 
         JPanel mainContainer = new JPanel(new BorderLayout(0, 10));
         createUpperAndLowerPanels();
-        addButtonsToSidePanels();
+        //addButtonsToSidePanels();
         insertToCenterPanel();
 
         // Assemble the main container
@@ -168,6 +168,8 @@ public class ATMUI extends ATM {
         mainframe.setMinimumSize(new Dimension(800, 600));
         mainframe.setSize(1200, 900);
         mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        mainframe.setLocationRelativeTo(null);
 
     }
 
@@ -176,47 +178,47 @@ public class ATMUI extends ATM {
         mainUpperPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         mainUpperPanel.setBorder(BorderFactory.createTitledBorder("Function Area"));
-
+/* 
         // left button panel (small proportion)
         leftButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         leftButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         leftButtonPanel.setName("leftButtonPanel");
         leftButtonPanel.setMinimumSize(new Dimension(100, 200));
         registerPanel(leftButtonPanel);
-
+*/
         // center content panel (large proportion, using CardLayout)
         centerCardLayout = new CardLayout();
         centerPanel = new JPanel(centerCardLayout);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         centerPanel.setPreferredSize(new Dimension(900, 400));
-
+/* 
         // right button panel (small proportion)
         rightButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         rightButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         rightButtonPanel.setName("rightButtonPanel");
         rightButtonPanel.setMinimumSize(new Dimension(100, 200));
         registerPanel(rightButtonPanel);
-
+*/
         // Set grid layout constraints
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 1.0;
 
-        // left panel occupies 20%
+/*         // left panel occupies 20%
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.15;
         mainUpperPanel.add(leftButtonPanel, gbc);
-
+*/
         // center panel occupies 60%
         gbc.gridx = 1;
         gbc.weightx = 0.7;
         mainUpperPanel.add(centerPanel, gbc);
-
+/* 
         // right panel occupies 20%
         gbc.gridx = 2;
         gbc.weightx = 0.15;
         mainUpperPanel.add(rightButtonPanel, gbc);
-
+*/
         // lower keypad panel
         lowerPanel = createKeypadPanel();
         lowerPanel.setBorder(BorderFactory.createTitledBorder("Keypad"));
@@ -232,7 +234,7 @@ public class ATMUI extends ATM {
                 new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
     }
 
-    protected void addButtonsToSidePanels() {
+ /*    protected void addButtonsToSidePanels() {
         Button1 = new RoundedButton(setImageSafety(
                 "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
                 new Dimension(Integer.MAX_VALUE, 50));
@@ -278,7 +280,7 @@ public class ATMUI extends ATM {
         rightButton[1] = Button6;
         rightButton[2] = Button7;
     }
-
+*/
     private void insertToCenterPanel() {
         JPanel greetingPanel = createGreetingPanel();
         centerPanel.add(greetingPanel, GREETING_PANEL);
@@ -347,7 +349,7 @@ public class ATMUI extends ATM {
         balanceGUI.getMainPanel().removeAll();
         historyGUI.getMainPanel().removeAll();
         withdrawGUI.getMainPanel().removeAll();
-        // transferGUI.getMainPanel().removeAll();
+        transferGUI.getMainPanel().removeAll();
     }
 
     // -------------functional panels creation methods-------------
@@ -369,13 +371,14 @@ public class ATMUI extends ATM {
 
     protected JPanel createMainMenuPanel() {
         mainMenuGUI = new MainMenuGUI();
-        mainMenuGUI.createMainMenuGUI(true, loginGUI.getAccountNumber());
+        mainMenuGUI.createMainMenuGUI(true, loginGUI.getAccountNumber(),getController());
         mainMenuGUI.getMainP().setName(MAIN_MENU_PANEL);
         return mainMenuGUI.getMainP();
     }
 
     protected JPanel createBalancePanel() {
-        balanceGUI = new BalanceInquiryUI(loginGUI.getAccountNumber(), getLeftButton(), getRightButton(),
+        balanceGUI = new BalanceInquiryUI(loginGUI.getAccountNumber(),
+                // getLeftButton(), getRightButton(),
                 getController());
         balanceGUI.getMainPanel().setName(BALANCE_PANEL);
         return balanceGUI.getMainPanel();
@@ -395,18 +398,27 @@ public class ATMUI extends ATM {
     }
 
     protected JPanel createWithdrawPanel() {
-        withdrawGUI = new WithdrawalUI(loginGUI.getAccountNumber(), getLeftButton(), getLeftButton(),
+        withdrawGUI = new WithdrawalUI(loginGUI.getAccountNumber(),
+                // getLeftButton(), getRightButton(),
                 getController());
         withdrawGUI.getMainPanel().setName(WITHDRAW_PANEL);
         return withdrawGUI.getMainPanel();
     }
 
+    // ------------- Waiting for improvement -------------
+    Screen screen = new Screen();
+    BankDatabase bankDatabase = BankDatabase.getInstance();
+    Keypad atmKeypad;
+    CashDispenser atmCashDispenser;
+
     protected JPanel createTransferPanel() {
-        transferUI = new TransferUI(loginGUI.getAccountNumber(), screen, bankDatabase,
-                atmKeypad, atmCashDispenser, getLeftButton(), getRightButton(),getController());
-        JPanel panel = transferUI.transferLayout();
+        transferGUI = new TransferUI(loginGUI.getAccountNumber(), screen, bankDatabase,
+                atmKeypad, atmCashDispenser,
+                //getLeftButton(), getRightButton(),
+                                 getController());
+        JPanel panel = transferGUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
-        transferUI.resetToInitialState();
+        transferGUI.resetToInitialState();
         return panel;
     }
 
@@ -415,7 +427,7 @@ public class ATMUI extends ATM {
         keypadPanel.setName(KEYPAD_PANEL);
         registerPanel(keypadPanel);
 
-        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00" };
+        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00" ,"Back to Main menu"};
         for (String key : keys) {
             RoundedButton btn = new RoundedButton(key);
             btn.setFont(ATMUI.NORMAL_FONT);
@@ -424,12 +436,6 @@ public class ATMUI extends ATM {
         }
         return keypadPanel;
     }
-
-    // ------------- Waiting for improvement -------------
-    Screen screen = new Screen();
-    BankDatabase bankDatabase = BankDatabase.getInstance();
-    Keypad atmKeypad;
-    CashDispenser atmCashDispenser;
 
     // -------------Getter&Setter methods-------------
 
@@ -440,12 +446,10 @@ public class ATMUI extends ATM {
                 return panel;
             }
         }
-        return null; // 没找到返回null
-    }
+        return null;
 
-    /**
-     * 彻底移除所有按钮的监听器
-     */
+    }
+/* 
     public void removeAllButtonListenersCompletely(JButton[] leftButton, JButton[] rightButton) {
         for (int i = 0; i < leftButton.length; i++) {
             if (leftButton[i] != null) {
@@ -469,14 +473,17 @@ public class ATMUI extends ATM {
         }
         System.out.println("=== 清理完成 ===");
     }
-
-    // switch center panel by name
+*/
+    // switch panel by name
     public void switchPanel(String name) {
         JPanel targetPanel = getPanel(name);
         if (targetPanel != null) {
             System.out.println(currentPanelName + " switch to " + name);// CardLayout作用于centerPanel
             this.currentPanelName = name;
             centerCardLayout.show(centerPanel, name);
+            if (WITHDRAW_PANEL.equals(name) && withdrawGUI != null) {
+                withdrawGUI.resetToInitialState();
+            }
         } else {
             // Error handling: panel not found
             System.err.println("Error: Panel with name '" + name + "' does not exist.");
@@ -487,7 +494,7 @@ public class ATMUI extends ATM {
     public JFrame getMainFrame() {
         return mainframe;
     }
-
+/* 
     // get lower keypad panel
     public JPanel getLowerPanel() {
         return lowerPanel;
@@ -501,17 +508,17 @@ public class ATMUI extends ATM {
     // Get right button panel
     public JPanel getRightButtonPanel() {
         return rightButtonPanel;
-    }
+    }*/
 
     // get current visible upper panel
-    public JPanel getCurrentUpperPanel() {
+    /*public JPanel getCurrentUpperPanel() {
         for (Component comp : centerPanel.getComponents()) {
             if (comp.isVisible()) {
                 return (JPanel) comp;
             }
         }
         return null;
-    }
+    }*/
 
     public LoginGUI getLoginGUI() {
         return loginGUI;
@@ -531,7 +538,7 @@ public class ATMUI extends ATM {
 
     // ------------- Side panel buttons getters -------------
 
-    public JButton getButton(int index) {
+    /*public JButton getButton(int index) {
         switch (index) {
             case 1:
                 return Button1;
@@ -552,7 +559,7 @@ public class ATMUI extends ATM {
             default:
                 return null;
         }
-    }
+    }*/
 
     // Function
 
@@ -597,21 +604,6 @@ public class ATMUI extends ATM {
         taskTitle.repaint();
     }
 
-    /*public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, "mainMenu");
-            }
-        }
-    }*/
-
     protected RoundedButton createStyledButton(String content, String changedContent, Color defaultBackgroundColor,
             Color changedBackgroundColor, Color defaultFontColor,
             Color changedFontColor, Font fontDefaultStyle, Font fontChangedSize, boolean roundedStatus, int widths,
@@ -631,11 +623,9 @@ public class ATMUI extends ATM {
     private void removePanelIfExists(String panelName) {
         JPanel panel = getPanel(panelName);
         if (panel != null) {
-            centerPanel.remove(panel); // 从容器中移除
-            // 从 allPanels 数组中移除
+            centerPanel.remove(panel);           
             for (int i = 0; i < panelCount; i++) {
-                if (allPanels[i] == panel) {
-                    // 将后续元素前移
+                if (allPanels[i] == panel) {                  
                     for (int j = i; j < panelCount - 1; j++) {
                         allPanels[j] = allPanels[j + 1];
                     }
