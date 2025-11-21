@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.net.URL;
 
 public class ATMUI extends ATM {
@@ -440,6 +441,33 @@ public class ATMUI extends ATM {
             }
         }
         return null; // 没找到返回null
+    }
+
+    /**
+     * 彻底移除所有按钮的监听器
+     */
+    public void removeAllButtonListenersCompletely(JButton[] leftButton, JButton[] rightButton) {
+        for (int i = 0; i < leftButton.length; i++) {
+            if (leftButton[i] != null) {
+                ActionListener[] listeners = leftButton[i].getActionListeners();
+                for (ActionListener listener : listeners) {
+                    leftButton[i].removeActionListener(listener);
+                }
+                System.out.println("左侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
+            }
+        }
+
+        // 清理右侧按钮
+        for (int i = 0; i < rightButton.length; i++) {
+            if (rightButton[i] != null) {
+                ActionListener[] listeners = rightButton[i].getActionListeners();
+                for (ActionListener listener : listeners) {
+                    rightButton[i].removeActionListener(listener);
+                }
+                System.out.println("右侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
+            }
+        }
+        System.out.println("=== 清理完成 ===");
     }
 
     // switch center panel by name
