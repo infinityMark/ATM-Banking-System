@@ -356,7 +356,7 @@ public class TransferUI extends Transfer {
      * Creates the receiver account and amount input form
      */
     public JPanel createReceiveTransferInformation(String remainAmount) {
-        setupReceiverPageButtons();
+//        setupReceiverPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -430,7 +430,7 @@ public class TransferUI extends Transfer {
     public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
             int fontSize, Font font) {
 
-        setupConfirmationPageButtons();
+//        setupConfirmationPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -505,7 +505,7 @@ public class TransferUI extends Transfer {
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
         removeAllButtonListenersCompletely(leftButton,rightButton);
-        setupFirstPageButtons();
+//        setupFirstPageButtons();
 
         JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
                 StandardColor.GreyHighest.getOppositeColorMode());
