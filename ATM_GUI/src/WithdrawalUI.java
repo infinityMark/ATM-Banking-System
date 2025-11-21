@@ -471,7 +471,7 @@ public class WithdrawalUI extends JPanel {
     }
 
     private void processCustomAmount() {
-//        isProcessing = true;
+        //isProcessing = true;
         try {
             String amountText = customAmountField.getText().trim();
 
