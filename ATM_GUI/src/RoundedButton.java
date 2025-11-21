@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.*;
 
 public class RoundedButton extends JButton{
-//    private int borderWidth = 50;
+    //private int borderWidth = 50;
     //private boolean isroundedStatus;
     private int cornerRadius = 15;
 
@@ -25,7 +25,7 @@ public class RoundedButton extends JButton{
         setForeground(defaultFontColor);
 
         setFont(fontDefaultStyle);
-//        setPreferredSize(new Dimension(widths,heights));
+        //setPreferredSize(new Dimension(widths,heights));
         this.setMaximumSize(new Dimension(widths,heights));
 
 
@@ -147,18 +147,18 @@ public class RoundedButton extends JButton{
         g2d.fillRoundRect(0, 0, getWidth(), getHeight(), cornerRadius, cornerRadius);
 
         // 绘制边框
-//        g2d.setColor(borderColor);
-//        g2d.setStroke(new BasicStroke(borderWidth));
-//        g2d.drawRoundRect(borderWidth / 2, borderWidth / 2,
-//                getWidth() - borderWidth, getHeight() - borderWidth,
-//                cornerRadius, cornerRadius);
+        //g2d.setColor(borderColor);
+        //g2d.setStroke(new BasicStroke(borderWidth));
+        //g2d.drawRoundRect(borderWidth / 2, borderWidth / 2,
+                //getWidth() - borderWidth, getHeight() - borderWidth,
+                //cornerRadius, cornerRadius);
 
         super.paintComponent(g);
     }
 
     public void setBorderColor(Color color) {
-//        this.borderColor = color;
-//        this.defaultBorderColor = color;
+        //this.borderColor = color;
+        //this.defaultBorderColor = color;
         repaint();
     }
 

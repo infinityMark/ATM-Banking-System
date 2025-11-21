@@ -1,4 +1,3 @@
-
 // Keypad.java
 // Represents the keypad of the ATM
 import java.util.InputMismatchException;

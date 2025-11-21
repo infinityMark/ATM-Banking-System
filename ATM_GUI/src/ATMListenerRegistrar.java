@@ -47,6 +47,11 @@ public class ATMListenerRegistrar {
                         ((Component) e.getSource()).setCursor(java.awt.Cursor.getDefaultCursor());
                     }
                 });
+                
+        // 2. Configure the keypad buttons (number keys, confirm, delete, etc.).
+        configureKeypadButtons();
+        
+        
         // ... Other mouse events
         /*addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
@@ -135,9 +140,6 @@ public class ATMListenerRegistrar {
             }
         });*/
 
-        // 2. Configure the keypad buttons (number keys, confirm, delete, etc.).
-        configureKeypadButtons();
-
         // 3. Configure the WithdrawalUI side buttons (remove the common configuration from other panels).
         //configureWithdrawalSideButtons();
         //configureTransferSideButtons();
@@ -145,7 +147,7 @@ public class ATMListenerRegistrar {
     }
 
     private void configureKeypadButtons() {
-        // Confirm button - Add withdrawal panel handling
+        // Confirm button
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 if (atmUI.loginGUI.confirmBT() == true) {
@@ -168,7 +170,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Delete button - Add withdrawal panel handling
+        // Delete button
         addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleDelete();
@@ -187,7 +189,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Clear button - Add withdrawal panel handling
+        // Clear button
         addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleClear();
@@ -206,7 +208,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Double zero button - Add withdrawal panel handling
+        // Double zero button
         addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput("00");
@@ -225,7 +227,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Decimal point button - Add withdrawal panel handling
+        // Decimal point button
         addButtonListener(ATMUI.KEYPAD_PANEL, ".", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput(".");
@@ -240,7 +242,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Keypad number buttons (0-9) - Add withdrawal panel handling
+        // Keypad number buttons (0-9)
         for (int i = 0; i <= 9; i++) {
             final int number = i;
             addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
@@ -262,12 +264,14 @@ public class ATMListenerRegistrar {
             });
         }
 
+        //back to main menu button
         addButtonListener(ATMUI.KEYPAD_PANEL, "back to main menu", e -> {
             String currentPanel = controller.getCurrentPanelName();
             System.out.println("Back to Main menu pressed from: " + currentPanel);
             if (ATMUI.GREETING_PANEL.equals(currentPanel)) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
-            } else if (!ATMUI.MAIN_MENU_PANEL.equals(currentPanel) && !ATMUI.LOGIN_PANEL.equals(currentPanel)) {
+            } else if (!ATMUI.MAIN_MENU_PANEL.equals(currentPanel) && 
+            !ATMUI.LOGIN_PANEL.equals(currentPanel)) {
                 controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
             }
         });
@@ -464,7 +468,7 @@ public class ATMListenerRegistrar {
      * Unified handling of the logic for returning to the main menu
      */
     private void returnToMainMenu(TransferUI transferUI) {
-        System.out.println("=== 开始执行 returnToMainMenu ===");
+        System.out.println("=== Start execute returnToMainMenu ===");
         System.out.println("1. Is transferUI null: " + (transferUI == null));
         System.out.println("2. Is the controller null: " + (controller == null));
         System.out.println("3. Current panel:: " + controller.getCurrentPanelName());
@@ -590,7 +594,7 @@ public class ATMListenerRegistrar {
                 ((JTextField) comp).addFocusListener((FocusListener) listener);
             } else if (type.equals("key")) {
                 comp.addKeyListener((KeyListener) listener);
-            } else if (type.equals("mouse")) { // 处理鼠标监听器
+            } else if (type.equals("mouse")) { // Handling mouse listeners
                 comp.addMouseListener((MouseListener) listener);
             }
         }
