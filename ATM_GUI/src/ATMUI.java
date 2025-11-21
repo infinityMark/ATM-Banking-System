@@ -46,7 +46,7 @@ public class ATMUI extends ATMUIController {
     private JFrame mainframe;
 
     // ------------- Side panel buttons -------------
-/* 
+    /* 
     // left side panel buttons
     private JButton Button1;
     private JButton Button2;
@@ -67,7 +67,7 @@ public class ATMUI extends ATMUIController {
     public JButton[] getRightButton() {
         return rightButton;
     }
-*/
+    */
     private ATMUIController controller;
 
     public ATMUIController getController() {
@@ -178,47 +178,47 @@ public class ATMUI extends ATMUIController {
         mainUpperPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         mainUpperPanel.setBorder(BorderFactory.createTitledBorder("Function Area"));
-/* 
+        /* 
         // left button panel (small proportion)
         leftButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         leftButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         leftButtonPanel.setName("leftButtonPanel");
         leftButtonPanel.setMinimumSize(new Dimension(100, 200));
         registerPanel(leftButtonPanel);
-*/
+        */
         // center content panel (large proportion, using CardLayout)
         centerCardLayout = new CardLayout();
         centerPanel = new JPanel(centerCardLayout);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         centerPanel.setPreferredSize(new Dimension(900, 400));
-/* 
+        /* 
         // right button panel (small proportion)
         rightButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
         rightButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         rightButtonPanel.setName("rightButtonPanel");
         rightButtonPanel.setMinimumSize(new Dimension(100, 200));
         registerPanel(rightButtonPanel);
-*/
+        */
         // Set grid layout constraints
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 1.0;
 
-/*         // left panel occupies 20%
+        /*// left panel occupies 20%
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0.15;
         mainUpperPanel.add(leftButtonPanel, gbc);
-*/
+        */
         // center panel occupies 60%
         gbc.gridx = 1;
         gbc.weightx = 0.7;
         mainUpperPanel.add(centerPanel, gbc);
-/* 
+        /* 
         // right panel occupies 20%
         gbc.gridx = 2;
         gbc.weightx = 0.15;
         mainUpperPanel.add(rightButtonPanel, gbc);
-*/
+        */
         // lower keypad panel
         lowerPanel = createKeypadPanel();
         lowerPanel.setBorder(BorderFactory.createTitledBorder("Keypad"));
@@ -234,7 +234,7 @@ public class ATMUI extends ATMUIController {
                 new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
     }
 
- /*    protected void addButtonsToSidePanels() {
+    /*protected void addButtonsToSidePanels() {
         Button1 = new RoundedButton(setImageSafety(
                 "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
                 new Dimension(Integer.MAX_VALUE, 50));
@@ -280,7 +280,7 @@ public class ATMUI extends ATMUIController {
         rightButton[1] = Button6;
         rightButton[2] = Button7;
     }
-*/
+    */
     private void insertToCenterPanel() {
         JPanel greetingPanel = createGreetingPanel();
         centerPanel.add(greetingPanel, GREETING_PANEL);
@@ -456,7 +456,7 @@ public class ATMUI extends ATMUIController {
         return null;
 
     }
-/* 
+    /* 
     public void removeAllButtonListenersCompletely(JButton[] leftButton, JButton[] rightButton) {
         for (int i = 0; i < leftButton.length; i++) {
             if (leftButton[i] != null) {
@@ -480,7 +480,7 @@ public class ATMUI extends ATMUIController {
         }
         System.out.println("=== 清理完成 ===");
     }
-*/
+    */
     // switch panel by name
     public void switchPanel(String name) {
         JPanel targetPanel = getPanel(name);
@@ -505,7 +505,7 @@ public class ATMUI extends ATMUIController {
     public JFrame getMainFrame() {
         return mainframe;
     }
-/* 
+    /* 
     // get lower keypad panel
     public JPanel getLowerPanel() {
         return lowerPanel;

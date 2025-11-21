@@ -26,7 +26,7 @@ public class Passwords extends JPasswordField{
 
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // 添加鼠标监听器实现悬停效果
+        // Add a mouse listener to achieve a hover effect
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -41,7 +41,7 @@ public class Passwords extends JPasswordField{
             }
         });
 
-        // 添加焦点监听器
+        // Add focus listener
         addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {

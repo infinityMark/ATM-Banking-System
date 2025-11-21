@@ -47,7 +47,12 @@ public class ATMListenerRegistrar {
                         ((Component) e.getSource()).setCursor(java.awt.Cursor.getDefaultCursor());
                     }
                 });
-        // ... 其他鼠标事件
+                
+        // 2. Configure the keypad buttons (number keys, confirm, delete, etc.).
+        configureKeypadButtons();
+        
+        
+        // ... Other mouse events
         /*addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToPanel(ATMUI.BALANCE_PANEL);
@@ -135,17 +140,14 @@ public class ATMListenerRegistrar {
             }
         });*/
 
-        // 2. 配置 Keypad 按钮（数字键、确认、删除等）
-        configureKeypadButtons();
-
-        // 3. 配置 WithdrawalUI 侧边按钮（删除其他面板的通用配置）
+        // 3. Configure the WithdrawalUI side buttons (remove the common configuration from other panels).
         //configureWithdrawalSideButtons();
         //configureTransferSideButtons();
 
     }
 
     private void configureKeypadButtons() {
-        // Confirm button - Add withdrawal panel handling
+        // Confirm button
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 if (atmUI.loginGUI.confirmBT() == true) {
@@ -168,7 +170,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Delete button - Add withdrawal panel handling
+        // Delete button
         addButtonListener(ATMUI.KEYPAD_PANEL, "delete", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleDelete();
@@ -187,7 +189,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Clear button - Add withdrawal panel handling
+        // Clear button
         addButtonListener(ATMUI.KEYPAD_PANEL, "clear", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleClear();
@@ -206,7 +208,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Double zero button - Add withdrawal panel handling
+        // Double zero button
         addButtonListener(ATMUI.KEYPAD_PANEL, "00", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput("00");
@@ -225,7 +227,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Decimal point button - Add withdrawal panel handling
+        // Decimal point button
         addButtonListener(ATMUI.KEYPAD_PANEL, ".", e -> {
             if (ATMUI.LOGIN_PANEL.equals(controller.getCurrentPanelName())) {
                 atmUI.getLoginGUI().handleNumberInput(".");
@@ -240,7 +242,7 @@ public class ATMListenerRegistrar {
             }
         });
 
-        // Keypad number buttons (0-9) - Add withdrawal panel handling
+        // Keypad number buttons (0-9)
         for (int i = 0; i <= 9; i++) {
             final int number = i;
             addButtonListener(ATMUI.KEYPAD_PANEL, String.valueOf(i), e -> {
@@ -262,12 +264,14 @@ public class ATMListenerRegistrar {
             });
         }
 
+        //back to main menu button
         addButtonListener(ATMUI.KEYPAD_PANEL, "back to main menu", e -> {
             String currentPanel = controller.getCurrentPanelName();
             System.out.println("Back to Main menu pressed from: " + currentPanel);
             if (ATMUI.GREETING_PANEL.equals(currentPanel)) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
-            } else if (!ATMUI.MAIN_MENU_PANEL.equals(currentPanel) && !ATMUI.LOGIN_PANEL.equals(currentPanel)) {
+            } else if (!ATMUI.MAIN_MENU_PANEL.equals(currentPanel) && 
+            !ATMUI.LOGIN_PANEL.equals(currentPanel)) {
                 controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
             }
         });
@@ -461,62 +465,62 @@ public class ATMListenerRegistrar {
     }
     */
     /**
-     * 统一处理返回主菜单的逻辑
+     * Unified handling of the logic for returning to the main menu
      */
     private void returnToMainMenu(TransferUI transferUI) {
-        System.out.println("=== 开始执行 returnToMainMenu ===");
-        System.out.println("1. transferUI 是否为 null: " + (transferUI == null));
-        System.out.println("2. controller 是否为 null: " + (controller == null));
-        System.out.println("3. 当前面板: " + controller.getCurrentPanelName());
+        System.out.println("=== Start execute returnToMainMenu ===");
+        System.out.println("1. Is transferUI null: " + (transferUI == null));
+        System.out.println("2. Is the controller null: " + (controller == null));
+        System.out.println("3. Current panel:: " + controller.getCurrentPanelName());
 
-        // 1. 刷新相关面板数据
-        System.out.println("4. 刷新历史面板...");
+        // 1. Refresh relevant panel data
+        System.out.println("4. Refresh History Panel...");
         controller.refreshHistoryPanel();
-        System.out.println("刷新完成");
+        System.out.println("Refresh complete");
 
-        // 2. 重置转账UI状态
+        // 2. Reset transfer UI status
         if (transferUI != null) {
-            System.out.println("5. 尝试重置转账UI状态...");
+            System.out.println("5. Try resetting the transfer UI state..");
             try {
-                // 先检查是否有重置方法
+                // First check if there is a reset method.
                 java.lang.reflect.Method resetMethod = transferUI.getClass().getMethod("resetToInitialState");
                 if (resetMethod != null) {
                     transferUI.resetToInitialState();
-                    System.out.println("重置方法调用成功");
+                    System.out.println("The reset method call was successful.");
                 }
             } catch (NoSuchMethodException e) {
-                System.out.println("没有找到 resetToInitialState 方法，使用 showCard 代替");
+                System.out.println("The resetToInitialState method was not found; showCard was used instead.");
                 transferUI.showCard(TransferUI.CARD_MENU);
             } catch (Exception e) {
-                System.out.println("重置方法调用异常: " + e.getMessage());
+                System.out.println("Reset method call exception: " + e.getMessage());
                 transferUI.showCard(TransferUI.CARD_MENU);
             }
         } else {
-            System.out.println("5. transferUI 为 null，跳过重置");
+            System.out.println("5. If transferUI is null, skip the reset.");
         }
 
-        // 3. 切换到主菜单面板
-        System.out.println("6. 准备切换到主菜单面板...");
+        // 3. Switch to main menu panel
+        System.out.println("6. Preparing to switch to the main menu panel...");
         try {
             controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
-            System.out.println("7. 切换面板方法调用完成");
-            System.out.println("切换后当前面板: " + controller.getCurrentPanelName());
+            System.out.println("7. The panel switching method call is complete.");
+            System.out.println("Switch to the current panel: " + controller.getCurrentPanelName());
         } catch (Exception e) {
-            System.out.println("切换面板时出现异常: " + e.getMessage());
+            System.out.println("An error occurred while switching panels.: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("=== returnToMainMenu 执行结束 ===");
+        System.out.println("=== returnToMainMenu Execution completed ===");
     }
 
     private void configureHistorySideButtons() {
         String[] leftButtons = { "Left1", "Left2", "Left3" };
         String[] rightButtons = { "Right1", "Right2", "Right3" };
 
-        // 统一的 TransferUI 按钮处理器
+        // Unified TransferUI button handler
         ActionListener transferButtonHandler = e -> {
-            // 检查当前是否在 Transfer 面板
+            // Check if you are currently in the Transfer panel.
             if (!ATMUI.HISTORY_PANEL.equals(controller.getCurrentPanelName())) {
-                return; // 不在 Transfer 面板，直接返回
+                return; // If you're not in the Transfer panel, go directly back.
             }
 
             TransactionHistoryUI transactionHistoryUI = atmUI.historyGUI;
@@ -530,7 +534,7 @@ public class ATMListenerRegistrar {
             controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
         };
 
-        // 为所有侧边按钮注册统一的处理器
+        // Register a unified processor for all side buttons
         for (String btnName : leftButtons) {
             addButtonListener("leftButtonPanel", btnName, transferButtonHandler);
         }
@@ -542,11 +546,11 @@ public class ATMListenerRegistrar {
     /**
      * 添加Listener
      * 
-     * @param panelName  面板名称（需与ATMUI中的面板名称常量一致）
-     * @param buttonName 按钮名称（用于查找按钮）
-     * @param listener   按钮点击监听器（可由组员实现具体逻辑）
+     * @param panelName Panel name (must match the panel name constant in ATMUI)
+     * @param buttonName Button name (used to find the button
+     * @param listener Button click listener (specific logic can be implemented by team members)
      */
-    // 1. 处理按钮点击事件
+    // 1. Handling button click events
     public void addButtonListener(String panelName, String buttonName, ActionListener listener) {
         actionConfigs.add(new Object[] { panelName, buttonName, "action", listener });
     }
@@ -561,12 +565,12 @@ public class ATMListenerRegistrar {
         actionConfigs.add(new Object[] { panelName, componentName, "key", listener });
     }*/
 
-    // 4. 处理鼠标事件
+    // 4. Handling mouse events
     public void addMouseListener(String panelName, String componentName, MouseListener listener) {
         actionConfigs.add(new Object[] { panelName, componentName, "mouse", listener });
     }
 
-    // 遍历所有配置，按类型绑定监听器
+    // Iterate through all configurations and bind listeners by type.
     public void registerAllListeners() {
         for (Object[] config : actionConfigs) {
             String panelName = (String) config[0];
@@ -578,36 +582,36 @@ public class ATMListenerRegistrar {
             if (panel == null)
                 continue;
 
-            // 找组件（按名称找，比按文本可靠）
+            // Find components (searching by name is more reliable than searching by text).
             Component comp = findComponentByName(panel, componentName);
             if (comp == null)
                 continue;
 
-            // 按类型绑定监听器
+            // Bind listeners by type
             if (type.equals("action") && comp instanceof JButton) {
                 ((JButton) comp).addActionListener((ActionListener) listener);
             } else if (type.equals("focus") && comp instanceof JTextField) {
                 ((JTextField) comp).addFocusListener((FocusListener) listener);
             } else if (type.equals("key")) {
                 comp.addKeyListener((KeyListener) listener);
-            } else if (type.equals("mouse")) { // 处理鼠标监听器
+            } else if (type.equals("mouse")) { // Handling mouse listeners
                 comp.addMouseListener((MouseListener) listener);
             }
         }
     }
 
     private Component findComponentByName(Container container, String name) {
-        // 先检查容器本身是否匹配名称
+        // First check if the container itself matches the name.
         if (name.equals(container.getName())) {
             return container;
         }
 
-        // 然后查找子组件
+        // Then find the child components.
         for (Component comp : container.getComponents()) {
             if (name.equals(comp.getName())) {
                 return comp;
             }
-            // 递归查找子组件
+            // Recursive search for subcomponents
             if (comp instanceof Container) {
                 Component child = findComponentByName((Container) comp, name);
                 if (child != null)

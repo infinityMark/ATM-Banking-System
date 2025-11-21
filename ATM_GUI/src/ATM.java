@@ -1,4 +1,3 @@
-
 // ATM.java
 // Represents an automated teller machine
 import javax.swing.*;
