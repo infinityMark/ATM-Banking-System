@@ -318,7 +318,7 @@ public class TransferUI extends Transfer {
                     showCard(CARD_CONFIRMATION);
                 } else {
                     showValidationError(amountTextField, amountLabel,
-                            String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
+                            String.format("Cheque Account can not %s over HK$50000 once time.", "Transfer"));
                 }
             }
         }
@@ -776,10 +776,10 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
-            if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
-                showValidationError(amountTextField, amountLabel,
-                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
-            }
+//            if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+//                showValidationError(textField, label,
+//                        String.format("Cheque Account can not %s over HK$50000 once time.", "Transfer"));
+//            }
 
             setAmount(amountValue);
             clearValidationError(label);
