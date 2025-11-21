@@ -395,7 +395,7 @@ public class ATMUI extends ATM {
 
     protected JPanel createWithdrawPanel() {
         withdrawGUI = new WithdrawalUI(loginGUI.getAccountNumber(), getLeftButton(), getLeftButton(),
-                getcController());
+                getcController(), this);
         withdrawGUI.getMainPanel().setName(WITHDRAW_PANEL);
         return withdrawGUI.getMainPanel();
     }
