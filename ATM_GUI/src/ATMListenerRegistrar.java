@@ -50,7 +50,7 @@ public class ATMListenerRegistrar {
         // ... 其他鼠标事件
         addButtonListener("leftButtonPanel", "Left1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.goToPanel(ATMUI.BALANCE_PANEL);
+                controller.switchToPanel(ATMUI.BALANCE_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
             } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
@@ -63,7 +63,7 @@ public class ATMListenerRegistrar {
 
         addButtonListener("leftButtonPanel", "Left2", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.goToPanel(ATMUI.WITHDRAW_PANEL);
+                controller.switchToPanel(ATMUI.WITHDRAW_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
             } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
@@ -76,7 +76,7 @@ public class ATMListenerRegistrar {
 
         addButtonListener("leftButtonPanel", "Left3", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.goToPanel(ATMUI.GREETING_PANEL);
+                controller.switchToPanel(ATMUI.GREETING_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
             } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
@@ -89,7 +89,7 @@ public class ATMListenerRegistrar {
 
         addButtonListener("rightButtonPanel", "Right1", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.goToPanel(ATMUI.TRANSFER_PANEL);
+                controller.switchToPanel(ATMUI.TRANSFER_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
             } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
@@ -102,8 +102,8 @@ public class ATMListenerRegistrar {
 
         addButtonListener("rightButtonPanel", "Right2", e -> {
             if (ATMUI.MAIN_MENU_PANEL.equals(controller.getCurrentPanelName())) {
-                controller.goToPanel(ATMUI.HISTORY_PANEL);
-                controller.onShowHistoryPanel();
+                controller.switchToPanel(ATMUI.HISTORY_PANEL);
+                controller.switchToPanel(ATMUI.HISTORY_PANEL);
             } else if (ATMUI.GREETING_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
             } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
@@ -120,7 +120,7 @@ public class ATMListenerRegistrar {
             } else if (ATMUI.BALANCE_PANEL.equals(controller.getCurrentPanelName())) {
                 controller.switchToPanel(ATMUI.LOGIN_PANEL);
             } else {
-                controller.goToPanel("mainMenu");
+                //controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
             }
         });
 
@@ -289,9 +289,9 @@ public class ATMListenerRegistrar {
         // 检查是否在结果页面
         if (atmUI.withdrawGUI.isOnResultScreen()) {
             atmUI.withdrawGUI.continueFromResultScreen();
-            controller.refrshPanel("balance");
+            controller.refreshPanel("balance");
             controller.refreshHistoryPanel();
-            controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
+            // controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
             System.out.println("onResultScreen");
             return;
         }
