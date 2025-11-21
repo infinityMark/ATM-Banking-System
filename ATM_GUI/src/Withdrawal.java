@@ -110,35 +110,6 @@ public class Withdrawal extends Transaction {
       } while (!cashDispensed);
    } // end method execute
 
-   // Add this method to the Withdrawal class to support GUI operations
-   public boolean performWithdrawal(int amount) {
-      BankDatabase bankDatabase = getBankDatabase();
-      double availableBalance = bankDatabase.getAvailableBalance(getAccountNumber());
-
-      // Check if user has sufficient funds
-      if (amount > availableBalance) {
-        return false;
-      }
-
-      // Check if cash dispenser has sufficient cash
-      if (!cashDispenser.isSufficientCashAvailable(amount)) {
-        return false;
-      }
-
-      // Check account limit conditions
-      if (isLimitAccountConditionCheckerHappen(amount, "withdrawal")) {
-        return false;
-      }
-
-      // Perform the withdrawal
-      bankDatabase.debit(getAccountNumber(), amount);
-      cashDispenser.dispenseCash();
-    
-      // Record transaction history
-      new TransactionHistory(1, getAccountNumber(), 0, 0, 0, (double) amount);
-    
-      return true;
-   }  
    // Add
    public boolean isMultiplesCondition(int amount) {
       // Check whether the amount is the multiples of HKD$ 100 or 500 or 1000.
