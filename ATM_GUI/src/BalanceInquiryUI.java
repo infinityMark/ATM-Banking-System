@@ -30,15 +30,6 @@ public class BalanceInquiryUI extends JPanel {
 
     private ATMUIController controller;
 
-    /*
-     * public BalanceInquiryUI(int accountNumber) {
-     * this.currentAccountNumber = accountNumber;
-     * this.bankDatabase = BankDatabase.getInstance();
-     * initializeUI();
-     * updateBalanceInfo();
-     * }
-     */
-
     public BalanceInquiryUI(int accountNumber,
                 //JButton[] leftButton, JButton[] rightButton,
             ATMUIController controller) {
@@ -134,12 +125,14 @@ public class BalanceInquiryUI extends JPanel {
         return panel;
     }
 
-    /*private void sideButtonRegistrar() {
+    /*
+    private void sideButtonRegistrar() {
         for (int i = 0; i < 3; i++) {
             leftButton[i].addActionListener(e -> goBackToMainPanel());
             rightButton[i].addActionListener(e -> goBackToMainPanel());
         }
-    }*/
+    }
+    */
 
     private JPanel createInfoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -344,11 +337,6 @@ public class BalanceInquiryUI extends JPanel {
     public JPanel getMainPanel() {
         return mainPanel;
     }
-
-    /*public void setAccountNumber(int accountNumber) {
-        this.currentAccountNumber = accountNumber;
-        updateBalanceInfo();
-    }*/
 
     public void refreshBalance(int accountNumber) {
         this.currentAccountNumber = accountNumber;
