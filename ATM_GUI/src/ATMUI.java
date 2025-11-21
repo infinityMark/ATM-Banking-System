@@ -14,6 +14,11 @@ public class ATMUI extends ATMUIController {
     public static final String KEYPAD_PANEL = "keypad";
     public static final String test = "test";
 
+    public static final String TAKE_OUT_CARD_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1" +
+            "_Group_101A-G03_UML_Showing/refs/heads/main/atm.png";
+    public static final String ATM_MACHINE_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_" +
+            "Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png";
+
     protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     protected static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
     protected static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
