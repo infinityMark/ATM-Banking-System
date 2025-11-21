@@ -41,14 +41,14 @@ public class GreetingUI extends ATMUI{
 
     /**
      * Creates a welcome interface panel for the ATM system.
-     * This panel includes a welcome message and an ATM machine image.
+     * This panel includes a welcome message and an ATM-machine image.
      *
      * @return JPanel Returns a configured welcome interface panel containing welcome text and ATM image
      *
      * Features:
      * - Uses GridBagLayout for flexible component arrangement
      * - Displays welcome message text
-     * - Loads ATM machine image from GitHub repository
+     * - Loads ATM-machine image from GitHub repository
      * - Automatically handles image loading failures with fallback
      *
      * Layout Structure:
@@ -62,7 +62,7 @@ public class GreetingUI extends ATMUI{
      * - Provides fallback display if image fails to load
      *
      * Styling:
-     * - Uses predefined fonts and colors from ATMUI class
+     * - Uses predefined fonts and colors from ATM UI class
      * - Centers all content horizontally
      * - Applies consistent spacing with insets
      */

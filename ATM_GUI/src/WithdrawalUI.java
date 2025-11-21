@@ -136,13 +136,13 @@ public class WithdrawalUI extends JPanel {
         }
 
         // Custom amount button
-        RoundedButton customButton = createActionButton("Custom Amount",
+        RoundedButton customButton = ATMUI.createActionButton("Custom Amount",
                 StandardColor.Blue.getColorMode());
         customButton.addActionListener(e -> showCard(CARD_CUSTOM));
         amountPanel.add(customButton);
 
         // Cancel button
-        RoundedButton cancelButton = createActionButton("Cancel",
+        RoundedButton cancelButton = ATMUI.createActionButton("Cancel",
                 StandardColor.Red.getColorMode());
         cancelButton.addActionListener(e -> goBackToMainPanel());
         amountPanel.add(cancelButton);
@@ -220,11 +220,11 @@ public class WithdrawalUI extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
-        RoundedButton confirmButton = createActionButton("Confirm",
+        RoundedButton confirmButton = ATMUI.createActionButton("Confirm",
                 StandardColor.Green.getColorMode());
         confirmButton.addActionListener(e -> processCustomAmount());
 
-        RoundedButton backButton = createActionButton("Back",
+        RoundedButton backButton = ATMUI.createActionButton("Back",
                 StandardColor.Yellow.getColorMode());
         backButton.addActionListener(e -> {
             showCard(CARD_MENU);
@@ -300,11 +300,11 @@ public class WithdrawalUI extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
-        RoundedButton confirmButton = createActionButton("Confirm Withdrawal",
+        RoundedButton confirmButton = ATMUI.createActionButton("Confirm Withdrawal",
                 StandardColor.Green.getColorMode());
         confirmButton.addActionListener(e -> executeWithdrawal());
 
-        RoundedButton cancelButton = createActionButton("Cancel",
+        RoundedButton cancelButton = ATMUI.createActionButton("Cancel",
                 StandardColor.Red.getColorMode());
         cancelButton.addActionListener(e -> {
             showCard(CARD_MENU);
@@ -387,7 +387,7 @@ public class WithdrawalUI extends JPanel {
         panel.add(instructionLabel, gbc);
 
         // Continue button
-        RoundedButton continueButton = createActionButton("Continue",
+        RoundedButton continueButton = ATMUI.createActionButton("Continue",
                 StandardColor.Blue.getColorMode());
         continueButton.addActionListener(e -> {
             resetToInitialState();
@@ -625,17 +625,6 @@ public class WithdrawalUI extends JPanel {
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         return gbc;
-    }
-
-    private RoundedButton createActionButton(String text, Color backgroundColor) {
-        return new RoundedButton(text, text,
-                backgroundColor,
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getOppositeColorMode(),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
-                true, 180, 50);
     }
 
     private JLabel createStyledLabel(String text, Font font, Color color) {

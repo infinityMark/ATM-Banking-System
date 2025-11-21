@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -32,7 +31,6 @@ public class TransferUI extends JPanel {
 
     private int userAccountNumberInUI;
 
-
     private Transfer transfer;
 
     // Validation states
@@ -53,7 +51,6 @@ public class TransferUI extends JPanel {
 
     public TransferUI(int userAccountNumber
         ,BankDatabase atmBankDatabase, ATMUIController controller) {
-//        super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         super();
         userAccountNumberInUI = userAccountNumber;
         // JPanel panel = this.transferLayout();
@@ -277,8 +274,8 @@ public class TransferUI extends JPanel {
         // Create UI components
         JLabel remainAmountTitle = createStyledLabel(remainAmount, ATMUI.FONT_SMALL,
                 StandardColor.GreyHighest.getOppositeColorMode());
-        RoundedButton confirmationButton = createActionButton("Confirm", StandardColor.Green.getColorMode());
-        RoundedButton backButton = createActionButton("Back", StandardColor.Yellow.getColorMode());
+//        RoundedButton confirmationButton = ATMUI.createActionButton("Confirm", StandardColor.Green.getColorMode());
+//        RoundedButton backButton = ATMUI.createActionButton("Back", StandardColor.Yellow.getColorMode());
 
         receiverAccountTextField = ATMUI.createInputField(40);
         receiverAccountTextField.setName(RECEIVER_TEXTFIELD);
@@ -317,10 +314,10 @@ public class TransferUI extends JPanel {
         gbc.weighty = 0.01;
         panel.add(instructionLabel, gbc);
 
-        backButton.addActionListener(e -> {
-            showCard(CARD_MENU);
-            resetToInitialState();
-        });
+//        backButton.addActionListener(e -> {
+//            showCard(CARD_MENU);
+//            resetToInitialState();
+//        });
 
         gbc.gridy = 6;
         gbc.weighty = 0.01;
@@ -477,20 +474,6 @@ public class TransferUI extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         button.setHorizontalAlignment(SwingConstants.LEFT);
         return button;
-    }
-
-    /**
-     * Creates a styled action button (Confirm, Back, etc.)
-     */
-    private RoundedButton createActionButton(String text, Color backgroundColor) {
-        return new RoundedButton(text, text,
-                backgroundColor,
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getOppositeColorMode(),
-                ATMUI.FONT_BUTTON,
-                ATMUI.FONT_BUTTON,
-                true, 200, 10);
     }
 
     /**

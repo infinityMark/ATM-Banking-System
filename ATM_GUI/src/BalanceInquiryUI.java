@@ -122,7 +122,7 @@ public class BalanceInquiryUI extends JPanel {
         panel.add(infoPanel, gbc);
 
         // Back button
-        RoundedButton backButton = createActionButton("Back to Main Menu",
+        RoundedButton backButton = ATMUI.createActionButton("Back to Main Menu",
                 StandardColor.Blue.getColorMode());
         backButton.addActionListener(e -> goBackToMainPanel());
         // sideButtonRegistrar();
@@ -316,17 +316,6 @@ public class BalanceInquiryUI extends JPanel {
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         return gbc;
-    }
-
-    private RoundedButton createActionButton(String text, Color backgroundColor) {
-        return new RoundedButton(text, text,
-                backgroundColor,
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getOppositeColorMode(),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
-                true, 200, 40);
     }
 
     private JLabel createStyledLabel(String text, Font font, Color color) {
