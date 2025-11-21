@@ -190,7 +190,7 @@ public class WithdrawalUI extends JPanel {
                 new Font(Font.SANS_SERIF, Font.BOLD, 24),
                 StandardColor.GreyHighest.getOppositeColorMode());
 
-        customAmountField = new TextFields(250, 40,
+        customAmountField = new TextFields(500, 40,
                 StandardColor.GreyLower.getColor(0),
                 StandardColor.Blue.getColor(0),
                 StandardColor.GreyHighest.getColor(1),
@@ -449,7 +449,7 @@ public class WithdrawalUI extends JPanel {
 
     public void handleConfirm() {
         if (isCustomAmountPanelActive && customAmountField != null) {
-            System.out.println("成功调用handleConfirm");
+            System.out.println("Successful call handleConfirm");
             processCustomAmount();
         }
     }
