@@ -9,6 +9,7 @@ public class ATMCaseStudy {
       // ATM atm = new ATM();
       // atm.run();
       ATMUIController controller = new ATMUIController(atmUI);
+      atmUI.setController(controller);
       controller.run();
    } // end main
 } // end class ATMCaseStudy

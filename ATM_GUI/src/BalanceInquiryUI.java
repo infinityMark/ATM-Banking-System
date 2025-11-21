@@ -2,20 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.*;
+import java.awt.event.*;
 
 public class BalanceInquiryUI extends JPanel {
     // Card names
     private static final String CARD_BALANCE = "BALANCE";
-    
+
     // Layout components
     private CardLayout cardLayout;
     private JPanel cardPanel;
     private JPanel mainPanel;
-    
+
     // Balance data
     private int currentAccountNumber;
     private BankDatabase bankDatabase;
-    
+
     // UI Components
     private JLabel accountTypeLabel;
     private JLabel availableBalanceLabel;
@@ -23,9 +25,27 @@ public class BalanceInquiryUI extends JPanel {
     private JLabel interestLabel;
     private JLabel chequeLimitLabel;
 
-    public BalanceInquiryUI(int accountNumber) {
+    private JButton[] leftButton = new JButton[3];
+    private JButton[] rightButton = new JButton[3];
+
+    private ATMUIController controller;
+
+    /*
+     * public BalanceInquiryUI(int accountNumber) {
+     * this.currentAccountNumber = accountNumber;
+     * this.bankDatabase = BankDatabase.getInstance();
+     * initializeUI();
+     * updateBalanceInfo();
+     * }
+     */
+
+    public BalanceInquiryUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
+            ATMUIController controller) {
         this.currentAccountNumber = accountNumber;
-        this.bankDatabase = new BankDatabase();
+        this.bankDatabase = BankDatabase.getInstance();
+        this.leftButton = leftButton;
+        this.rightButton = rightButton;
+        this.controller = controller;
         initializeUI();
         updateBalanceInfo();
     }
@@ -37,8 +57,8 @@ public class BalanceInquiryUI extends JPanel {
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
         // Title
-        JLabel taskTitle = createStyledLabel("Balance Inquiry", 
-                new Font(Font.SANS_SERIF, Font.BOLD, 40), 
+        JLabel taskTitle = createStyledLabel("Balance Inquiry",
+                new Font(Font.SANS_SERIF, Font.BOLD, 40),
                 StandardColor.Blue.getColorMode());
         taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -73,7 +93,7 @@ public class BalanceInquiryUI extends JPanel {
         gbc.insets = new Insets(10, 15, 10, 15);
 
         // Title
-        JLabel titleLabel = createStyledLabel("Account Balance Information", 
+        JLabel titleLabel = createStyledLabel("Account Balance Information",
                 new Font(Font.SANS_SERIF, Font.BOLD, 32),
                 StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -83,7 +103,7 @@ public class BalanceInquiryUI extends JPanel {
         panel.add(titleLabel, gbc);
 
         // Current date
-        JLabel dateLabel = createStyledLabel("Date: " + getCurrentDate(), 
+        JLabel dateLabel = createStyledLabel("Date: " + getCurrentDate(),
                 new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 StandardColor.Blue.getColorMode());
         dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -94,17 +114,17 @@ public class BalanceInquiryUI extends JPanel {
 
         // Account information panel
         JPanel infoPanel = createInfoPanel();
-        
+
         gbc.gridy = 2;
         gbc.weighty = 0.6;
         gbc.insets = new Insets(20, 50, 20, 50);
         panel.add(infoPanel, gbc);
 
         // Back button
-        RoundedButton backButton = createActionButton("Back to Main Menu", 
+        RoundedButton backButton = createActionButton("Back to Main Menu",
                 StandardColor.Blue.getColorMode());
         backButton.addActionListener(e -> goBackToMainPanel());
-
+        // sideButtonRegistrar();
         gbc.gridy = 3;
         gbc.weighty = 0.1;
         gbc.insets = new Insets(20, 15, 10, 15);
@@ -113,22 +133,28 @@ public class BalanceInquiryUI extends JPanel {
         return panel;
     }
 
+    private void sideButtonRegistrar() {
+        for (int i = 0; i < 3; i++) {
+            leftButton[i].addActionListener(e -> goBackToMainPanel());
+            rightButton[i].addActionListener(e -> goBackToMainPanel());
+        }
+    }
+
     private JPanel createInfoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(StandardColor.GreyMiddle.getColorMode());
         panel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(StandardColor.Blue.getColorMode(), 2),
-            BorderFactory.createEmptyBorder(20, 20, 20, 20)
-        ));
+                BorderFactory.createLineBorder(StandardColor.Blue.getColorMode(), 2),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)));
 
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // Account Type
-        JLabel accountTypeTitle = createStyledLabel("Account Type:", 
+        JLabel accountTypeTitle = createStyledLabel("Account Type:",
                 new Font(Font.SANS_SERIF, Font.BOLD, 20),
                 StandardColor.GreyHighest.getOppositeColorMode());
-        accountTypeLabel = createStyledLabel("", 
+        accountTypeLabel = createStyledLabel("",
                 new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                 StandardColor.Blue.getColorMode());
 
@@ -136,7 +162,7 @@ public class BalanceInquiryUI extends JPanel {
         gbc.weighty = 0.1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(accountTypeTitle, gbc);
-        
+
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(accountTypeLabel, gbc);
@@ -145,15 +171,15 @@ public class BalanceInquiryUI extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        JLabel availableBalanceTitle = createStyledLabel("Available Balance:", 
+        JLabel availableBalanceTitle = createStyledLabel("Available Balance:",
                 new Font(Font.SANS_SERIF, Font.BOLD, 20),
                 StandardColor.GreyHighest.getOppositeColorMode());
-        availableBalanceLabel = createStyledLabel("", 
+        availableBalanceLabel = createStyledLabel("",
                 new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                 StandardColor.Green.getColorMode());
 
         panel.add(availableBalanceTitle, gbc);
-        
+
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(availableBalanceLabel, gbc);
@@ -162,21 +188,21 @@ public class BalanceInquiryUI extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        JLabel totalBalanceTitle = createStyledLabel("Total Balance:", 
+        JLabel totalBalanceTitle = createStyledLabel("Total Balance:",
                 new Font(Font.SANS_SERIF, Font.BOLD, 20),
                 StandardColor.GreyHighest.getOppositeColorMode());
-        totalBalanceLabel = createStyledLabel("", 
+        totalBalanceLabel = createStyledLabel("",
                 new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                 StandardColor.Green.getColorMode());
 
         panel.add(totalBalanceTitle, gbc);
-        
+
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(totalBalanceLabel, gbc);
 
         // Interest Rate (for Saving Account)
-        interestLabel = createStyledLabel("", 
+        interestLabel = createStyledLabel("",
                 new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 StandardColor.Orange.getColorMode());
         interestLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -189,7 +215,7 @@ public class BalanceInquiryUI extends JPanel {
         panel.add(interestLabel, gbc);
 
         // Cheque Limit (for Cheque Account)
-        chequeLimitLabel = createStyledLabel("", 
+        chequeLimitLabel = createStyledLabel("",
                 new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 StandardColor.Orange.getColorMode());
         chequeLimitLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -219,7 +245,7 @@ public class BalanceInquiryUI extends JPanel {
                 if (accountType.equals("Saving Account")) {
                     interestLabel.setText(String.format("Interest Rate: %.2f%% per annum", rateOrLimit * 100));
                     chequeLimitLabel.setText(""); // Clear cheque limit label
-                    
+
                     // Calculate and display future value
                     SavingAccount savingAccount = (SavingAccount) bankDatabase.getAccount(currentAccountNumber);
                     if (savingAccount != null) {
@@ -229,7 +255,7 @@ public class BalanceInquiryUI extends JPanel {
                                 new Font(Font.SANS_SERIF, Font.PLAIN, 14),
                                 StandardColor.Mint.getColorMode());
                         futureValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                        
+
                         // Add future value to panel if not already added
                         GridBagConstraints gbc = createDefaultGridBagConstraints();
                         gbc.gridx = 0;
@@ -237,7 +263,7 @@ public class BalanceInquiryUI extends JPanel {
                         gbc.gridwidth = 2;
                         gbc.anchor = GridBagConstraints.CENTER;
                         gbc.insets = new Insets(10, 10, 5, 10);
-                        
+
                         JPanel infoPanel = (JPanel) cardPanel.getComponent(0).getComponentAt(2, 2);
                         if (infoPanel != null) {
                             // Remove existing future value label if any
@@ -279,18 +305,7 @@ public class BalanceInquiryUI extends JPanel {
     }
 
     public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, "mainMenu");
-            }
-        }
+        controller.switchToMainMenuPanel();
     }
 
     // Helper methods
@@ -334,7 +349,8 @@ public class BalanceInquiryUI extends JPanel {
         updateBalanceInfo();
     }
 
-    public void refreshBalance() {
+    public void refreshBalance(int accountNumber) {
+        this.currentAccountNumber = accountNumber;
         updateBalanceInfo();
     }
 }

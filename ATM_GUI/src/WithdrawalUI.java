@@ -13,6 +13,8 @@ public class WithdrawalUI extends JPanel {
     private static final String CARD_RESULT = "RESULT";
     private static final String CARD_CUSTOM = "CUSTOM";
 
+    private String currentCardName = CARD_MENU;
+
     // Layout components
     private CardLayout cardLayout;
     private JPanel cardPanel;
@@ -28,23 +30,28 @@ public class WithdrawalUI extends JPanel {
     // UI Components
     private JLabel statusLabel;
     private TextFields customAmountField;
-    private JLabel balanceLabel; 
+    private JLabel balanceLabel;
+
+    private JButton[] leftButton = new JButton[3];
+    private JButton[] rightButton = new JButton[3];
+
+    private ATMUIController controller;
 
     // Keypad integration
     private boolean isCustomAmountPanelActive = false;
-    private ATMUI atmUI;
-    
+    // private ATMUI atmUI;
+
     // Constants for preset amounts
     private final int[] PRESET_AMOUNTS = { 200, 400, 800, 1000 };
     private final int CANCELED = 6;
-    
-    public WithdrawalUI(ATMUI atmUI) {
-        this.atmUI = atmUI;
-    }
 
-    public void createWithdrawalUI(int accountNumber) {
+    public WithdrawalUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
+            ATMUIController controller) {
+        this.leftButton = leftButton;
+        this.rightButton = rightButton;
+        this.controller = controller;
         this.currentAccountNumber = accountNumber;
-        this.bankDatabase = new BankDatabase();
+        this.bankDatabase = BankDatabase.getInstance();
         this.cashDispenser = new CashDispenser();
         this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(), bankDatabase, new Keypad(), cashDispenser);
 
@@ -96,7 +103,7 @@ public class WithdrawalUI extends JPanel {
 
         // Title
         JLabel titleLabel = createStyledLabel("Withdrawal Menu",
-                new Font(Font.SANS_SERIF, Font.BOLD, 36), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 36),
                 StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -104,11 +111,11 @@ public class WithdrawalUI extends JPanel {
         gbc.weighty = 0.1;
         panel.add(titleLabel, gbc);
 
-        // Available balance 
+        // Available balance
         double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
-        balanceLabel = createStyledLabel( 
+        balanceLabel = createStyledLabel(
                 String.format("Available Balance: HK$ %.2f", availableBalance),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 24), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 24),
                 StandardColor.Green.getColorMode());
         balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -117,7 +124,7 @@ public class WithdrawalUI extends JPanel {
         panel.add(balanceLabel, gbc);
 
         // Preset amount buttons
-        JPanel amountPanel = new JPanel(new GridLayout(3, 2, 15, 15)); 
+        JPanel amountPanel = new JPanel(new GridLayout(3, 2, 15, 15));
         amountPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
         // Preset amounts
@@ -155,7 +162,7 @@ public class WithdrawalUI extends JPanel {
 
         // Title
         JLabel titleLabel = createStyledLabel("Enter Custom Amount",
-                new Font(Font.SANS_SERIF, Font.BOLD, 36), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 36),
                 StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -166,7 +173,7 @@ public class WithdrawalUI extends JPanel {
         // Instruction
         JLabel instructionLabel = createStyledLabel(
                 "Amount must be multiples of HK$ 100, 500, or 1000",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                 StandardColor.Orange.getColorMode());
         instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -179,32 +186,17 @@ public class WithdrawalUI extends JPanel {
         inputPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
         JLabel amountLabel = createStyledLabel("HK$",
-                new Font(Font.SANS_SERIF, Font.BOLD, 24), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 24),
                 StandardColor.GreyHighest.getOppositeColorMode());
 
-        customAmountField = new TextFields(250, 40, 
+        customAmountField = new TextFields(250, 40,
                 StandardColor.GreyLower.getColor(0),
                 StandardColor.Blue.getColor(0),
                 StandardColor.GreyHighest.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 36));
         customAmountField.setHorizontalAlignment(JTextField.RIGHT);
         customAmountField.setEditable(false); // Make non-editable to force keypad use
-        
-        /*
-        // Add focus listener to track when this field is active
-        customAmountField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                activateCustomAmountField();
-            }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Don't deactivate immediately to allow keypad interaction
-            }
-        });
-        */
-        
         inputPanel.add(amountLabel);
         inputPanel.add(customAmountField);
 
@@ -218,12 +210,11 @@ public class WithdrawalUI extends JPanel {
                 new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 StandardColor.Blue.getColorMode());
         keypadInstruction.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         gbc.gridy = 3;
         gbc.weighty = 0.05;
         panel.add(keypadInstruction, gbc);
 
-        
         // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
@@ -248,7 +239,7 @@ public class WithdrawalUI extends JPanel {
 
         // Status label
         statusLabel = createStyledLabel("",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                 StandardColor.Red.getColorMode());
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -267,7 +258,7 @@ public class WithdrawalUI extends JPanel {
 
         // Title
         JLabel titleLabel = createStyledLabel("Confirm Withdrawal",
-                new Font(Font.SANS_SERIF, Font.BOLD, 36), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 36),
                 StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -278,7 +269,7 @@ public class WithdrawalUI extends JPanel {
         // Amount confirmation
         JLabel amountLabel = createStyledLabel(
                 String.format("Amount: HK$ %d", selectedAmount),
-                new Font(Font.SANS_SERIF, Font.BOLD, 28), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 28),
                 StandardColor.Green.getColorMode());
         amountLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -296,7 +287,7 @@ public class WithdrawalUI extends JPanel {
         JLabel notesLabel = createStyledLabel(
                 String.format("You will receive:\n   %d x HK$1000\n   %d x HK$500\n   %d x HK$100",
                         thousands, fiveHundreds, hundreds),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 22), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 22),
                 StandardColor.Blue.getColorMode());
         notesLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -337,7 +328,7 @@ public class WithdrawalUI extends JPanel {
 
         // Result message
         JLabel resultLabel = createStyledLabel("Withdrawal Successful!",
-                new Font(Font.SANS_SERIF, Font.BOLD, 36), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 36),
                 StandardColor.Green.getColorMode());
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -348,7 +339,7 @@ public class WithdrawalUI extends JPanel {
         // Amount withdrawn
         JLabel amountLabel = createStyledLabel(
                 String.format("HK$ %d has been withdrawn", selectedAmount),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 28), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 28),
                 StandardColor.GreyHighest.getOppositeColorMode());
         amountLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -361,11 +352,11 @@ public class WithdrawalUI extends JPanel {
         int thousands = cashDispenser.getNumberOfOneThousand();
         int fiveHundreds = cashDispenser.getNumberOfFiveHundred();
         int hundreds = cashDispenser.getNumberOfOneHundred();
-        
+
         JLabel breakdownLabel = createStyledLabel(
                 String.format("Banknotes dispensed:\n   HK$1000: %d\n   HK$500: %d\n   HK$100: %d",
                         thousands, fiveHundreds, hundreds),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 22), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 22),
                 StandardColor.Blue.getColorMode());
         breakdownLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -376,7 +367,7 @@ public class WithdrawalUI extends JPanel {
         double remainingBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
         JLabel updatedBalanceLabel = createStyledLabel(
                 String.format("Remaining Balance: HK$ %.2f", remainingBalance),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 24), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 24),
                 StandardColor.Blue.getColorMode());
         updatedBalanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -386,7 +377,7 @@ public class WithdrawalUI extends JPanel {
 
         // Instruction
         JLabel instructionLabel = createStyledLabel("Please take your cash now.",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 22), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 22),
                 StandardColor.Orange.getColorMode());
         instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -401,9 +392,10 @@ public class WithdrawalUI extends JPanel {
             resetToInitialState();
             showCard(CARD_MENU);
             deactivateCustomAmountPanel();
-            
+            goBackToMainPanel();
+
             // Update balance inquiry
-            //updateBalanceInquiry();
+            // updateBalanceInquiry();
         });
 
         gbc.gridy = 5;
@@ -417,15 +409,15 @@ public class WithdrawalUI extends JPanel {
     public void activateCustomAmountPanel() {
         isCustomAmountPanelActive = true;
     }
-    
+
     public void deactivateCustomAmountPanel() {
         isCustomAmountPanelActive = false;
     }
-    
+
     public void handleNumberInput(String input) {
         if (isCustomAmountPanelActive && customAmountField != null) {
             String currentText = customAmountField.getText();
-            
+
             if (input.equals(".")) {
                 customAmountField.setText(currentText + ".");
                 return;
@@ -459,16 +451,15 @@ public class WithdrawalUI extends JPanel {
             processCustomAmount();
         }
     }
-    
-    
+
     private RoundedButton createAmountButton(String text, int amount) {
         RoundedButton button = new RoundedButton(text, text,
                 StandardColor.GreyHighest.getColorMode(),
                 StandardColor.Blue.getColorMode(),
                 StandardColor.GreyHighest.getOppositeColorMode(),
                 StandardColor.GreyHighest.getColorMode(),
-                new Font(Font.SANS_SERIF, Font.BOLD, 22), 
-                new Font(Font.SANS_SERIF, Font.BOLD, 22), 
+                new Font(Font.SANS_SERIF, Font.BOLD, 22),
+                new Font(Font.SANS_SERIF, Font.BOLD, 22),
                 true, 180, 60);
 
         button.addActionListener(e -> {
@@ -543,42 +534,88 @@ public class WithdrawalUI extends JPanel {
         return amount % 100 == 0 || amount % 500 == 0 || amount % 1000 == 0;
     }
 
+    private boolean withdrawalInProgress = false;
+
     private void executeWithdrawal() {
-        double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
-        
-        if (selectedAmount <= availableBalance) {
-            bankDatabase.debit(currentAccountNumber, selectedAmount);
-            cashDispenser.precheckNumberOfAmountType(selectedAmount);
-            cashDispenser.dispenseCash();
-            new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double) selectedAmount);
-            showResultCard();
-        } else {
-            statusLabel.setText("Withdrawal failed - insufficient funds");
-            statusLabel.setForeground(StandardColor.Red.getColorMode());
-            showCard(CARD_CUSTOM);
+
+        /*
+         * double availableBalance =
+         * bankDatabase.getAvailableBalance(currentAccountNumber);
+         * 
+         * if (selectedAmount <= availableBalance) {
+         * bankDatabase.debit(currentAccountNumber, selectedAmount);
+         * cashDispenser.precheckNumberOfAmountType(selectedAmount);
+         * cashDispenser.dispenseCash();
+         * new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double)
+         * selectedAmount);
+         * showResultCard();
+         * } else {
+         * statusLabel.setText("Withdrawal failed - insufficient funds");
+         * statusLabel.setForeground(StandardColor.Red.getColorMode());
+         * showCard(CARD_CUSTOM);
+         * }
+         */
+
+        if (withdrawalInProgress)
+            return; // 防止重复执行
+        withdrawalInProgress = true;
+
+        try {
+            double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+            if (selectedAmount <= availableBalance) {
+                bankDatabase.debit(currentAccountNumber, selectedAmount);
+                cashDispenser.dispenseCash();
+                new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double) selectedAmount);
+                showResultCard();
+            }
+        } finally {
+            withdrawalInProgress = false;
         }
     }
-    
+
     /*
-    private void updateBalanceInquiry() {
-        // Update balance inquiry panel
-        if (atmUI != null && atmUI.balanceGUI != null) {
-            atmUI.balanceGUI.setAccountNumber(currentAccountNumber);
-            atmUI.balanceGUI.refreshBalance();
-        }
-    }
-    */
-    
+     * private void updateBalanceInquiry() {
+     * // Update balance inquiry panel
+     * if (atmUI != null && atmUI.balanceGUI != null) {
+     * atmUI.balanceGUI.setAccountNumber(currentAccountNumber);
+     * atmUI.balanceGUI.refreshBalance();
+     * }
+     * }
+     */
+
     private void showCard(String cardName) {
-        cardLayout.show(cardPanel, cardName);
-        if (CARD_CUSTOM.equals(cardName)) {
-            activateCustomAmountPanel();
-        } else {
-            deactivateCustomAmountPanel();
+        /*
+         * cardLayout.show(cardPanel, cardName);
+         * if (CARD_CUSTOM.equals(cardName)) {
+         * activateCustomAmountPanel();
+         * } else {
+         * deactivateCustomAmountPanel();
+         * }
+         */
+        if (cardLayout != null && cardPanel != null) {
+            cardLayout.show(cardPanel, cardName);
+            this.currentCardName = cardName;
         }
     }
 
     private void showConfirmationCard() {
+        /*
+         * Component[] components = cardPanel.getComponents();
+         * for (Component comp : components) {
+         * if (comp instanceof JPanel && CARD_CONFIRMATION.equals(((JPanel)
+         * comp).getName())) {
+         * cardPanel.remove(comp);
+         * break;
+         * }
+         * }
+         * 
+         * JPanel confirmationCard = createConfirmationCard();
+         * confirmationCard.setName(CARD_CONFIRMATION);
+         * cardPanel.add(confirmationCard, CARD_CONFIRMATION);
+         * 
+         * cardLayout.show(cardPanel, CARD_CONFIRMATION);
+         * deactivateCustomAmountPanel();
+         */
         Component[] components = cardPanel.getComponents();
         for (Component comp : components) {
             if (comp instanceof JPanel && CARD_CONFIRMATION.equals(((JPanel) comp).getName())) {
@@ -586,12 +623,12 @@ public class WithdrawalUI extends JPanel {
                 break;
             }
         }
-        
+
         JPanel confirmationCard = createConfirmationCard();
         confirmationCard.setName(CARD_CONFIRMATION);
         cardPanel.add(confirmationCard, CARD_CONFIRMATION);
-        
-        cardLayout.show(cardPanel, CARD_CONFIRMATION);
+
+        showCard(CARD_CONFIRMATION); // 使用统一方法
         deactivateCustomAmountPanel();
     }
 
@@ -603,28 +640,19 @@ public class WithdrawalUI extends JPanel {
                 break;
             }
         }
-        
+
         JPanel resultCard = createResultCard();
         resultCard.setName(CARD_RESULT);
         cardPanel.add(resultCard, CARD_RESULT);
-        
+
         cardLayout.show(cardPanel, CARD_RESULT);
+
+        currentCardName = CARD_RESULT;
         deactivateCustomAmountPanel();
     }
 
     public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, "mainMenu");
-            }
-        }
+        controller.switchToMainMenuPanel();
     }
 
     // Helper methods
@@ -642,8 +670,8 @@ public class WithdrawalUI extends JPanel {
                 StandardColor.GreyHighest.getColorMode(),
                 StandardColor.GreyHighest.getColorMode(),
                 StandardColor.GreyHighest.getOppositeColorMode(),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20), 
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20), 
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                 true, 180, 50);
     }
 
@@ -672,11 +700,77 @@ public class WithdrawalUI extends JPanel {
             balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
         }
     }
-    
+
     public void refreshBalance() {
         if (balanceLabel != null) {
             double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
             balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
+        }
+    }
+
+    public void refreshBalancePanel(int account) {
+        if (balanceLabel != null) {
+            this.currentAccountNumber = account;
+            double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+            balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
+        }
+    }
+
+    public void selectAmount200() {
+        selectedAmount = 200;
+        showConfirmationCard();
+    }
+
+    public void selectAmount400() {
+        selectedAmount = 400;
+        showConfirmationCard();
+    }
+
+    public void cancelWithdrawal() {
+        goBackToMainPanel();
+    }
+
+    public void selectAmount800() {
+        selectedAmount = 800;
+        showConfirmationCard();
+    }
+
+    public void selectAmount1000() {
+        selectedAmount = 1000;
+        showConfirmationCard();
+    }
+
+    public void selectCustomAmount() {
+        showCard(CARD_CUSTOM);
+    }
+
+    public boolean isOnConfirmationScreen() {
+        return CARD_CONFIRMATION.equals(currentCardName);
+    }
+
+    public void confirmWithdrawalFromSideButton() {
+        if (isOnConfirmationScreen()) {
+            executeWithdrawal();
+        }
+    }
+
+    public void cancelWithdrawalFromSideButton() {
+        if (isOnConfirmationScreen()) {
+            showCard(CARD_MENU);
+            deactivateCustomAmountPanel();
+        }
+    }
+
+    public boolean isOnResultScreen() {
+        return CARD_RESULT.equals(currentCardName);
+    }
+
+    public void continueFromResultScreen() {
+        if (isOnResultScreen()) {
+            resetToInitialState();
+            System.out.println("6666");
+            goBackToMainPanel();
+            System.out.println("main");
         }
     }
 }

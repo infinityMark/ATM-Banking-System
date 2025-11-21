@@ -22,7 +22,7 @@ public class MainMenuGUI {
         centerP = new JPanel(new GridLayout(3, 1));
         leftP = new JPanel(new GridLayout(3, 1));
         rightP = new JPanel(new GridLayout(3, 1));
-        bankDatabase = new BankDatabase();
+        bankDatabase = BankDatabase.getInstance();
 
         TopPanel();
         LeftPanel();
@@ -40,7 +40,7 @@ public class MainMenuGUI {
 
     private void mainPanel() {
         mainP.setLayout(new BorderLayout());
-         mainP.setBackground(StandardColor.DarkBlue.getColorMode());
+        mainP.setBackground(StandardColor.DarkBlue.getColorMode());
     }
 
     private void TopPanel() {

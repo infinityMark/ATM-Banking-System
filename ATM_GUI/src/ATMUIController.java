@@ -69,25 +69,50 @@ public class ATMUIController {
     }
 
     public void goToPanel(String panelName) {
+        refrshPanel(panelName);
         atmUI.switchPanel(panelName);
     }
 
     public void showTransactionHistory() {
-        atmUI.switchPanel("transactionHistory");
         TransactionHistoryUI historyUI = atmUI.historyGUI;
         if (historyUI == null) {
             historyUI.refreshHistory(accountNumber);
         }
+        atmUI.switchPanel("transactionHistory");
     }
 
     public void refreshHistoryPanel() {
-        if (atmUI.historyGUI != null) {
-            atmUI.historyGUI.refreshHistory(accountNumber);
+        atmUI.historyGUI.refreshHistory(accountNumber);
+    }
+
+    public void refrshPanel(String name) {
+        if (atmUI.balanceGUI == null || atmUI.withdrawGUI == null || atmUI.historyGUI == null) {
+            System.err.println("Panels not initialized. ");
+        }
+        switch (name) {
+            case "balance":
+                atmUI.balanceGUI.refreshBalance(accountNumber);
+                System.out.println("refresh balance");
+                break;
+            case "withdraw":
+                atmUI.withdrawGUI.refreshBalancePanel(accountNumber);
+                System.out.println("refresh withdraw");
+                break;
+            case "transfer":
+                break;
+            case "history":
+                atmUI.historyGUI.refreshHistory(accountNumber);
+                System.out.println("refresh history");
+                break;
+            default:
+                System.out.println("Error to refrshPanel: " + name);
+                break;
         }
     }
 
     public void onShowHistoryPanel() {
         refreshHistoryPanel();
+        atmUI.switchPanel("transactionHistory");
     }
 
     public JFrame getMainFrame() {
@@ -130,7 +155,7 @@ public class ATMUIController {
         JPanel balancePanel = atmUI.getPanel(ATMUI.BALANCE_PANEL);
         if (balancePanel instanceof BalanceInquiryUI) {
             ((BalanceInquiryUI) balancePanel).setAccountNumber(accountNumber);
-            ((BalanceInquiryUI) balancePanel).refreshBalance();
+            ((BalanceInquiryUI) balancePanel).refreshBalance(accountNumber);
         }
     }
 }

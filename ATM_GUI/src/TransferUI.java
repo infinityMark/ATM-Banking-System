@@ -34,8 +34,8 @@ public class TransferUI extends Transfer {
     // Validation states
     private Boolean isReceiverValid = false;
     private Boolean isAmountValid = false;
-    
-    //keypad integration
+
+    // keypad integration
     private boolean isReceiverFieldActive = true;
     private TextFields receiverAccountTextField;
     private TextFields amountTextField;
@@ -48,12 +48,11 @@ public class TransferUI extends Transfer {
     BankDatabase bankDatabase;
 
     public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
-                      Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[]) {
+            Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[]) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
-        bankDatabase = atmBankDatabase;
-//        JPanel panel = this.transferLayout();
-//        showCard(CARD_MENU);
+        // JPanel panel = this.transferLayout();
+        // showCard(CARD_MENU);
         leftButton[0] = left[0];
         leftButton[1] = left[1];
         leftButton[2] = left[2];
@@ -70,7 +69,8 @@ public class TransferUI extends Transfer {
         for (Component comp : panel.getComponents()) {
             if (comp instanceof JPanel) {
                 RoundedButton found = getButtonByName((JPanel) comp, buttonName);
-                if (found != null) return found;
+                if (found != null)
+                    return found;
             } else if (comp instanceof RoundedButton && buttonName.equals(comp.getName())) {
                 return (RoundedButton) comp;
             }
@@ -96,7 +96,7 @@ public class TransferUI extends Transfer {
             }
         }
     }
-    
+
     // Keypad integration methods
     public void handleNumberInput(String input) {
         if (isReceiverFieldActive && receiverAccountTextField != null) {
@@ -107,10 +107,10 @@ public class TransferUI extends Transfer {
             handleAmountInput(input);
         }
     }
-    
+
     private void handleReceiverAccountInput(String input) {
         String currentText = receiverAccountTextField.getText();
-        
+
         if (input.equals(".")) {
             // "." button - append .
             receiverAccountTextField.setText(currentText + ".");
@@ -123,10 +123,10 @@ public class TransferUI extends Transfer {
             receiverAccountTextField.setText(currentText + input);
         }
     }
-    
+
     private void handleAmountInput(String input) {
         String currentText = amountTextField.getText();
-        
+
         if (input.equals(".")) {
             // Only allow one decimal point
             if (!currentText.contains(".")) {
@@ -198,7 +198,8 @@ public class TransferUI extends Transfer {
     public void handleConfirm() {
         if (isReceiverFieldActive) {
             // Validate receiver account and switch to amount field
-            if (validateReceiverAccount(receiverAccountTextField.getContent().trim(), receiverAccountTextField, receiverLabel)) {
+            if (validateReceiverAccount(receiverAccountTextField.getContent().trim(), receiverAccountTextField,
+                    receiverLabel)) {
                 isReceiverFieldActive = false;
                 highlightActiveField();
             }
@@ -211,7 +212,7 @@ public class TransferUI extends Transfer {
             }
         }
     }
-    
+
     private void highlightActiveField() {
         if (receiverAccountTextField != null && amountTextField != null) {
             if (isReceiverFieldActive) {
@@ -225,21 +226,22 @@ public class TransferUI extends Transfer {
     }
 
     public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
-                                      int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo) {
+            int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 15, 10, 15);
 
         // Create selection buttons
         RoundedButton selectionOneBtn = createMenuButton(firstSelection, StandardColor.Green.getColorMode(), fontSize);
-        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(), fontSize);
+        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(),
+                fontSize);
 
         selectionOneBtn.setName(BUTTON_FIRST);
         selectionTwoBtn.setName(BUTTON_SECOND);
 
-//        button[0].addActionListener(e -> showCard(nextPageForButtonOne));
-//        button[1].addActionListener(e -> showCard(nextPageForButtonOne));
-//        button[2].addActionListener(e -> showCard(nextPageForButtonOne));
+        // this.button[0].addActionListener(e -> showCard(nextPageForButtonOne));
+        // this.button[1].addActionListener(e -> showCard(nextPageForButtonOne));
+        // this.button[2].addActionListener(e -> showCard(nextPageForButtonOne));
 
         selectionOneBtn.addActionListener(e -> showCard(nextPageForButtonOne));
         selectionTwoBtn.addActionListener(e -> {
@@ -279,14 +281,15 @@ public class TransferUI extends Transfer {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // Create UI components
-        JLabel remainAmountTitle = createStyledLabel(remainAmount, FONT_SMALL, StandardColor.GreyHighest.getOppositeColorMode());
+        JLabel remainAmountTitle = createStyledLabel(remainAmount, FONT_SMALL,
+                StandardColor.GreyHighest.getOppositeColorMode());
         RoundedButton confirmationButton = createActionButton("Confirm", StandardColor.Green.getColorMode());
         RoundedButton backButton = createActionButton("Back", StandardColor.Yellow.getColorMode());
 
         receiverAccountTextField = createInputField(40);
         receiverAccountTextField.setName(RECEIVER_TEXTFIELD);
         receiverAccountTextField.setEditable(false); // Make non-editable to force keypad use
-        
+
         amountTextField = createInputField(40);
         amountTextField.setName(AMOUNT_TEXTFIELD);
         amountTextField.setEditable(false); // Make non-editable to force keypad use
@@ -311,11 +314,11 @@ public class TransferUI extends Transfer {
         addComponentToPanel(panel, gbc, amountDisplay, 4, 0.01);
 
         // Instructions for keypad usage
-        JLabel instructionLabel = createStyledLabel("Use keypad to input numbers. Press Confirm to proceed.", 
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16), 
+        JLabel instructionLabel = createStyledLabel("Use keypad to input numbers. Press Confirm to proceed.",
+                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
                 StandardColor.Blue.getColorMode());
         instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         gbc.gridy = 5;
         gbc.weighty = 0.01;
         panel.add(instructionLabel, gbc);
@@ -345,7 +348,7 @@ public class TransferUI extends Transfer {
      * Creates the transfer confirmation screen
      */
     public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
-                                         int fontSize, Font font) {
+            int fontSize, Font font) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
@@ -391,7 +394,7 @@ public class TransferUI extends Transfer {
 //        BankDatabase bankDatabase = getBankDatabase();
         double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
         double receiverBalance = bankDatabase.getAvailableBalance(getReceiverAccounts());
-        
+
         System.out.printf("Transfer completed: Account %d balance: HK$ %.2f, Account %d balance: HK$ %.2f%n",
                 userAccountNumberInUI, currentBalance, getReceiverAccounts(), receiverBalance);
     }
@@ -400,13 +403,16 @@ public class TransferUI extends Transfer {
         cardLayout.show(cardPanel, CARD_MENU);
         resetValidationFlags();
         isReceiverFieldActive = true;
-        if (receiverAccountTextField != null) receiverAccountTextField.setText("");
-        if (amountTextField != null) amountTextField.setText("");
-        if (receiverLabel != null) receiverLabel.setText(receiverText);
-        if (amountLabel != null) amountLabel.setText(amountText);
+        if (receiverAccountTextField != null)
+            receiverAccountTextField.setText("");
+        if (amountTextField != null)
+            amountTextField.setText("");
+        if (receiverLabel != null)
+            receiverLabel.setText(receiverText);
+        if (amountLabel != null)
+            amountLabel.setText(amountText);
     }
-    
-    
+
     /**
      * Creates the post-transfer completion screen
      */
@@ -518,7 +524,7 @@ public class TransferUI extends Transfer {
      * Helper method to add components to panel with consistent layout
      */
     private void addComponentToPanel(JPanel panel, GridBagConstraints gbc, Component component,
-                                     int gridY, double weightY) {
+            int gridY, double weightY) {
         gbc.gridy = gridY;
         gbc.weighty = weightY;
         panel.add(component, gbc);
@@ -535,7 +541,7 @@ public class TransferUI extends Transfer {
         return panel;
     }
 
-    private void setupFieldListener(TextFields textField, JLabel label, String content){
+    private void setupFieldListener(TextFields textField, JLabel label, String content) {
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -548,15 +554,15 @@ public class TransferUI extends Transfer {
             }
         });
     }
-    
+
     /**
      * Sets up the confirmation button validation and action logic
      */
     private void setupConfirmationButtonListener(RoundedButton confirmationButton,
-                                                 TextFields receiverAccountTextField,
-                                                 TextFields amountTextField,
-                                                 JLabel receiverLabel,
-                                                 JLabel amountLabel) {
+            TextFields receiverAccountTextField,
+            TextFields amountTextField,
+            JLabel receiverLabel,
+            JLabel amountLabel) {
         confirmationButton.addActionListener(e -> {
             resetValidationFlags();
 
@@ -565,8 +571,9 @@ public class TransferUI extends Transfer {
             boolean isAmountValid = validateAmount(
                     amountTextField.getContent().trim(), amountTextField, amountLabel);
 
-            if (super.isLimitAccountConditionCheckerHappen(getAmount(),"Transfer")){
-                showValidationError(amountTextField, amountLabel, String.format("Sorry, You are not allowed to %s over HK$50000 at once time.","Transfer"));
+            if (super.isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+                showValidationError(amountTextField, amountLabel,
+                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
                 return;
             }
 
@@ -674,8 +681,10 @@ public class TransferUI extends Transfer {
      * Clears input fields
      */
     private void clearInputFields(TextFields field1, TextFields field2) {
-        if (field1 != null) field1.setText("");
-        if (field2 != null) field2.setText("");
+        if (field1 != null)
+            field1.setText("");
+        if (field2 != null)
+            field2.setText("");
     }
 
     /**
@@ -684,7 +693,8 @@ public class TransferUI extends Transfer {
     private void executeTransfer() {
 //        setBankDatabase(bankDatabase);
         bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
-        System.out.println("Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
+        System.out.println(
+                "Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
         System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(getAccountNumber()));
         new TransactionHistory(0, getAccountNumber(), getReceiverAccounts(), 0, 0, getAmount());
 
@@ -713,7 +723,8 @@ public class TransferUI extends Transfer {
         switch (cardName) {
             case CARD_INFO:
                 JPanel infoCard = createReceiveTransferInformation(
-                        "Currently asset in your account HKD$" + bankDatabase.getAvailableBalance(userAccountNumberInUI));
+                        "Currently asset in your account HKD$"
+                                + bankDatabase.getAvailableBalance(userAccountNumberInUI));
                 infoCard.setName(CARD_INFO);
                 cardPanel.add(infoCard, CARD_INFO);
                 break;

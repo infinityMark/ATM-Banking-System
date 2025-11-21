@@ -30,9 +30,9 @@ public class ATM {
       keypad = new Keypad(); // create keypad
       cashDispenser = new CashDispenser(); // create cash dispenser
       // depositSlot = new DepositSlot(); // create deposit slot
-      bankDatabase = new BankDatabase(); // create acct info database
+      bankDatabase = BankDatabase.getInstance(); // create acct info database
 
-      //mainFrame = new JFrame("ATM GUI implement");
+      // mainFrame = new JFrame("ATM GUI implement");
       // ATM GUI implements to initial the mainFrame setting.
       // initializeGUI();
    } // end no-argument ATM constructor
@@ -55,11 +55,11 @@ public class ATM {
    } // end method run
 
    // public synchronized void setCurrentAccountNumber(int currentAccountNumbers){
-   //    this.currentAccountNumber = currentAccountNumbers;
+   // this.currentAccountNumber = currentAccountNumbers;
    // }
 
    // public int getCurrentAccountNumber(){
-   //    return currentAccountNumber;
+   // return currentAccountNumber;
    // }
 
    // attempts to authenticate user against database

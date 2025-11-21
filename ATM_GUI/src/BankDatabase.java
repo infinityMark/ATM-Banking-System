@@ -3,9 +3,10 @@
 
 public class BankDatabase {
    private Account accounts[]; // array of Accounts
+   private static BankDatabase instance;
 
    // no-argument BankDatabase constructor initializes accounts
-   public BankDatabase() {
+   private BankDatabase() {
       accounts = new Account[9]; // 8 accounts for testing
       accounts[0] = new SavingAccount(11111, 11111, 1000.0, 1000.0);
       accounts[1] = new ChequeAccount(21111, 21111, 25000.0, 25000.0);
@@ -17,6 +18,13 @@ public class BankDatabase {
       accounts[7] = new ChequeAccount(24444, 24444, 7999999, 7999999);
       accounts[8] = new SavingAccount(24985, 24985, 800000, 800000);
    } // end no-argument BankDatabase constructor
+
+   public static synchronized BankDatabase getInstance() {
+      if (instance == null) {
+         instance = new BankDatabase();
+      }
+      return instance;
+   }
 
    // retrieve Account object containing specified account number
    Account getAccount(int accountNumber) {
