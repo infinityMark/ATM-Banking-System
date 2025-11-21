@@ -75,12 +75,12 @@ public class MainMenuGUI {
             LL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
             leftP.add(LL);
 
-            // 添加鼠标监听器
+            // Add mouse listener
             final int index = i;
             LL.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    // 调用控制器切换到目标面板
+                    // Invoke the controller to switch to the target panel
                     if (controller != null) {
                         controller.switchToPanel(targetPanels[index]);
                     }
@@ -89,12 +89,13 @@ public class MainMenuGUI {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     LL.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    LL.setBackground(StandardColor.Blue.getColorMode().darker()); // 加深背景色提示
+                    // Darken the background color to indicate
+                    LL.setBackground(StandardColor.Blue.getColorMode().darker());
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    // 鼠标离开时恢复默认
+                    // Restore default settings when mouse leaves
                     LL.setCursor(Cursor.getDefaultCursor());
                     LL.setBackground(StandardColor.DarkBlue.getColorMode());
                 }
@@ -132,7 +133,7 @@ public class MainMenuGUI {
             RL.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    // 调用控制器切换到目标面板
+                    // Invoke the controller to switch to the target panel
                     if (controller != null) {
                         controller.switchToPanel(targetPanels[index]);
                     }
