@@ -37,14 +37,14 @@ public class LoginGUI {
                 current.revalidate();
                 current.repaint();
             } else {
-                System.err.println("CardLayout miss,无法切换面板");
+                System.err.println("CardLayout miss,Unable to switch panels");
             }
         } else {
-            System.err.println("mainP = null,无法切换面板");
+            System.err.println("mainP = null,Unable to switch panels");
         }
     }
 
-    public LoginGUI(boolean showLoginGUI) { // 測試借用的frame
+    public LoginGUI(boolean showLoginGUI) { // Test borrowed frame
 
         mainP = new JPanel();
         mainPanel();
@@ -193,7 +193,7 @@ public class LoginGUI {
 
         GridBagConstraints gap = new GridBagConstraints();
         gap.insets = new Insets(20, 20, 20, 20);// the gap bettwen the field
-        gap.anchor = GridBagConstraints.WEST;// 向左對齊
+        gap.anchor = GridBagConstraints.WEST;// Align to the left
 
         JLabel accountL = new JLabel("ACCOUNT NUMBER: ");
         font(accountL, 1, StandardColor.White.getColorMode(), 18);
