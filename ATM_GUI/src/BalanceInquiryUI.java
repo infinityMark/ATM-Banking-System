@@ -24,9 +24,9 @@ public class BalanceInquiryUI extends JPanel {
     private JLabel interestLabel;
     private JLabel chequeLimitLabel;
 
+    
     //private JButton[] leftButton = new JButton[3];
     //private JButton[] rightButton = new JButton[3];
-
     private ATMUIController controller;
 
     public BalanceInquiryUI(int accountNumber,
@@ -123,15 +123,6 @@ public class BalanceInquiryUI extends JPanel {
 
         return panel;
     }
-
-    /*
-    private void sideButtonRegistrar() {
-        for (int i = 0; i < 3; i++) {
-            leftButton[i].addActionListener(e -> goBackToMainPanel());
-            rightButton[i].addActionListener(e -> goBackToMainPanel());
-        }
-    }
-    */
 
     private JPanel createInfoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -341,4 +332,13 @@ public class BalanceInquiryUI extends JPanel {
         this.currentAccountNumber = accountNumber;
         updateBalanceInfo();
     }
+    
+    /*
+    private void sideButtonRegistrar() {
+        for (int i = 0; i < 3; i++) {
+            leftButton[i].addActionListener(e -> goBackToMainPanel());
+            rightButton[i].addActionListener(e -> goBackToMainPanel());
+        }
+    }
+    */
 }
