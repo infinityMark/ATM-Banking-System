@@ -36,57 +36,15 @@ public class ATMUIController {
 
     // ------------- General method for switching panels -------------
     public void switchToPanel(String panelName) {
-        refrshPanel(panelName);
+        refreshPanel(panelName);
         atmUI.switchPanel(panelName);
-    }
-
-    // ------------- Convenience methods for switching panels -------------
-    /*public void switchToGreetingPanel() {
-        atmUI.switchPanel("greeting");
-    }
-
-    public void switchToLoginPanel() {
-        atmUI.switchPanel("login");
-    }
-
-    public void switchToMainMenuPanel() {
-        atmUI.switchPanel("mainMenu");
-    }
-
-    public void switchToBalancePanel() {
-        atmUI.switchPanel("balance");
-    }
-
-    public void switchToWithdrawPanel() {
-        atmUI.switchPanel("withdraw");
-    }
-
-    public void switchToTransferPanel() {
-        atmUI.switchPanel("transfer");
-    }
-
-    public void showAccountInfo() {
-        atmUI.switchPanel("accountInfo");
-    }*/
-
-    public void goToPanel(String panelName) {
-        refrshPanel(panelName);
-        atmUI.switchPanel(panelName);
-    }
-
-    public void showTransactionHistory() {
-        TransactionHistoryUI historyUI = atmUI.historyGUI;
-        if (historyUI == null) {
-            historyUI.refreshHistory(accountNumber);
-        }
-        atmUI.switchPanel("transactionHistory");
     }
 
     public void refreshHistoryPanel() {
         atmUI.historyGUI.refreshHistory(accountNumber);
     }
 
-    public void refrshPanel(String name) {
+    public void refreshPanel(String name) {
         if (atmUI.balanceGUI == null || atmUI.withdrawGUI == null || atmUI.historyGUI == null) {
             System.err.println("Panels not initialized. ");
         }
@@ -100,6 +58,7 @@ public class ATMUIController {
                 System.out.println("refresh withdraw");
                 break;
             case "transfer":
+
                 break;
             case "history":
                 atmUI.historyGUI.refreshHistory(accountNumber);
@@ -109,11 +68,6 @@ public class ATMUIController {
                 System.out.println("Error to refrshPanel: " + name);
                 break;
         }
-    }
-
-    public void onShowHistoryPanel() {
-        refreshHistoryPanel();
-        atmUI.switchPanel("transactionHistory");
     }
 
     public JFrame getMainFrame() {
@@ -143,15 +97,13 @@ public class ATMUIController {
     }
 
     public void showInfo() {
-        // JOptionPane.showMessageDialog(atmUI.getMainFrame(), "啊哦，Listener出问题咯！");
-        System.out.println("跳转失败！！");
+        System.out.println("Unsuccessful Swich ！！");
     }
 
     public void loginSuccess(int accountNunber) {
         this.accountNumber = accountNunber;
     }
 
-    // update balance inquiry
     public void updateBalancePanel(int accountNumber) {
         JPanel balancePanel = atmUI.getPanel(ATMUI.BALANCE_PANEL);
         if (balancePanel instanceof BalanceInquiryUI) {

@@ -390,7 +390,7 @@ public class WithdrawalUI extends JPanel {
                 StandardColor.Blue.getColorMode());
         continueButton.addActionListener(e -> {
             resetToInitialState();
-            showCard(CARD_MENU);
+            // showCard(CARD_MENU);
             deactivateCustomAmountPanel();
             goBackToMainPanel();
 
@@ -472,6 +472,7 @@ public class WithdrawalUI extends JPanel {
 
     private void processCustomAmount() {
         // isProcessing = true;
+        currentCardName = CARD_AMOUNT;
         try {
             String amountText = customAmountField.getText().trim();
 
@@ -539,25 +540,6 @@ public class WithdrawalUI extends JPanel {
     private boolean withdrawalInProgress = false;
 
     private void executeWithdrawal() {
-
-        /*
-         * double availableBalance =
-         * bankDatabase.getAvailableBalance(currentAccountNumber);
-         * 
-         * if (selectedAmount <= availableBalance) {
-         * bankDatabase.debit(currentAccountNumber, selectedAmount);
-         * cashDispenser.precheckNumberOfAmountType(selectedAmount);
-         * cashDispenser.dispenseCash();
-         * new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double)
-         * selectedAmount);
-         * showResultCard();
-         * } else {
-         * statusLabel.setText("Withdrawal failed - insufficient funds");
-         * statusLabel.setForeground(StandardColor.Red.getColorMode());
-         * showCard(CARD_CUSTOM);
-         * }
-         */
-
         if (withdrawalInProgress)
             return;
         withdrawalInProgress = true;
@@ -576,25 +558,7 @@ public class WithdrawalUI extends JPanel {
         }
     }
 
-    /*
-     * private void updateBalanceInquiry() {
-     * // Update balance inquiry panel
-     * if (atmUI != null && atmUI.balanceGUI != null) {
-     * atmUI.balanceGUI.setAccountNumber(currentAccountNumber);
-     * atmUI.balanceGUI.refreshBalance();
-     * }
-     * }
-     */
-
     private void showCard(String cardName) {
-        /*
-         * cardLayout.show(cardPanel, cardName);
-         * if (CARD_CUSTOM.equals(cardName)) {
-         * activateCustomAmountPanel();
-         * } else {
-         * deactivateCustomAmountPanel();
-         * }
-         */
         if (cardLayout != null && cardPanel != null) {
             cardLayout.show(cardPanel, cardName);
             this.currentCardName = cardName;
@@ -607,23 +571,6 @@ public class WithdrawalUI extends JPanel {
     }
 
     private void showConfirmationCard() {
-        /*
-         * Component[] components = cardPanel.getComponents();
-         * for (Component comp : components) {
-         * if (comp instanceof JPanel && CARD_CONFIRMATION.equals(((JPanel)
-         * comp).getName())) {
-         * cardPanel.remove(comp);
-         * break;
-         * }
-         * }
-         * 
-         * JPanel confirmationCard = createConfirmationCard();
-         * confirmationCard.setName(CARD_CONFIRMATION);
-         * cardPanel.add(confirmationCard, CARD_CONFIRMATION);
-         * 
-         * cardLayout.show(cardPanel, CARD_CONFIRMATION);
-         * deactivateCustomAmountPanel();
-         */
         Component[] components = cardPanel.getComponents();
         for (Component comp : components) {
             if (comp instanceof JPanel && CARD_CONFIRMATION.equals(((JPanel) comp).getName())) {
@@ -636,7 +583,7 @@ public class WithdrawalUI extends JPanel {
         confirmationCard.setName(CARD_CONFIRMATION);
         cardPanel.add(confirmationCard, CARD_CONFIRMATION);
 
-        showCard(CARD_CONFIRMATION); // 使用统一方法
+        showCard(CARD_CONFIRMATION);
         deactivateCustomAmountPanel();
     }
 
@@ -655,7 +602,7 @@ public class WithdrawalUI extends JPanel {
 
         cardLayout.show(cardPanel, CARD_RESULT);
         currentCardName = CARD_RESULT;
-        //isOnResultScreen();
+        // isOnResultScreen();
         deactivateCustomAmountPanel();
     }
 
