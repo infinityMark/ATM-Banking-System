@@ -360,7 +360,7 @@ public class ATMListenerRegistrar {
             if (transferUI == null)
                 return;
 
-            // 获取当前激活的卡片名称（需要在 TransferUI 中实现 getCurrentCardName() 方法）
+            // 获取当前激活的卡片名称
             String currentCard = transferUI.getCurrentCardName();
 
             JButton sourceButton = (JButton) e.getSource();
@@ -370,15 +370,24 @@ public class ATMListenerRegistrar {
             // 根据当前卡片和按钮位置执行相应操作
             switch (currentCard) {
                 case TransferUI.CARD_MENU:
-                case TransferUI.CARD_AFTER_TRANSACTION: // "也是同理" - 与 MENU 行为一致
                     if (isLeftButton) {
                         // 左侧按钮：跳转到输入信息页面
                         transferUI.showCard(TransferUI.CARD_INFO);
                     } else {
-                        // 右侧按钮：返回主菜单（带刷新）
-                        controller.refreshHistoryPanel();
-                        transferUI.showCard(TransferUI.CARD_MENU);
-                        controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
+                        // 右侧按钮：返回主菜单
+                        returnToMainMenu(transferUI);
+                    }
+                    break;
+
+                case TransferUI.CARD_AFTER_TRANSACTION:
+                    if (isLeftButton) {
+                        // 左侧按钮：开始新的转账，重置状态
+                        transferUI.resetToInitialState();
+                        transferUI.showCard(TransferUI.CARD_INFO);
+                    } else {
+//                         右侧按钮：返回主菜单
+                        returnToMainMenu(transferUI);
+//                        ATMUI atmui = new ATMUI();
                     }
                     break;
 
@@ -391,6 +400,7 @@ public class ATMListenerRegistrar {
                         // 左侧按钮：确认转账，执行并跳转到完成页面
                         transferUI.executeTransfer();
                         transferUI.showCard(TransferUI.CARD_AFTER_TRANSACTION);
+                        // 如果失败，保持在确认页面显示错误信息
                     } else {
                         // 右侧按钮：取消，返回菜单
                         transferUI.showCard(TransferUI.CARD_MENU);
@@ -398,7 +408,7 @@ public class ATMListenerRegistrar {
                     break;
 
                 default:
-                    controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
+                    returnToMainMenu(transferUI);
                     break;
             }
         };
@@ -410,6 +420,54 @@ public class ATMListenerRegistrar {
         for (String btnName : rightButtons) {
             addButtonListener("rightButtonPanel", btnName, transferButtonHandler);
         }
+    }
+
+    /**
+     * 统一处理返回主菜单的逻辑
+     */
+    private void returnToMainMenu(TransferUI transferUI) {
+        System.out.println("=== 开始执行 returnToMainMenu ===");
+        System.out.println("1. transferUI 是否为 null: " + (transferUI == null));
+        System.out.println("2. controller 是否为 null: " + (controller == null));
+        System.out.println("3. 当前面板: " + controller.getCurrentPanelName());
+
+        // 1. 刷新相关面板数据
+        System.out.println("4. 刷新历史面板...");
+        controller.refreshHistoryPanel();
+        System.out.println("刷新完成");
+
+        // 2. 重置转账UI状态
+        if (transferUI != null) {
+            System.out.println("5. 尝试重置转账UI状态...");
+            try {
+                // 先检查是否有重置方法
+                java.lang.reflect.Method resetMethod = transferUI.getClass().getMethod("resetToInitialState");
+                if (resetMethod != null) {
+                    transferUI.resetToInitialState();
+                    System.out.println("重置方法调用成功");
+                }
+            } catch (NoSuchMethodException e) {
+                System.out.println("没有找到 resetToInitialState 方法，使用 showCard 代替");
+                transferUI.showCard(TransferUI.CARD_MENU);
+            } catch (Exception e) {
+                System.out.println("重置方法调用异常: " + e.getMessage());
+                transferUI.showCard(TransferUI.CARD_MENU);
+            }
+        } else {
+            System.out.println("5. transferUI 为 null，跳过重置");
+        }
+
+        // 3. 切换到主菜单面板
+        System.out.println("6. 准备切换到主菜单面板...");
+        try {
+            controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
+            System.out.println("7. 切换面板方法调用完成");
+            System.out.println("切换后当前面板: " + controller.getCurrentPanelName());
+        } catch (Exception e) {
+            System.out.println("切换面板时出现异常: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("=== returnToMainMenu 执行结束 ===");
     }
 
     private void configureHistorySideButtons() {

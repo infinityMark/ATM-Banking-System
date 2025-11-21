@@ -26,9 +26,9 @@ public class TransferUI extends Transfer {
     public static final String receiverText = "Receiver account";
 
     // Layout components
-    private static CardLayout cardLayout;
-    private static JPanel cardPanel;
-    private static JPanel mainPanel;
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
+    private JPanel mainPanel;
 
     private int userAccountNumberInUI;
 
@@ -52,7 +52,7 @@ public class TransferUI extends Transfer {
 
     public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
             Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[],
-            ATMUIController controller) {
+            ATMUIController controller,JPanel cardPanel) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
         // JPanel panel = this.transferLayout();
@@ -66,9 +66,9 @@ public class TransferUI extends Transfer {
         rightButton[0] = right[0];
         rightButton[1] = right[1];
         rightButton[2] = right[2];
-    }
 
-    ActionListener rightButtonThirdPage = e -> goBackToMainPanel();
+        this.cardPanel = cardPanel;
+    }
 
     /**
      * Recursively searches for a button by name within a panel hierarchy
@@ -187,22 +187,22 @@ public class TransferUI extends Transfer {
      * Navigates back to the main menu panel
      */
     public void goBackToMainPanel() {
-        /*
-         * Container parent = mainPanel.getParent();
-         * if (parent != null) {
-         * Container current = parent;
-         * while (current != null && !(current.getLayout() instanceof CardLayout)) {
-         * current = current.getParent();
-         * }
-         * 
-         * if (current != null) {
-         * CardLayout layout = (CardLayout) current.getLayout();
-         * layout.show(current, CARD_MENU);
-         * layout.show(current, "mainMenu");
-         * }
-         * }
-         */
-        controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
+        
+        Container parent = mainPanel.getParent();
+         if (parent != null) {
+         Container current = parent;
+         while (current != null && !(current.getLayout() instanceof CardLayout)) {
+         current = current.getParent();
+         }
+        
+         if (current != null) {
+         CardLayout layout = (CardLayout) current.getLayout();
+         layout.show(current, CARD_MENU);
+         layout.show(current, "mainMenu");
+        }
+        }
+        
+//        controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
 
     // Keypad integration methods
