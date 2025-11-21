@@ -3,7 +3,7 @@ import java.awt.*;
 //import java.awt.event.ActionListener;
 import java.net.URL;
 
-public class ATMUI extends ATM {
+public class ATMUI extends ATMUIController {
     // ------------- Panel name constants -------------
     public static final String GREETING_PANEL = "greeting";
     public static final String LOGIN_PANEL = "login";
@@ -488,6 +488,10 @@ public class ATMUI extends ATM {
             // Error handling: panel not found
             System.err.println("Error: Panel with name '" + name + "' does not exist.");
         }
+    }
+
+    public CardLayout getCenterCardLayout() {
+        return centerCardLayout;
     }
 
     // get main frame

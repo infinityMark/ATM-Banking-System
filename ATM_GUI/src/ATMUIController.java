@@ -22,6 +22,8 @@ public class ATMUIController {
      * }
      */
 
+    public ATMUIController(){}
+
     public ATMUIController(ATMUI atmUI) {
         this.atmUI = atmUI;
         this.listenerRegistrar = new ATMListenerRegistrar(atmUI, this);

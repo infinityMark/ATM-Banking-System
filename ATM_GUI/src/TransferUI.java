@@ -26,9 +26,9 @@ public class TransferUI extends Transfer {
     public static final String receiverText = "Receiver account";
 
     // Layout components
-    private static CardLayout cardLayout;
-    private static JPanel cardPanel;
-    private static JPanel mainPanel;
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
+    private JPanel mainPanel;
 
     private int userAccountNumberInUI;
 
@@ -74,11 +74,12 @@ public class TransferUI extends Transfer {
         rightButton[0] = right[0];
         rightButton[1] = right[1];
         rightButton[2] = right[2];*/
-    }
+    
     
 
 
-    ActionListener rightButtonThirdPage = e -> goBackToMainPanel();
+        this.cardPanel = cardPanel;
+    }
 
     /**
      * Recursively searches for a button by name within a panel hierarchy
@@ -313,7 +314,7 @@ public class TransferUI extends Transfer {
                     showCard(CARD_CONFIRMATION);
                 } else {
                     showValidationError(amountTextField, amountLabel,
-                            String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
+                            String.format("Cheque Account can not %s over HK$50000 once time.", "Transfer"));
                 }
             }
         }
@@ -771,10 +772,10 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
-            if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
-                showValidationError(amountTextField, amountLabel,
-                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
-            }
+//            if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+//                showValidationError(textField, label,
+//                        String.format("Cheque Account can not %s over HK$50000 once time.", "Transfer"));
+//            }
 
             setAmount(amountValue);
             clearValidationError(label);
