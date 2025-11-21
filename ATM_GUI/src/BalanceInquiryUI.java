@@ -245,7 +245,7 @@ public class BalanceInquiryUI extends JPanel {
                         double futureValue = savingAccount.calculateInterest(1, new Screen());
                         JLabel futureValueLabel = createStyledLabel(
                                 String.format("Projected balance after 1 year: HK$ %.2f", futureValue),
-                                new Font(Font.SANS_SERIF, Font.PLAIN, 14),
+                                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                                 StandardColor.Mint.getColorMode());
                         futureValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
