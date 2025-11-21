@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.ActionListener;
 import java.net.URL;
 
 public class ATMUI extends ATMUIController {
@@ -14,6 +13,11 @@ public class ATMUI extends ATMUIController {
     public static final String HISTORY_PANEL = "history";
     public static final String KEYPAD_PANEL = "keypad";
     public static final String test = "test";
+
+    public static final String TAKE_OUT_CARD_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1" +
+            "_Group_101A-G03_UML_Showing/refs/heads/main/atm.png";
+    public static final String ATM_MACHINE_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_" +
+            "Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png";
 
     protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     protected static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
@@ -39,35 +43,11 @@ public class ATMUI extends ATMUIController {
 
     private CardLayout centerCardLayout;
     private JPanel mainUpperPanel;
-    //private JPanel leftButtonPanel;
+    // private JPanel leftButtonPanel;
     private JPanel centerPanel;
-    //private JPanel rightButtonPanel;
+    // private JPanel rightButtonPanel;
     private JPanel lowerPanel;
     private JFrame mainframe;
-
-    // ------------- Side panel buttons -------------
-    /* 
-    // left side panel buttons
-    private JButton Button1;
-    private JButton Button2;
-    private JButton Button3;
-
-    // Right side panel buttons
-    private JButton Button5;
-    private JButton Button6;
-    private JButton Button7;
-
-    private JButton[] rightButton = new JButton[3];
-    private JButton[] leftButton = new JButton[3];
-
-    public JButton[] getLeftButton() {
-        return leftButton;
-    }
-
-    public JButton[] getRightButton() {
-        return rightButton;
-    }
-    */
     private ATMUIController controller;
 
     public ATMUIController getController() {
@@ -87,14 +67,6 @@ public class ATMUI extends ATMUIController {
     static public int getCurrentAccountNumber() {
         return currentAccountNumber;
     }
-
-    /*
-     * protected JButton getButton1() {
-     * return Button1;
-     * }
-     */
-
-    // public boolean isAutoSize = false;
 
     JPanel mainPanel = new JPanel(new GridBagLayout());
     JPanel contentPanel = new JPanel();
@@ -132,12 +104,8 @@ public class ATMUI extends ATMUIController {
 
     public void initializeUI() {
         baseSetup();
-
-        
-
         JPanel mainContainer = new JPanel(new BorderLayout(0, 10));
         createUpperAndLowerPanels();
-        //addButtonsToSidePanels();
         insertToCenterPanel();
 
         // Assemble the main container
@@ -168,58 +136,28 @@ public class ATMUI extends ATMUIController {
         mainframe.setMinimumSize(new Dimension(800, 600));
         mainframe.setSize(1200, 900);
         mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         mainframe.setLocationRelativeTo(null);
 
     }
 
     private void createUpperAndLowerPanels() {
-        // upper Panel with GridBagLayout
         mainUpperPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         mainUpperPanel.setBorder(BorderFactory.createTitledBorder("Function Area"));
-        /* 
-        // left button panel (small proportion)
-        leftButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        leftButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        leftButtonPanel.setName("leftButtonPanel");
-        leftButtonPanel.setMinimumSize(new Dimension(100, 200));
-        registerPanel(leftButtonPanel);
-        */
-        // center content panel (large proportion, using CardLayout)
+
         centerCardLayout = new CardLayout();
         centerPanel = new JPanel(centerCardLayout);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         centerPanel.setPreferredSize(new Dimension(900, 400));
-        /* 
-        // right button panel (small proportion)
-        rightButtonPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        rightButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        rightButtonPanel.setName("rightButtonPanel");
-        rightButtonPanel.setMinimumSize(new Dimension(100, 200));
-        registerPanel(rightButtonPanel);
-        */
-        // Set grid layout constraints
+
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 1.0;
 
-        /*// left panel occupies 20%
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0.15;
-        mainUpperPanel.add(leftButtonPanel, gbc);
-        */
-        // center panel occupies 60%
         gbc.gridx = 1;
         gbc.weightx = 0.7;
         mainUpperPanel.add(centerPanel, gbc);
-        /* 
-        // right panel occupies 20%
-        gbc.gridx = 2;
-        gbc.weightx = 0.15;
-        mainUpperPanel.add(rightButtonPanel, gbc);
-        */
-        // lower keypad panel
+
         lowerPanel = createKeypadPanel();
         lowerPanel.setBorder(BorderFactory.createTitledBorder("Keypad"));
         lowerPanel.setMinimumSize(new Dimension(0, 200));
@@ -234,53 +172,6 @@ public class ATMUI extends ATMUIController {
                 new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
     }
 
-    /*protected void addButtonsToSidePanels() {
-        Button1 = new RoundedButton(setImageSafety(
-                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
-                new Dimension(Integer.MAX_VALUE, 50));
-        Button1.setName("Left1");
-        Button2 = new RoundedButton(setImageSafety(
-                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
-                new Dimension(Integer.MAX_VALUE, 50));
-        Button2.setName("Left2");
-        Button3 = new RoundedButton(setImageSafety(
-                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_right.png"),
-                new Dimension(Integer.MAX_VALUE, 50));
-        Button3.setName("Left3");
-
-        // initialize right buttons, change if needed
-        Button5 = new RoundedButton(setImageSafety(
-                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),
-                new Dimension(Integer.MAX_VALUE, 50));
-        Button5.setName("Right1");
-        Button6 = new RoundedButton(setImageSafety(
-                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),
-                new Dimension(Integer.MAX_VALUE, 50));
-        Button6.setName("Right2");
-        Button7 = new RoundedButton(setImageSafety(
-                "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_Group_101A-G03_UML_Showing/refs/heads/main/arrow_circle_left.png"),
-                new Dimension(Integer.MAX_VALUE, 50));
-        Button7.setName("Right3");
-
-        // left buttons
-        leftButtonPanel.add(Button1);
-        leftButtonPanel.add(Button2);
-        leftButtonPanel.add(Button3);
-
-        // right buttons
-        rightButtonPanel.add(Button5);
-        rightButtonPanel.add(Button6);
-        rightButtonPanel.add(Button7);
-
-        leftButton[0] = Button1;
-        leftButton[1] = Button2;
-        leftButton[2] = Button3;
-
-        rightButton[0] = Button5;
-        rightButton[1] = Button6;
-        rightButton[2] = Button7;
-    }
-    */
     private void insertToCenterPanel() {
         JPanel greetingPanel = createGreetingPanel();
         centerPanel.add(greetingPanel, GREETING_PANEL);
@@ -371,7 +262,7 @@ public class ATMUI extends ATMUIController {
 
     protected JPanel createMainMenuPanel() {
         mainMenuGUI = new MainMenuGUI();
-        mainMenuGUI.createMainMenuGUI(true, loginGUI.getAccountNumber(),getController());
+        mainMenuGUI.createMainMenuGUI(true, loginGUI.getAccountNumber(), getController());
         mainMenuGUI.getMainP().setName(MAIN_MENU_PANEL);
         return mainMenuGUI.getMainP();
     }
@@ -423,7 +314,7 @@ public class ATMUI extends ATMUIController {
     }
 
     protected JPanel createTransferPanel() {
-        transferGUI = new TransferUI(loginGUI.getAccountNumber(),bankDatabase, getController());
+        transferGUI = new TransferUI(loginGUI.getAccountNumber(), bankDatabase, getController());
         transferGUI.getMainPanel().setName(TRANSFER_PANEL);
         transferGUI.resetToInitialState();
         return transferGUI.getMainPanel();
@@ -434,7 +325,8 @@ public class ATMUI extends ATMUIController {
         keypadPanel.setName(KEYPAD_PANEL);
         registerPanel(keypadPanel);
 
-        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00" ,"Back to Main menu"};
+        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00",
+                "Back to Main menu" };
         for (String key : keys) {
             RoundedButton btn = new RoundedButton(key);
             btn.setFont(ATMUI.NORMAL_FONT);
@@ -454,38 +346,13 @@ public class ATMUI extends ATMUIController {
             }
         }
         return null;
-
     }
-    /* 
-    public void removeAllButtonListenersCompletely(JButton[] leftButton, JButton[] rightButton) {
-        for (int i = 0; i < leftButton.length; i++) {
-            if (leftButton[i] != null) {
-                ActionListener[] listeners = leftButton[i].getActionListeners();
-                for (ActionListener listener : listeners) {
-                    leftButton[i].removeActionListener(listener);
-                }
-                System.out.println("左侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-            }
-        }
 
-        // 清理右侧按钮
-        for (int i = 0; i < rightButton.length; i++) {
-            if (rightButton[i] != null) {
-                ActionListener[] listeners = rightButton[i].getActionListeners();
-                for (ActionListener listener : listeners) {
-                    rightButton[i].removeActionListener(listener);
-                }
-                System.out.println("右侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-            }
-        }
-        System.out.println("=== 清理完成 ===");
-    }
-    */
     // switch panel by name
     public void switchPanel(String name) {
         JPanel targetPanel = getPanel(name);
         if (targetPanel != null) {
-            System.out.println(currentPanelName + " switch to " + name);// CardLayout作用于centerPanel
+            System.out.println(currentPanelName + " switch to " + name);
             this.currentPanelName = name;
             centerCardLayout.show(centerPanel, name);
             if (WITHDRAW_PANEL.equals(name) && withdrawGUI != null) {
@@ -505,31 +372,6 @@ public class ATMUI extends ATMUIController {
     public JFrame getMainFrame() {
         return mainframe;
     }
-    /* 
-    // get lower keypad panel
-    public JPanel getLowerPanel() {
-        return lowerPanel;
-    }
-
-    // Get left button panel
-    public JPanel getLeftButtonPanel() {
-        return leftButtonPanel;
-    }
-
-    // Get right button panel
-    public JPanel getRightButtonPanel() {
-        return rightButtonPanel;
-    }*/
-
-    // get current visible upper panel
-    /*public JPanel getCurrentUpperPanel() {
-        for (Component comp : centerPanel.getComponents()) {
-            if (comp.isVisible()) {
-                return (JPanel) comp;
-            }
-        }
-        return null;
-    }*/
 
     public LoginGUI getLoginGUI() {
         return loginGUI;
@@ -547,33 +389,13 @@ public class ATMUI extends ATMUIController {
         return currentPanelName;
     }
 
-    // ------------- Side panel buttons getters -------------
-
-    /*public JButton getButton(int index) {
-        switch (index) {
-            case 1:
-                return Button1;
-            case 2:
-                return Button2;
-            case 3:
-                return Button3;
-            // case 4:
-            // return Button4;
-            case 5:
-                return Button5;
-            case 6:
-                return Button6;
-            case 7:
-                return Button7;
-            // case 8:
-            // return Button8;
-            default:
-                return null;
-        }
-    }*/
+    /*
+     * public JPanel getMainPanel() {
+     * return mainPanel;
+     * }
+     */
 
     // Function
-
     static public ImageIcon setImageSafety(String imageUrl) {
         try {
             URL url = new URL(imageUrl);
@@ -605,10 +427,6 @@ public class ATMUI extends ATMUIController {
         }
     }
 
-    public JPanel getPanelUI() {
-        return mainPanel;
-    }
-
     public void passInformation(String information) {
         taskTitle.setText(information);
         taskTitle.revalidate();
@@ -634,9 +452,9 @@ public class ATMUI extends ATMUIController {
     private void removePanelIfExists(String panelName) {
         JPanel panel = getPanel(panelName);
         if (panel != null) {
-            centerPanel.remove(panel);           
+            centerPanel.remove(panel);
             for (int i = 0; i < panelCount; i++) {
-                if (allPanels[i] == panel) {                  
+                if (allPanels[i] == panel) {
                     for (int j = i; j < panelCount - 1; j++) {
                         allPanels[j] = allPanels[j + 1];
                     }

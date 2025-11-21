@@ -55,13 +55,13 @@ public class LoginGUI {
                 StandardColor.Green.getColor(0),
                 StandardColor.Green.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
-        passwordF.setEditable(false);
+        passwordF.setEditable(false); //Make non-editable to force keypad use
         accounTF = new TextFields(200, 30,
                 StandardColor.GreyHighest.getColor(0),
                 StandardColor.Green.getColor(0),
                 StandardColor.Green.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
-        accounTF.setEditable(false);
+        accounTF.setEditable(false);//Make non-editable to force keypad use
         reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
 
         Toppanel();
@@ -87,7 +87,15 @@ public class LoginGUI {
 
         passwordF.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                accountFieldFocused = false;
+                if (!accountGot) {
+                    SwingUtilities.invokeLater(() -> {
+                        accounTF.requestFocusInWindow();
+                        reminderL.setText("Please confirm account number first before entering PIN");
+                        reminderL.setForeground(StandardColor.Red.getColorMode());
+                    });
+                } else {
+                    accountFieldFocused = false;
+                }
             }
         });
 
@@ -115,8 +123,10 @@ public class LoginGUI {
             String currentText = accounTF.getText();
             accounTF.setText(currentText + number);
         } else {
-            String currentText = new String(passwordF.getPassword());
-            passwordF.setText(currentText + number);
+            if (accountGot) {
+                String currentText = new String(passwordF.getPassword());
+                passwordF.setText(currentText + number);
+            }
         }
     }
 
@@ -130,12 +140,14 @@ public class LoginGUI {
                 accounTF.setText(currentText.substring(0, currentText.length() - 1));
             }
         } else {
-            String currentText = new String(passwordF.getPassword());
-            if (!currentText.isEmpty()) {
-                passwordF.setText(currentText.substring(0, currentText.length() - 1));
+            if (accountGot) {
+                String currentText = new String(passwordF.getPassword());
+                if (!currentText.isEmpty()) {
+                    passwordF.setText(currentText.substring(0, currentText.length() - 1));
+                }
             }
         }
-    }
+    }   
 
     /**
      * Handles clear action from keypad - clears all input
@@ -336,10 +348,12 @@ public class LoginGUI {
                     accounTF.setText(text.substring(0, text.length() - 1));
                 accounTF.requestFocusInWindow();
             } else {
-                String text = new String(passwordF.getPassword());
-                if (!text.isEmpty())
-                    passwordF.setText(text.substring(0, text.length() - 1));
-                passwordF.requestFocusInWindow();
+                if (accountGot) {
+                    String text = new String(passwordF.getPassword());
+                    if (!text.isEmpty())
+                        passwordF.setText(text.substring(0, text.length() - 1));
+                    passwordF.requestFocusInWindow();
+                }
             }
             handleDelete();
         }

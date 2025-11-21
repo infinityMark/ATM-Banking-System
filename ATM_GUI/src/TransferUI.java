@@ -507,17 +507,13 @@ public class TransferUI extends JPanel {
         }
     }
 
-    private void updateBalanceInquiry() {
+    protected void updateBalanceInquiry(int user) {
         // Update balance inquiry for current account
         // BankDatabase bankDatabase = getBankDatabase();
-        double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
-        double receiverBalance = bankDatabase.getAvailableBalance(transfer.getReceiverAccounts());
-
-        System.out.printf("Transfer completed: Account %d balance: HK$ %.2f, Account %d balance: HK$ %.2f%n",
-                userAccountNumberInUI, currentBalance, transfer.getReceiverAccounts(), receiverBalance);
+        user = userAccountNumberInUI;
+        double currentBalance = bankDatabase.getAvailableBalance(user);
+        showCard(CARD_MENU);
     }
-
-
 
 
     // UI create
@@ -655,7 +651,7 @@ public class TransferUI extends JPanel {
         RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
         confirmButton.addActionListener(e -> {
             executeTransfer();
-            updateBalanceInquiry();
+            updateBalanceInquiry(userAccountNumberInUI);
         });
 
         RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);

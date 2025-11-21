@@ -1,3 +1,4 @@
+
 // Transfer.java
 // Represents a transfer ATM transaction
 import java.math.BigDecimal;
@@ -14,40 +15,42 @@ public class Transfer extends Transaction {
     public Transfer(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
             Keypad atmKeypad, CashDispenser atmCashDispenser) {
         // initialize superclass variables
-        super(userAccountNumber, atmScreen, atmBankDatabase,"Transfer");
+        super(userAccountNumber, atmScreen, atmBankDatabase, "Transfer");
         // initialize references to keypad and cash dispenser
         keypad = atmKeypad;
     } // end Transfer constructor
 
-    public Transfer(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase){
-        super(userAccountNumber, atmScreen, atmBankDatabase,"Transfer");
+    public Transfer(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase) {
+        super(userAccountNumber, atmScreen, atmBankDatabase, "Transfer");
     }
 
-    protected double getAmount(){
+    protected double getAmount() {
         return amount;
     }
 
-    protected void setAmount(double amounts){
+    protected void setAmount(double amounts) {
         this.amount = amounts;
     }
 
-    protected int getReceiverAccounts(){
+    protected int getReceiverAccounts() {
         return receiverAccount;
     }
 
-    protected void setReceiverAccounts(int receiverAccount){
+    protected void setReceiverAccounts(int receiverAccount) {
         this.receiverAccount = receiverAccount;
     }
 
-    public JPanel getGUI(){
+    public JPanel getGUI() {
         return mainPanel;
     }
 
     @Override
-    public void createPanelUI(){
+    public void createPanelUI() {
         contentPanel.removeAll();
 
-        JLabel titleLabel = new JLabel("<html><center>Transfer Menu:<br>1 - Input receiver account number<br>2 - Exit<br>Choose a function:</center></html>", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel(
+                "<html><center>Transfer Menu:<br>1 - Input receiver account number<br>2 - Exit<br>Choose a function:</center></html>",
+                SwingConstants.CENTER);
         titleLabel.setFont(new Font("微软雅黑", Font.BOLD, 16)); // 减小字体大小
 
         contentPanel.add(titleLabel, BorderLayout.NORTH);
