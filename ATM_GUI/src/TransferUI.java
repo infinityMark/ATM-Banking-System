@@ -419,7 +419,7 @@ public class TransferUI extends Transfer {
         isReceiverFieldActive = true;
         highlightActiveField();
 
-        super.removeAllButtonListenersCompletely(leftButton,rightButton);
+//        super.removeAllButtonListenersCompletely(leftButton,rightButton);
 
         return panel;
     }
@@ -504,7 +504,7 @@ public class TransferUI extends Transfer {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
-        removeAllButtonListenersCompletely(leftButton,rightButton);
+//        removeAllButtonListenersCompletely(leftButton,rightButton);
 //        setupFirstPageButtons();
 
         JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
