@@ -45,14 +45,18 @@ public class TransferUI extends Transfer {
     private JLabel receiverLabel;
     private JLabel amountLabel;
 
+    ATMUIController controller;
+
     private JButton[] leftButton = new JButton[3];
     private JButton[] rightButton = new JButton[3];
 
     public TransferUI(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,
-            Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[]) {
+            Keypad atmKeypad, CashDispenser atmCashDispenser, JButton[] left, JButton right[],
+            ATMUIController controller) {
         super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
         userAccountNumberInUI = userAccountNumber;
         // JPanel panel = this.transferLayout();
+        this.controller = controller;
         bankDatabase = atmBankDatabase;
         // showCard(CARD_MENU);
         leftButton[0] = left[0];
@@ -113,7 +117,7 @@ public class TransferUI extends Transfer {
      * 设置第一页的按钮功能
      */
     private void setupFirstPageButtons() {
-//        removeAllButtonListenersCompletely();
+        // removeAllButtonListenersCompletely();
 
         // 设置左侧按钮 - 跳转到信息页面
         for (int i = 0; i < leftButton.length; i++) {
@@ -177,19 +181,22 @@ public class TransferUI extends Transfer {
      * Navigates back to the main menu panel
      */
     public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, CARD_MENU);
-                layout.show(current, "mainMenu");
-            }
-        }
+        /*
+         * Container parent = mainPanel.getParent();
+         * if (parent != null) {
+         * Container current = parent;
+         * while (current != null && !(current.getLayout() instanceof CardLayout)) {
+         * current = current.getParent();
+         * }
+         * 
+         * if (current != null) {
+         * CardLayout layout = (CardLayout) current.getLayout();
+         * layout.show(current, CARD_MENU);
+         * layout.show(current, "mainMenu");
+         * }
+         * }
+         */
+        controller.switchToMainMenuPanel();
     }
 
     // Keypad integration methods
@@ -303,10 +310,9 @@ public class TransferUI extends Transfer {
             if (validateAmount(amountTextField.getContent().trim(), amountTextField, amountLabel)) {
                 if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
                     showCard(CARD_CONFIRMATION);
-                }
-                else{
+                } else {
                     showValidationError(amountTextField, amountLabel,
-                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
+                            String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
                 }
             }
         }
@@ -325,9 +331,10 @@ public class TransferUI extends Transfer {
     }
 
     public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
-                                      int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo, GridBagConstraints gridBagConstraints) {
+            int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo,
+            GridBagConstraints gridBagConstraints) {
 
-                                        // System.out.println("create selection menu");
+        // System.out.println("create selection menu");
         // setupFirstPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -336,7 +343,8 @@ public class TransferUI extends Transfer {
 
         // Create selection buttons
         RoundedButton selectionOneBtn = createMenuButton(firstSelection, StandardColor.Green.getColorMode(), fontSize);
-        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(), fontSize);
+        RoundedButton selectionTwoBtn = createMenuButton(secondSelection, StandardColor.Yellow.getColorMode(),
+                fontSize);
 
         selectionOneBtn.setName(BUTTON_FIRST);
         selectionTwoBtn.setName(BUTTON_SECOND);
@@ -431,7 +439,7 @@ public class TransferUI extends Transfer {
         gbc.gridy = 6;
         gbc.weighty = 0.01;
         gbc.insets = new Insets(30, 10, 10, 10);
-//        panel.add(buttonPanel, gbc);
+        // panel.add(buttonPanel, gbc);
 
         // Initialize field highlighting
         isReceiverFieldActive = true;
@@ -446,7 +454,7 @@ public class TransferUI extends Transfer {
      * Creates the transfer confirmation screen
      */
     public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
-                                         int fontSize, Font font) {
+            int fontSize, Font font) {
 
         setupConfirmationPageButtons();
 
@@ -493,7 +501,7 @@ public class TransferUI extends Transfer {
 
     private void updateBalanceInquiry() {
         // Update balance inquiry for current account
-//        BankDatabase bankDatabase = getBankDatabase();
+        // BankDatabase bankDatabase = getBankDatabase();
         double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
         double receiverBalance = bankDatabase.getAvailableBalance(getReceiverAccounts());
 
@@ -536,7 +544,7 @@ public class TransferUI extends Transfer {
         addComponentToPanel(panel, gbc, transactionInfoLabel, 0, 0.1);
         addComponentToPanel(panel, gbc, successLabel, 1, 0.1);
 
-        gbc.insets = new Insets(0,0,0,0);
+        gbc.insets = new Insets(0, 0, 0, 0);
         JPanel continueMenu = createSelectionMenu("Do you want transfer to another?",
                 "Yes, go back transfer", "No, go back ATM menu",
                 35, font, CARD_INFO, "mainMenu", gbc);
@@ -667,30 +675,33 @@ public class TransferUI extends Transfer {
     /**
      * Sets up the confirmation button validation and action logic
      */
-//    private void setupConfirmationButtonListener(RoundedButton confirmationButton,
-//            TextFields receiverAccountTextField,
-//            TextFields amountTextField,
-//            JLabel receiverLabel,
-//            JLabel amountLabel) {
-//        confirmationButton.addActionListener(e -> {
-//            resetValidationFlags();
-//
-//            boolean isReceiverValid = validateReceiverAccount(
-//                    receiverAccountTextField.getContent().trim(), receiverAccountTextField, receiverLabel);
-//            boolean isAmountValid = validateAmount(
-//                    amountTextField.getContent().trim(), amountTextField, amountLabel);
-//
-//            if (isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
-//                showValidationError(amountTextField, amountLabel,
-//                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
-//                return;
-//            }
-//
-//            if (isReceiverValid && isAmountValid) {
-//                showCard(CARD_CONFIRMATION);
-//            }
-//        });
-//    }
+    // private void setupConfirmationButtonListener(RoundedButton
+    // confirmationButton,
+    // TextFields receiverAccountTextField,
+    // TextFields amountTextField,
+    // JLabel receiverLabel,
+    // JLabel amountLabel) {
+    // confirmationButton.addActionListener(e -> {
+    // resetValidationFlags();
+    //
+    // boolean isReceiverValid = validateReceiverAccount(
+    // receiverAccountTextField.getContent().trim(), receiverAccountTextField,
+    // receiverLabel);
+    // boolean isAmountValid = validateAmount(
+    // amountTextField.getContent().trim(), amountTextField, amountLabel);
+    //
+    // if (isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+    // showValidationError(amountTextField, amountLabel,
+    // String.format("Sorry, You are not allowed to %s over HK$50000 at once time.",
+    // "Transfer"));
+    // return;
+    // }
+    //
+    // if (isReceiverValid && isAmountValid) {
+    // showCard(CARD_CONFIRMATION);
+    // }
+    // });
+    // }
 
     /**
      * Validates receiver account input

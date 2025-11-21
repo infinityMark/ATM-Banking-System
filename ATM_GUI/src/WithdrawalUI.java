@@ -39,6 +39,7 @@ public class WithdrawalUI extends JPanel {
 
     // Keypad integration
     private boolean isCustomAmountPanelActive = false;
+    private boolean isProcessing = false;
     // private ATMUI atmUI;
 
     // Constants for preset amounts
@@ -471,8 +472,10 @@ public class WithdrawalUI extends JPanel {
     }
 
     private void processCustomAmount() {
+        isProcessing = true;
         try {
             String amountText = customAmountField.getText().trim();
+
             if (amountText.isEmpty()) {
                 statusLabel.setText("Please enter an amount");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
@@ -557,7 +560,7 @@ public class WithdrawalUI extends JPanel {
          */
 
         if (withdrawalInProgress)
-            return; // 防止重复执行
+            return;
         withdrawalInProgress = true;
 
         try {
@@ -567,6 +570,7 @@ public class WithdrawalUI extends JPanel {
                 cashDispenser.dispenseCash();
                 new TransactionHistory(1, currentAccountNumber, 0, 0, 0, (double) selectedAmount);
                 showResultCard();
+                System.out.println("showResultCard...");
             }
         } finally {
             withdrawalInProgress = false;
@@ -647,7 +651,7 @@ public class WithdrawalUI extends JPanel {
 
         cardLayout.show(cardPanel, CARD_RESULT);
 
-        currentCardName = CARD_RESULT;
+        isOnResultScreen();
         deactivateCustomAmountPanel();
     }
 
@@ -768,9 +772,8 @@ public class WithdrawalUI extends JPanel {
     public void continueFromResultScreen() {
         if (isOnResultScreen()) {
             resetToInitialState();
-            System.out.println("6666");
             goBackToMainPanel();
-            System.out.println("main");
         }
     }
+
 }

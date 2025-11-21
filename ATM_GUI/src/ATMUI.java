@@ -69,7 +69,7 @@ public class ATMUI extends ATM {
 
     private ATMUIController controller;
 
-    public ATMUIController getcController() {
+    public ATMUIController getController() {
         return controller;
     }
 
@@ -375,7 +375,7 @@ public class ATMUI extends ATM {
 
     protected JPanel createBalancePanel() {
         balanceGUI = new BalanceInquiryUI(loginGUI.getAccountNumber(), getLeftButton(), getRightButton(),
-                getcController());
+                getController());
         balanceGUI.getMainPanel().setName(BALANCE_PANEL);
         return balanceGUI.getMainPanel();
     }
@@ -395,14 +395,14 @@ public class ATMUI extends ATM {
 
     protected JPanel createWithdrawPanel() {
         withdrawGUI = new WithdrawalUI(loginGUI.getAccountNumber(), getLeftButton(), getLeftButton(),
-                getcController());
+                getController());
         withdrawGUI.getMainPanel().setName(WITHDRAW_PANEL);
         return withdrawGUI.getMainPanel();
     }
 
     protected JPanel createTransferPanel() {
         transferUI = new TransferUI(loginGUI.getAccountNumber(), screen, bankDatabase,
-                atmKeypad, atmCashDispenser, getLeftButton(), getRightButton());
+                atmKeypad, atmCashDispenser, getLeftButton(), getRightButton(),getController());
         JPanel panel = transferUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferUI.resetToInitialState();
