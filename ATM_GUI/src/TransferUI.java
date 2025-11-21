@@ -321,13 +321,13 @@ public class TransferUI extends Transfer {
     }
 
     public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
-                                      int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo) {
+                                      int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo, GridBagConstraints gridBagConstraints) {
 
         setupFirstPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
-        gbc.insets = new Insets(10, 15, 10, 15);
+        gbc.insets = gridBagConstraints.insets;
 
         // Create selection buttons
         RoundedButton selectionOneBtn = createMenuButton(firstSelection, StandardColor.Green.getColorMode(), fontSize);
@@ -418,10 +418,6 @@ public class TransferUI extends Transfer {
         gbc.weighty = 0.01;
         panel.add(instructionLabel, gbc);
 
-        // Add buttons
-        JPanel buttonPanel = createButtonPanel(backButton, confirmationButton);
-        setupConfirmationButtonListener(confirmationButton, receiverAccountTextField, amountTextField,
-                receiverLabel, amountLabel);
         backButton.addActionListener(e -> {
             showCard(CARD_MENU);
             resetToInitialState();
@@ -430,7 +426,7 @@ public class TransferUI extends Transfer {
         gbc.gridy = 6;
         gbc.weighty = 0.01;
         gbc.insets = new Insets(30, 10, 10, 10);
-        panel.add(buttonPanel, gbc);
+//        panel.add(buttonPanel, gbc);
 
         // Initialize field highlighting
         isReceiverFieldActive = true;
@@ -464,8 +460,9 @@ public class TransferUI extends Transfer {
         panel.add(confirmationLabel, gbc);
 
         // Create selection menu
+        gbc.insets = new Insets(10, 15, 10, 15);
         JPanel selectionMenu = createSelectionMenu(title, firstSelection, secondSelection,
-                fontSize, font, CARD_AFTER_TRANSACTION, CARD_MENU);
+                fontSize, font, CARD_AFTER_TRANSACTION, CARD_MENU, gbc);
         selectionMenu.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         gbc.weighty = 0.4;
@@ -520,8 +517,8 @@ public class TransferUI extends Transfer {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
+        // 清理并设置按钮
         removeAllButtonListenersCompletely();
-
         setupFirstPageButtons();
 
         JLabel transactionInfoLabel = createStyledLabel(transactionInformation, font,
@@ -534,9 +531,12 @@ public class TransferUI extends Transfer {
         addComponentToPanel(panel, gbc, transactionInfoLabel, 0, 0.1);
         addComponentToPanel(panel, gbc, successLabel, 1, 0.1);
 
+        gbc.insets = new Insets(0,0,0,0);
         JPanel continueMenu = createSelectionMenu("Do you want transfer to another?",
                 "Yes, go back transfer", "No, go back ATM menu",
-                35, font, CARD_INFO, "mainMenu");
+                35, font, CARD_INFO, "mainMenu", gbc);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
         gbc.gridy = 2;
         gbc.weighty = 0.8;
         panel.add(continueMenu, gbc);
@@ -662,30 +662,30 @@ public class TransferUI extends Transfer {
     /**
      * Sets up the confirmation button validation and action logic
      */
-    private void setupConfirmationButtonListener(RoundedButton confirmationButton,
-            TextFields receiverAccountTextField,
-            TextFields amountTextField,
-            JLabel receiverLabel,
-            JLabel amountLabel) {
-        confirmationButton.addActionListener(e -> {
-            resetValidationFlags();
-
-            boolean isReceiverValid = validateReceiverAccount(
-                    receiverAccountTextField.getContent().trim(), receiverAccountTextField, receiverLabel);
-            boolean isAmountValid = validateAmount(
-                    amountTextField.getContent().trim(), amountTextField, amountLabel);
-
-            if (super.isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
-                showValidationError(amountTextField, amountLabel,
-                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
-                return;
-            }
-
-            if (isReceiverValid && isAmountValid) {
-                showCard(CARD_CONFIRMATION);
-            }
-        });
-    }
+//    private void setupConfirmationButtonListener(RoundedButton confirmationButton,
+//            TextFields receiverAccountTextField,
+//            TextFields amountTextField,
+//            JLabel receiverLabel,
+//            JLabel amountLabel) {
+//        confirmationButton.addActionListener(e -> {
+//            resetValidationFlags();
+//
+//            boolean isReceiverValid = validateReceiverAccount(
+//                    receiverAccountTextField.getContent().trim(), receiverAccountTextField, receiverLabel);
+//            boolean isAmountValid = validateAmount(
+//                    amountTextField.getContent().trim(), amountTextField, amountLabel);
+//
+//            if (isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+//                showValidationError(amountTextField, amountLabel,
+//                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
+//                return;
+//            }
+//
+//            if (isReceiverValid && isAmountValid) {
+//                showCard(CARD_CONFIRMATION);
+//            }
+//        });
+//    }
 
     /**
      * Validates receiver account input
@@ -744,6 +744,11 @@ public class TransferUI extends Transfer {
             if (amountValue <= 0) {
                 showValidationError(textField, label, "Amount must be greater than 0");
                 return false;
+            }
+
+            if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+                showValidationError(amountTextField, amountLabel,
+                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
             }
 
             setAmount(amountValue);
@@ -881,8 +886,9 @@ public class TransferUI extends Transfer {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
+        gbc.insets = new Insets(10, 15, 10, 15);
         JPanel menuCard = createSelectionMenu("Menu", "1 - Input receiver account number", "2 - Exit", 30,
-                new Font(Font.SANS_SERIF, Font.PLAIN, 35), CARD_INFO, "mainMenu");
+                new Font(Font.SANS_SERIF, Font.PLAIN, 35), CARD_INFO, "mainMenu", gbc);
 
         cardPanel.add(menuCard, CARD_MENU);
 
