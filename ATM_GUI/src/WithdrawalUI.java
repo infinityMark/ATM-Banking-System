@@ -39,15 +39,14 @@ public class WithdrawalUI extends JPanel {
 
     // Keypad integration
     private boolean isCustomAmountPanelActive = false;
-    private boolean isProcessing = false;
-    // private ATMUI atmUI;
+    private ATMUI atmUI;
 
     // Constants for preset amounts
     private final int[] PRESET_AMOUNTS = { 200, 400, 800, 1000 };
     private final int CANCELED = 6;
 
     public WithdrawalUI(int accountNumber, JButton[] leftButton, JButton[] rightButton,
-            ATMUIController controller) {
+            ATMUIController controller, ATMUI atmUI) {
         this.leftButton = leftButton;
         this.rightButton = rightButton;
         this.controller = controller;
@@ -55,7 +54,7 @@ public class WithdrawalUI extends JPanel {
         this.bankDatabase = BankDatabase.getInstance();
         this.cashDispenser = new CashDispenser();
         this.withdrawal = new Withdrawal(currentAccountNumber, new Screen(), bankDatabase, new Keypad(), cashDispenser);
-
+        this.atmUI = atmUI;
         initializeUI();
     }
 
@@ -212,7 +211,7 @@ public class WithdrawalUI extends JPanel {
                 StandardColor.Blue.getColorMode());
         keypadInstruction.setHorizontalAlignment(SwingConstants.CENTER);
 
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.weighty = 0.05;
         panel.add(keypadInstruction, gbc);
 
@@ -599,6 +598,11 @@ public class WithdrawalUI extends JPanel {
         if (cardLayout != null && cardPanel != null) {
             cardLayout.show(cardPanel, cardName);
             this.currentCardName = cardName;
+            if (CARD_CUSTOM.equals(cardName)) {
+                activateCustomAmountPanel();
+            } else {
+                deactivateCustomAmountPanel();
+            }
         }
     }
 
