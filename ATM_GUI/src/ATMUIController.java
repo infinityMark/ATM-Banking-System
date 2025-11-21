@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 /**
  * controller class for ATMUI
  */
@@ -29,7 +27,8 @@ public class ATMUIController {
     }
 
     public void refreshPanel(String name) {
-        if (atmUI.balanceGUI == null || atmUI.withdrawGUI == null || atmUI.transferGUI == null|| atmUI.historyGUI == null) {
+        if (atmUI.balanceGUI == null || atmUI.withdrawGUI == null || atmUI.transferGUI == null
+                || atmUI.historyGUI == null) {
             System.err.println("Panels not initialized. ");
         }
         switch (name) {
@@ -43,7 +42,7 @@ public class ATMUIController {
                 break;
             case "transfer":
                 atmUI.transferGUI.updateBalanceInquiry(accountNumber);
-                System.out.println("refresh withdraw");
+                System.out.println("refresh transfer");
                 break;
             case "history":
                 atmUI.historyGUI.refreshHistory(accountNumber);

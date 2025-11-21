@@ -14,9 +14,11 @@ public class ATMUI extends ATMUIController {
     public static final String KEYPAD_PANEL = "keypad";
     public static final String test = "test";
 
-    public static final String TAKE_OUT_CARD_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1" +
+    public static final String TAKE_OUT_CARD_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1"
+            +
             "_Group_101A-G03_UML_Showing/refs/heads/main/atm.png";
-    public static final String ATM_MACHINE_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_" +
+    public static final String ATM_MACHINE_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_"
+            +
             "Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png";
 
     protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 45);
@@ -325,8 +327,7 @@ public class ATMUI extends ATMUIController {
         keypadPanel.setName(KEYPAD_PANEL);
         registerPanel(keypadPanel);
 
-        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00",
-                "Back to Main menu" };
+        String[] keys = { "7", "8", "9", "Confirm", "4", "5", "6", "Delete", "1", "2", "3", "Clear", "0", ".", "00" };
         for (String key : keys) {
             RoundedButton btn = new RoundedButton(key);
             btn.setFont(ATMUI.NORMAL_FONT);

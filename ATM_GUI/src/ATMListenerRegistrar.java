@@ -172,7 +172,7 @@ public class ATMListenerRegistrar {
         }
 
         // back to main menu button
-        addButtonListener(ATMUI.KEYPAD_PANEL, "back to main menu", e -> {
+        /*addButtonListener(ATMUI.KEYPAD_PANEL, "back to main menu", e -> {
             String currentPanel = controller.getCurrentPanelName();
             System.out.println("Back to Main menu pressed from: " + currentPanel);
             if (ATMUI.GREETING_PANEL.equals(currentPanel)) {
@@ -181,7 +181,7 @@ public class ATMListenerRegistrar {
                     !ATMUI.LOGIN_PANEL.equals(currentPanel)) {
                 controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
             }
-        });
+        });*/
     }
 
     // 1. Handling button click events
