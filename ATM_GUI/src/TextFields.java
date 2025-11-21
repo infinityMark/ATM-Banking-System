@@ -62,6 +62,8 @@ public class TextFields extends JTextField {
         setBackground(StandardColor.Red.getColorMode());
     }
 
+    public void normal(){setBackground(getFocusBorderColor());}
+
     public String getContent(){
         return getText().isEmpty()? "0": getText();
     }
@@ -110,6 +112,10 @@ public class TextFields extends JTextField {
     public void setHoverBorderColor(Color color) {
         this.hoverBorderColor = color;
         repaint();
+    }
+
+    public Color getFocusBorderColor(){
+        return focusBorderColor;
     }
 
 //    public Color getFocusBorderColor
