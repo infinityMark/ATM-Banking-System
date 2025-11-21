@@ -272,7 +272,7 @@ public class ATMListenerRegistrar {
             }
         });
     }
-/* 
+    /*
     private void configureWithdrawalSideButtons() {
         atmUI.removeAllButtonListenersCompletely(atmUI.getLeftButton(), atmUI.getRightButton());
         // 在通用逻辑中，先检查当前面板是否为 WITHDRAW_PANEL
@@ -423,9 +423,9 @@ public class ATMListenerRegistrar {
                         transferUI.resetToInitialState();
                         transferUI.showCard(TransferUI.CARD_INFO);
                     } else {
-//                         右侧按钮：返回主菜单
+                         //右侧按钮：返回主菜单
                         returnToMainMenu(transferUI);
-//                        ATMUI atmui = new ATMUI();
+                        //ATMUI atmui = new ATMUI();
                     }
                     break;
 
@@ -459,7 +459,7 @@ public class ATMListenerRegistrar {
             addButtonListener("rightButtonPanel", btnName, transferButtonHandler);
         }
     }
-*/
+    */
     /**
      * 统一处理返回主菜单的逻辑
      */
@@ -524,7 +524,7 @@ public class ATMListenerRegistrar {
                 return;
 
             JButton sourceButton = (JButton) e.getSource();
-//            String buttonName = sourceButton.getName();
+            // buttonName = sourceButton.getName();
 
             controller.refreshHistoryPanel();
             controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);

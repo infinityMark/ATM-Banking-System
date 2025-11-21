@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-//import javax.swing.*;
 //import java.awt.event.*;
 
 public class BalanceInquiryUI extends JPanel {
@@ -25,19 +24,10 @@ public class BalanceInquiryUI extends JPanel {
     private JLabel interestLabel;
     private JLabel chequeLimitLabel;
 
+    
     //private JButton[] leftButton = new JButton[3];
     //private JButton[] rightButton = new JButton[3];
-
     private ATMUIController controller;
-
-    /*
-     * public BalanceInquiryUI(int accountNumber) {
-     * this.currentAccountNumber = accountNumber;
-     * this.bankDatabase = BankDatabase.getInstance();
-     * initializeUI();
-     * updateBalanceInfo();
-     * }
-     */
 
     public BalanceInquiryUI(int accountNumber,
                 //JButton[] leftButton, JButton[] rightButton,
@@ -133,13 +123,6 @@ public class BalanceInquiryUI extends JPanel {
 
         return panel;
     }
-
-    /*private void sideButtonRegistrar() {
-        for (int i = 0; i < 3; i++) {
-            leftButton[i].addActionListener(e -> goBackToMainPanel());
-            rightButton[i].addActionListener(e -> goBackToMainPanel());
-        }
-    }*/
 
     private JPanel createInfoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -253,7 +236,7 @@ public class BalanceInquiryUI extends JPanel {
                         double futureValue = savingAccount.calculateInterest(1, new Screen());
                         JLabel futureValueLabel = createStyledLabel(
                                 String.format("Projected balance after 1 year: HK$ %.2f", futureValue),
-                                new Font(Font.SANS_SERIF, Font.PLAIN, 14),
+                                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
                                 StandardColor.Mint.getColorMode());
                         futureValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -334,13 +317,17 @@ public class BalanceInquiryUI extends JPanel {
         return mainPanel;
     }
 
-    /*public void setAccountNumber(int accountNumber) {
-        this.currentAccountNumber = accountNumber;
-        updateBalanceInfo();
-    }*/
-
     public void refreshBalance(int accountNumber) {
         this.currentAccountNumber = accountNumber;
         updateBalanceInfo();
     }
+    
+    /*
+    private void sideButtonRegistrar() {
+        for (int i = 0; i < 3; i++) {
+            leftButton[i].addActionListener(e -> goBackToMainPanel());
+            rightButton[i].addActionListener(e -> goBackToMainPanel());
+        }
+    }
+    */
 }

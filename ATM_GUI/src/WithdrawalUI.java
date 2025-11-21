@@ -244,7 +244,7 @@ public class WithdrawalUI extends JPanel {
                 StandardColor.Red.getColorMode());
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.weighty = 0.05;
         panel.add(statusLabel, gbc);
 
