@@ -57,6 +57,7 @@ public class TransferUI extends JPanel {
         this.controller = controller;
         bankDatabase = atmBankDatabase;
         transfer = new Transfer(userAccountNumber, screen,atmBankDatabase);
+        initializeUI();
     }
 
     /**
@@ -218,6 +219,8 @@ public class TransferUI extends JPanel {
             int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo,
             GridBagConstraints gridBagConstraints) {
 
+        setCurrentCardName(CARD_MENU);
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = gridBagConstraints.insets;
@@ -266,6 +269,9 @@ public class TransferUI extends JPanel {
      */
     public JPanel createReceiveTransferInformation(String remainAmount) {
         //setupReceiverPageButtons();
+
+        setCurrentCardName(CARD_INFO);
+
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -342,6 +348,7 @@ public class TransferUI extends JPanel {
             int fontSize, Font font) {
 
         // setupConfirmationPageButtons();
+        setCurrentCardName(CARD_CONFIRMATION);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -398,6 +405,7 @@ public class TransferUI extends JPanel {
 
     public void resetToInitialState() {
         cardLayout.show(cardPanel, CARD_MENU);
+        setCurrentCardName(CARD_MENU);
         resetValidationFlags();
         isReceiverFieldActive = true;
         if (receiverAccountTextField != null)
@@ -416,6 +424,8 @@ public class TransferUI extends JPanel {
     public JPanel createAfterTransaction(String transactionInformation, Font font) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
+
+        setCurrentCardName(CARD_AFTER_TRANSACTION);
 
         // 清理并设置按钮
         // removeAllButtonListenersCompletely();
@@ -671,6 +681,7 @@ public class TransferUI extends JPanel {
 
         if (cardLayout != null && cardPanel != null) {
             cardLayout.show(cardPanel, cardName);
+            setCurrentCardName(cardName);
         } else {
             System.err.println("CardLayout or cardPanel is null");
         }
@@ -726,8 +737,10 @@ public class TransferUI extends JPanel {
     /**
      * Creates and returns the main transfer layout panel
      */
-    public JPanel transferLayout() {
-        System.out.println(userAccountNumberInUI);
+    public void initializeUI() {
+        System.out.println("=== TransferUI.initializeUI() ===");
+        System.out.println("用户账户: " + userAccountNumberInUI);
+
         mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
@@ -752,19 +765,23 @@ public class TransferUI extends JPanel {
         gbc.weighty = 0.9;
         mainPanel.add(cardPanel, gbc);
 
+        // 关键修复：在显示卡片后立即设置当前卡片状态
         cardLayout.show(cardPanel, CARD_MENU);
-        return mainPanel;
+        setCurrentCardName(CARD_MENU);  // 确保状态同步
+
+        System.out.println("初始化完成，当前卡片: " + getCurrentCardName());
+        System.out.println("=== TransferUI.initializeUI() 结束 ===");
     }
 
-    //private String currentCardName = CARD_MENU;
+    private String currentCardName = CARD_MENU;
 
-    /*public void setCurrentCardName(String name){
+    public void setCurrentCardName(String name){
         currentCardName = name;
     }
-    
-    /*public String getCurrentCardName() {
+
+    public String getCurrentCardName() {
         return currentCardName;
-    }*/
+    }
    
     public JPanel getMainPanel() {
         return mainPanel;
