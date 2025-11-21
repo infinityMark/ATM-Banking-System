@@ -304,6 +304,10 @@ public class TransferUI extends Transfer {
                 if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
                     showCard(CARD_CONFIRMATION);
                 }
+                else{
+                    showValidationError(amountTextField, amountLabel,
+                        String.format("Sorry, You are not allowed to %s over HK$50000 at once time.", "Transfer"));
+                }
             }
         }
     }
