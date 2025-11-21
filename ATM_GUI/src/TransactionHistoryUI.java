@@ -7,6 +7,7 @@ public class TransactionHistoryUI {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private int currentAccountNumber;
+    private ATMUIController atmUIController;
 
     private static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
     private static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
@@ -24,6 +25,10 @@ public class TransactionHistoryUI {
 
     public TransactionHistoryUI() {
 
+    }
+
+    public void setATMUIController(ATMUIController controller) {
+        this.atmUIController = controller;
     }
 
     private void initializeMainPanel() {
@@ -93,10 +98,16 @@ public class TransactionHistoryUI {
         refreshHistory();
 
         gbc.gridy = 1;
-        gbc.weighty = 0.8;// 80%
+        gbc.weighty = 0.7;
         gbc.insets = new Insets(20, 20, 20, 20);
         historyPanel.add(scrollPane, gbc);
-
+        
+        RoundedButton backButton = new RoundedButton("Main Menu");
+        gbc.gridy = 2;
+        gbc.weighty = 0.1;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        historyPanel.add(backButton, gbc);
+        backButton.addActionListener(e -> goBackToMainPanel());
         cardPanel.add(historyPanel, CARD_HISTORY);
     }
 
@@ -113,6 +124,23 @@ public class TransactionHistoryUI {
         this.currentAccountNumber = accountNumber;
         refreshHistory();
     }
+
+    
+    public void goBackToMainPanel() {
+        Container parent = mainPanel.getParent();
+        if (parent != null) {
+            Container current = parent;
+            while (current != null && !(current.getLayout() instanceof CardLayout)) {
+                current = current.getParent();
+            }
+
+            if (current != null) {
+                CardLayout layout = (CardLayout) current.getLayout();
+                layout.show(current, "mainMenu");
+            }
+        }
+    }
+        
 
     private GridBagConstraints createDefaultGridBagConstraints() {
         GridBagConstraints gbc = new GridBagConstraints();
