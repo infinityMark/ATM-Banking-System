@@ -211,7 +211,7 @@ public class WithdrawalUI extends JPanel {
                 StandardColor.Blue.getColorMode());
         keypadInstruction.setHorizontalAlignment(SwingConstants.CENTER);
 
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.weighty = 0.05;
         panel.add(keypadInstruction, gbc);
 
