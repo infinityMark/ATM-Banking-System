@@ -226,7 +226,7 @@ public class ATMUI extends ATMUIController {
         lowerPanel.setPreferredSize(new Dimension(750, 200));
     }
 
-    protected TextFields createInputField(int fontSize) {
+    static public TextFields createInputField(int fontSize) {
         return new TextFields(200, 30,
                 StandardColor.GreyHighest.getColor(0),
                 StandardColor.Blue.getColor(0),
@@ -412,10 +412,7 @@ public class ATMUI extends ATMUIController {
     CashDispenser atmCashDispenser;
 
     protected JPanel createTransferPanel() {
-        transferGUI = new TransferUI(loginGUI.getAccountNumber(), screen, bankDatabase,
-                atmKeypad, atmCashDispenser,
-                //getLeftButton(), getRightButton(),
-                                 getController());
+        transferGUI = new TransferUI(loginGUI.getAccountNumber(),bankDatabase, getController());
         JPanel panel = transferGUI.transferLayout();
         panel.setName(TRANSFER_PANEL);
         transferGUI.resetToInitialState();

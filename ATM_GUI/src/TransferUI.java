@@ -8,7 +8,7 @@ import java.awt.event.FocusListener;
  * Transfer User Interface - Handles the GUI for money transfer operations
  * Provides a multistep form for transferring funds between accounts
  */
-public class TransferUI extends Transfer {
+public class TransferUI extends JPanel {
     // Constants for card names
     public static final String CARD_MENU = "MENU";
     public static final String CARD_INFO = "INFO";
@@ -33,6 +33,7 @@ public class TransferUI extends Transfer {
     private int userAccountNumberInUI;
 
 
+    private Transfer transfer;
 
     // Validation states
     private Boolean isReceiverValid = false;
@@ -47,38 +48,18 @@ public class TransferUI extends Transfer {
 
     ATMUIController controller;
 
-   // private JButton[] leftButton = new JButton[3];
-   //private JButton[] rightButton = new JButton[3];
-
     Screen screen = new Screen();
     BankDatabase bankDatabase = BankDatabase.getInstance();
-    Keypad atmKeypad;
-    CashDispenser atmCashDispenser;
-
 
     public TransferUI(int userAccountNumber
-        , Screen atmScreen, BankDatabase atmBankDatabase,
-            Keypad atmKeypad, CashDispenser atmCashDispenser,
-                    //JButton[] left, JButton right[],
-            ATMUIController controller) {
-        super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
+        ,BankDatabase atmBankDatabase, ATMUIController controller) {
+//        super(userAccountNumber, atmScreen, atmBankDatabase, atmKeypad, atmCashDispenser);
+        super();
         userAccountNumberInUI = userAccountNumber;
         // JPanel panel = this.transferLayout();
         this.controller = controller;
         bankDatabase = atmBankDatabase;
-        // showCard(CARD_MENU);
-        /*leftButton[0] = left[0];
-        leftButton[1] = left[1];
-        leftButton[2] = left[2];
-        
-        rightButton[0] = right[0];
-        rightButton[1] = right[1];
-        rightButton[2] = right[2];*/
-    
-    
-
-
-        this.cardPanel = cardPanel;
+        transfer = new Transfer(userAccountNumber, screen,atmBankDatabase);
     }
 
     /**
@@ -97,102 +78,6 @@ public class TransferUI extends Transfer {
         return null;
     }
 
-    /**
-     * 彻底移除所有按钮的监听器
-     */
-    /*
-     * private void removeAllButtonListenersCompletely() {
-     * for (int i = 0; i < leftButton.length; i++) {
-     * if (leftButton[i] != null) {
-     * ActionListener[] listeners = leftButton[i].getActionListeners();
-     * for (ActionListener listener : listeners) {
-     * leftButton[i].removeActionListener(listener);
-     * }
-     * System.out.println("左侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-     * }
-     * }
-     * 
-     * // 清理右侧按钮
-     * for (int i = 0; i < rightButton.length; i++) {
-     * if (rightButton[i] != null) {
-     * ActionListener[] listeners = rightButton[i].getActionListeners();
-     * for (ActionListener listener : listeners) {
-     * rightButton[i].removeActionListener(listener);
-     * }
-     * System.out.println("右侧按钮 " + i + " 移除了 " + listeners.length + " 个监听器");
-     * }
-     * }
-     * System.out.println("=== 清理完成 ===");
-     * }
-     */
-
-    /**
-     * 设置第一页的按钮功能
-     */
-    /*
-     * private void setupFirstPageButtons() {
-     * // removeAllButtonListenersCompletely();
-     * 
-     * // 设置左侧按钮 - 跳转到信息页面
-     * for (int i = 0; i < leftButton.length; i++) {
-     * if (leftButton[i] != null) {
-     * leftButton[i].addActionListener(e -> {
-     * System.out.println("左侧按钮点击 - 跳转到信息页面");
-     * showCard(CARD_INFO);
-     * });
-     * }
-     * }
-     * 
-     * // 设置右侧按钮 - 返回主菜单
-     * for (int i = 0; i < rightButton.length; i++) {
-     * if (rightButton[i] != null) {
-     * rightButton[i].addActionListener(e -> {
-     * System.out.println("右侧按钮点击 - 返回主菜单");
-     * goBackToMainPanel();
-     * });
-     * }
-     * }
-     * }
-     */
-
-    /**
-     * 设置确认页面的按钮功能
-     */
-    /*
-     * private void setupConfirmationPageButtons() {
-     * // removeAllButtonListenersCompletely();
-     * 
-     * // 设置左侧按钮 - 执行转账
-     * for (int i = 0; i < leftButton.length; i++) {
-     * if (leftButton[i] != null) {
-     * leftButton[i].addActionListener(e -> {
-     * System.out.println("左侧按钮点击 - 执行转账");
-     * executeTransfer();
-     * updateBalanceInquiry();
-     * showCard(CARD_AFTER_TRANSACTION);
-     * });
-     * }
-     * }
-     * 
-     * // 设置右侧按钮 - 返回菜单
-     * for (int i = 0; i < rightButton.length; i++) {
-     * if (rightButton[i] != null) {
-     * rightButton[i].addActionListener(e -> {
-     * System.out.println("右侧按钮点击 - 返回菜单");
-     * showCard(CARD_MENU);
-     * });
-     * }
-     * }
-     * }
-     */
-
-    /**
-     * 设置接收者信息页面的按钮功能（无功能）
-     */
-    /*private void setupReceiverPageButtons() {
-        // removeAllButtonListenersCompletely();
-        System.out.println("接收者信息页面 - 侧边按钮无功能");
-    }*/
 
     /**
      * Navigates back to the main menu panel
@@ -310,7 +195,7 @@ public class TransferUI extends Transfer {
         } else {
             // Validate amount and proceed to confirmation
             if (validateAmount(amountTextField.getContent().trim(), amountTextField, amountLabel)) {
-                if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
+                if (!transfer.isLimitAccountConditionCheckerHappen(transfer.getAmount(), "Transfer")) {
                     showCard(CARD_CONFIRMATION);
                 } else {
                     showValidationError(amountTextField, amountLabel,
@@ -335,9 +220,6 @@ public class TransferUI extends Transfer {
     public JPanel createSelectionMenu(String title, String firstSelection, String secondSelection,
             int fontSize, Font font, String nextPageForButtonOne, String nextPageForButtonTwo,
             GridBagConstraints gridBagConstraints) {
-
-        // System.out.println("create selection menu");
-        // setupFirstPageButtons();
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = createDefaultGridBagConstraints();
@@ -393,22 +275,22 @@ public class TransferUI extends Transfer {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // Create UI components
-        JLabel remainAmountTitle = createStyledLabel(remainAmount, FONT_SMALL,
+        JLabel remainAmountTitle = createStyledLabel(remainAmount, ATMUI.FONT_SMALL,
                 StandardColor.GreyHighest.getOppositeColorMode());
         RoundedButton confirmationButton = createActionButton("Confirm", StandardColor.Green.getColorMode());
         RoundedButton backButton = createActionButton("Back", StandardColor.Yellow.getColorMode());
 
-        receiverAccountTextField = createInputField(40);
+        receiverAccountTextField = ATMUI.createInputField(40);
         receiverAccountTextField.setName(RECEIVER_TEXTFIELD);
         receiverAccountTextField.setEditable(false);
 
-        amountTextField = createInputField(40);
+        amountTextField = ATMUI.createInputField(40);
         amountTextField.setName(AMOUNT_TEXTFIELD);
         amountTextField.setEditable(false);
 
-        receiverLabel = createStyledLabel(receiverText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        receiverLabel = createStyledLabel(receiverText, ATMUI.FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
         receiverLabel.setName(RECEIVER_LABEL);
-        amountLabel = createStyledLabel(amountText, FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
+        amountLabel = createStyledLabel(amountText, ATMUI.FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
         amountLabel.setName(AMOUNT_LABEL);
 
         setupFieldListener(receiverAccountTextField, receiverLabel, receiverText);
@@ -469,8 +351,8 @@ public class TransferUI extends Transfer {
 
         // Create confirmation message
         String confirmationMessage = String.format("The system is going to transfer HK$ %.2f to account number: %d",
-                getAmount(), getReceiverAccounts());
-        JLabel confirmationLabel = createStyledLabel(confirmationMessage, FONT_SMALL,
+                transfer.getAmount(), transfer.getReceiverAccounts());
+        JLabel confirmationLabel = createStyledLabel(confirmationMessage, ATMUI.FONT_SMALL,
                 StandardColor.GreyHighest.getOppositeColorMode());
 
         gbc.weighty = 0.0;
@@ -511,10 +393,10 @@ public class TransferUI extends Transfer {
         // Update balance inquiry for current account
         // BankDatabase bankDatabase = getBankDatabase();
         double currentBalance = bankDatabase.getAvailableBalance(userAccountNumberInUI);
-        double receiverBalance = bankDatabase.getAvailableBalance(getReceiverAccounts());
+        double receiverBalance = bankDatabase.getAvailableBalance(transfer.getReceiverAccounts());
 
         System.out.printf("Transfer completed: Account %d balance: HK$ %.2f, Account %d balance: HK$ %.2f%n",
-                userAccountNumberInUI, currentBalance, getReceiverAccounts(), receiverBalance);
+                userAccountNumberInUI, currentBalance, transfer.getReceiverAccounts(), receiverBalance);
     }
 
     public void resetToInitialState() {
@@ -606,8 +488,8 @@ public class TransferUI extends Transfer {
                 StandardColor.GreyHighest.getColorMode(),
                 StandardColor.GreyHighest.getColorMode(),
                 StandardColor.GreyHighest.getOppositeColorMode(),
-                FONT_BUTTON,
-                FONT_BUTTON,
+                ATMUI.FONT_BUTTON,
+                ATMUI.FONT_BUTTON,
                 true, 200, 10);
     }
 
@@ -628,7 +510,7 @@ public class TransferUI extends Transfer {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        TextFields currencySymbol = createInputField(40);
+        TextFields currencySymbol = ATMUI.createInputField(40);
         currencySymbol.setText("HK$ ");
         currencySymbol.setEnabled(false);
 
@@ -683,37 +565,6 @@ public class TransferUI extends Transfer {
     }
 
     /**
-     * Sets up the confirmation button validation and action logic
-     */
-    // private void setupConfirmationButtonListener(RoundedButton
-    // confirmationButton,
-    // TextFields receiverAccountTextField,
-    // TextFields amountTextField,
-    // JLabel receiverLabel,
-    // JLabel amountLabel) {
-    // confirmationButton.addActionListener(e -> {
-    // resetValidationFlags();
-    //
-    // boolean isReceiverValid = validateReceiverAccount(
-    // receiverAccountTextField.getContent().trim(), receiverAccountTextField,
-    // receiverLabel);
-    // boolean isAmountValid = validateAmount(
-    // amountTextField.getContent().trim(), amountTextField, amountLabel);
-    //
-    // if (isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
-    // showValidationError(amountTextField, amountLabel,
-    // String.format("Sorry, You are not allowed to %s over HK$50000 at once time.",
-    // "Transfer"));
-    // return;
-    // }
-    //
-    // if (isReceiverValid && isAmountValid) {
-    // showCard(CARD_CONFIRMATION);
-    // }
-    // });
-    // }
-
-    /**
      * Validates receiver account input
      */
     private boolean validateReceiverAccount(String accountText, TextFields textField, JLabel label) {
@@ -735,7 +586,7 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
-            setReceiverAccounts(accountNumber);
+            transfer.setReceiverAccounts(accountNumber);
             clearValidationError(label);
             return true;
 
@@ -757,7 +608,7 @@ public class TransferUI extends Transfer {
         try {
             double amountValue = Double.parseDouble(amountText);
 
-            if (!isTwoDecimalOnly(amountValue)) {
+            if (!transfer.isTwoDecimalOnly(amountValue)) {
                 showValidationError(textField, label, "Only two decimal amount is maximum allowed");
                 return false;
             }
@@ -772,12 +623,7 @@ public class TransferUI extends Transfer {
                 return false;
             }
 
-//            if (!isLimitAccountConditionCheckerHappen(getAmount(), "Transfer")) {
-//                showValidationError(textField, label,
-//                        String.format("Cheque Account can not %s over HK$50000 once time.", "Transfer"));
-//            }
-
-            setAmount(amountValue);
+            transfer.setAmount(amountValue);
             clearValidationError(label);
             return true;
 
@@ -826,11 +672,11 @@ public class TransferUI extends Transfer {
      * Executes the actual transfer operation
      */
     protected void executeTransfer() {
-        bankDatabase.transfer(getAccountNumber(), getReceiverAccounts(), getAmount());
+        bankDatabase.transfer(transfer.getAccountNumber(), transfer.getReceiverAccounts(), transfer.getAmount());
         System.out.println(
-                "Transfer executed: " + getAmount() + " from " + getAccountNumber() + " to " + getReceiverAccounts());
-        System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(getAccountNumber()));
-        new TransactionHistory(0, getAccountNumber(), getReceiverAccounts(), 0, 0, getAmount());
+                "Transfer executed: " + transfer.getAmount() + " from " + transfer.getAccountNumber() + " to " + transfer.getReceiverAccounts());
+        System.out.println("Remaining balance: " + bankDatabase.getAvailableBalance(transfer.getAccountNumber()));
+        new TransactionHistory(0, transfer.getAccountNumber(), transfer.getReceiverAccounts(), 0, 0, transfer.getAmount());
     }
 
     /**
@@ -872,7 +718,7 @@ public class TransferUI extends Transfer {
 
             case CARD_AFTER_TRANSACTION:
                 String transactionInfo = String.format("Total HK$ %.2f transfers to account %d.",
-                        getAmount(), getReceiverAccounts());
+                        transfer.getAmount(), transfer.getReceiverAccounts());
                 JPanel afterTransactionCard = createAfterTransaction(transactionInfo,
                         new Font(Font.SANS_SERIF, Font.PLAIN, 20));
                 afterTransactionCard.setName(CARD_AFTER_TRANSACTION);
@@ -904,7 +750,7 @@ public class TransferUI extends Transfer {
 
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
-        JLabel taskTitle = createStyledLabel("Transfer", FONT_TITLE_LARGE, StandardColor.Blue.getColorMode());
+        JLabel taskTitle = createStyledLabel("Transfer", ATMUI.FONT_TITLE_LARGE, StandardColor.Blue.getColorMode());
         taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
         mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));

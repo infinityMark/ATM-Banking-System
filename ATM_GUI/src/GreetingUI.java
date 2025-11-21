@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-//import java.net.URI;
-//import java.net.URL;
 
 public class GreetingUI extends ATMUI{
     public static final String GREETING_PANEL = "greeting";
@@ -92,21 +90,6 @@ public class GreetingUI extends ATMUI{
         return panel;
     }
 
-    /*static public void goToPanel(String name) {
-        Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, name);
-            }
-        }
-    }*/
-
     @Override
     public JPanel createGreetingPanel() {
         mainPanel = new JPanel(new GridBagLayout());
@@ -115,7 +98,7 @@ public class GreetingUI extends ATMUI{
 
         GridBagConstraints gbc = createDefaultGridBagConstraints();
 
-        JLabel taskTitle = createStyledLabel("Transfer", TransferUI.FONT_TITLE_LARGE,
+        JLabel taskTitle = createStyledLabel("Transfer", ATMUI.FONT_TITLE_LARGE,
                 StandardColor.Blue.getColorMode());
         taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -130,36 +113,6 @@ public class GreetingUI extends ATMUI{
         mainPanel.add(atmPhoto, gbc);
         gbc.gridx = 1;
         mainPanel.add(reminderPanel, gbc);
-
-        /*
-         * mainPanel.addMouseListener(new MouseListener() {
-         * 
-         * @Override
-         * public void mouseClicked(MouseEvent e) {
-         * goToPanel(ATMUI.LOGIN_PANEL);
-         * }
-         * 
-         * @Override
-         * public void mousePressed(MouseEvent e) {
-         * 
-         * }
-         * 
-         * @Override
-         * public void mouseReleased(MouseEvent e) {
-         * 
-         * }
-         * 
-         * @Override
-         * public void mouseEntered(MouseEvent e) {
-         * 
-         * }
-         * 
-         * @Override
-         * public void mouseExited(MouseEvent e) {
-         * 
-         * }
-         * });
-         */
 
         return mainPanel;
     }
