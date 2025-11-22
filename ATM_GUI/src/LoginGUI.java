@@ -120,6 +120,7 @@ public class LoginGUI {
      * Handles number input from keypad
      */
     public void handleNumberInput(String number) {
+         if (!invalidinput) {
         if (accountFieldFocused) {
             String currentText = accounTF.getText();
             accounTF.setText(currentText + number);
@@ -129,13 +130,15 @@ public class LoginGUI {
                 passwordF.setText(currentText + number);
             }
         }
+     }
     }
 
     /**
      * Handles delete action from keypad - deletes last character
      */
     public void handleDelete() {
-        if (accountFieldFocused) {
+        if (!invalidinput) {
+             if (accountFieldFocused) {
             String currentText = accounTF.getText();
             if (!currentText.isEmpty()) {
                 accounTF.setText(currentText.substring(0, currentText.length() - 1));
@@ -148,13 +151,14 @@ public class LoginGUI {
                 }
             }
         }
+        }
     }   
 
     /**
      * Handles clear action from keypad - clears all input
      */
     public void handleClear() {
-        clearInput();
+         if (!invalidinput) {clearInput();}
     }
 
     /**
