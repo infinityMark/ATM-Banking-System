@@ -63,6 +63,7 @@ public class LoginGUI {
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
         accounTF.setEditable(false);//Make non-editable to force keypad use
         reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
+        reminderL.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 40));
 
         Toppanel();
         Bottompanel();
@@ -195,7 +196,7 @@ public class LoginGUI {
     }
 
     private void Bottompanel() {
-        font(reminderL, 3, StandardColor.Yellow.getColorMode(), 16);
+        font(reminderL, 3, StandardColor.Yellow.getColorMode(), 30);
         reminderL.setBorder(BorderFactory.createLineBorder(StandardColor.Gray.getColorMode(), 1));
         reminderL.setOpaque(true);
         backGroudColor(reminderL);
