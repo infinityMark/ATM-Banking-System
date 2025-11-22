@@ -23,19 +23,12 @@ public class BalanceInquiryUI extends JPanel {
     private JLabel totalBalanceLabel;
     private JLabel interestLabel;
     private JLabel chequeLimitLabel;
-
     
-    //private JButton[] leftButton = new JButton[3];
-    //private JButton[] rightButton = new JButton[3];
     private ATMUIController controller;
 
-    public BalanceInquiryUI(int accountNumber,
-                //JButton[] leftButton, JButton[] rightButton,
-            ATMUIController controller) {
+    public BalanceInquiryUI(int accountNumber, ATMUIController controller) {
         this.currentAccountNumber = accountNumber;
         this.bankDatabase = BankDatabase.getInstance();
-        //this.leftButton = leftButton;
-        //this.rightButton = rightButton;
         this.controller = controller;
         initializeUI();
         updateBalanceInfo();
@@ -115,7 +108,6 @@ public class BalanceInquiryUI extends JPanel {
         RoundedButton backButton = ATMUI.createActionButton("Back to Main Menu",
                 StandardColor.Blue.getColorMode());
         backButton.addActionListener(e -> goBackToMainPanel());
-        // sideButtonRegistrar();
         gbc.gridy = 3;
         gbc.weighty = 0.1;
         gbc.insets = new Insets(20, 15, 10, 15);
@@ -321,13 +313,4 @@ public class BalanceInquiryUI extends JPanel {
         this.currentAccountNumber = accountNumber;
         updateBalanceInfo();
     }
-    
-    /*
-    private void sideButtonRegistrar() {
-        for (int i = 0; i < 3; i++) {
-            leftButton[i].addActionListener(e -> goBackToMainPanel());
-            rightButton[i].addActionListener(e -> goBackToMainPanel());
-        }
-    }
-    */
 }
