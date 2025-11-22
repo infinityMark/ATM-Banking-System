@@ -1,3 +1,9 @@
+
+/**
+ * Registers event listeners for ATM UI components.
+ * Binds user interactions (button clicks, mouse events) to controller logic.
+ * Manages listener configurations for different UI panels.
+ */
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,12 +28,11 @@ public class ATMListenerRegistrar {
     public ATMListenerRegistrar(ATMUI atmUI, ATMUIController controller) {
         this.atmUI = atmUI;
         this.controller = controller;
-
         initBaseActionConfigs();
     }
 
+    // method to add listeners
     private void initBaseActionConfigs() {
-
         addMouseListener(
                 GreetingUI.GREETING_PANEL,
                 GreetingUI.GREETING_PANEL,
@@ -47,12 +52,11 @@ public class ATMListenerRegistrar {
                         ((Component) e.getSource()).setCursor(java.awt.Cursor.getDefaultCursor());
                     }
                 });
-
         // 2. Configure the keypad buttons (number keys, confirm, delete, etc.).
         configureKeypadButtons();
-
     }
 
+    // method for adding listener to keypad
     private void configureKeypadButtons() {
         // Confirm button
         addButtonListener(ATMUI.KEYPAD_PANEL, "confirm", e -> {
@@ -170,18 +174,6 @@ public class ATMListenerRegistrar {
                 }
             });
         }
-
-        // back to main menu button
-        /*addButtonListener(ATMUI.KEYPAD_PANEL, "back to main menu", e -> {
-            String currentPanel = controller.getCurrentPanelName();
-            System.out.println("Back to Main menu pressed from: " + currentPanel);
-            if (ATMUI.GREETING_PANEL.equals(currentPanel)) {
-                controller.switchToPanel(ATMUI.LOGIN_PANEL);
-            } else if (!ATMUI.MAIN_MENU_PANEL.equals(currentPanel) &&
-                    !ATMUI.LOGIN_PANEL.equals(currentPanel)) {
-                controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
-            }
-        });*/
     }
 
     // 1. Handling button click events
@@ -194,7 +186,7 @@ public class ATMListenerRegistrar {
         actionConfigs.add(new Object[] { panelName, componentName, "mouse", listener });
     }
 
-    // Iterate through all configurations and bind listeners by type.
+    // Iterate through all configurations and bind listeners by type
     public void registerAllListeners() {
         for (Object[] config : actionConfigs) {
             String panelName = (String) config[0];
@@ -206,7 +198,7 @@ public class ATMListenerRegistrar {
             if (panel == null)
                 continue;
 
-            // Find components (searching by name is more reliable than searching by text).
+            // Find components (searching by name is more reliable than searching by text)
             Component comp = findComponentByName(panel, componentName);
             if (comp == null)
                 continue;
@@ -224,6 +216,7 @@ public class ATMListenerRegistrar {
         }
     }
 
+    // sub method of registerAllListeners
     private Component findComponentByName(Container container, String name) {
         // First check if the container itself matches the name.
         if (name.equals(container.getName())) {

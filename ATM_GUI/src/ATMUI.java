@@ -1,8 +1,14 @@
+
+/**
+ * Manages the ATM's user interface components.
+ * Handles panel creation, switching between panels, and UI initialization.
+ * Coordinates with controller for user interactions.
+ */
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class ATMUI extends ATMUIController {
+public class ATMUI {
     // ------------- Panel name constants -------------
     public static final String GREETING_PANEL = "greeting";
     public static final String LOGIN_PANEL = "login";
@@ -13,18 +19,6 @@ public class ATMUI extends ATMUIController {
     public static final String HISTORY_PANEL = "history";
     public static final String KEYPAD_PANEL = "keypad";
     public static final String test = "test";
-
-    public static final String TAKE_OUT_CARD_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1"
-            +
-            "_Group_101A-G03_UML_Showing/refs/heads/main/atm.png";
-    public static final String ATM_MACHINE_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_"
-            +
-            "Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png";
-
-    protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 45);
-    protected static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
-    protected static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
-    protected static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 
     // ------------- Instance GUI --------------------
     private String currentPanelName = GREETING_PANEL;
@@ -42,66 +36,38 @@ public class ATMUI extends ATMUIController {
     private int panelCount = 0;
 
     // Main frame and panels
-
     private CardLayout centerCardLayout;
     private JPanel mainUpperPanel;
-    // private JPanel leftButtonPanel;
     private JPanel centerPanel;
-    // private JPanel rightButtonPanel;
     private JPanel lowerPanel;
     private JFrame mainframe;
+
     private ATMUIController controller;
 
+    // get controller's method
     public ATMUIController getController() {
         return controller;
     }
 
+    // set controller's method
     public void setController(ATMUIController controller) {
         this.controller = controller;
     }
 
+    // Create a unified account number
     static private int currentAccountNumber;
 
+    // set unified account number
     static public void setCurrentAccountNumber(int currentAccountNumber1) {
         currentAccountNumber = currentAccountNumber1;
     }
 
+    // get unified account number
     static public int getCurrentAccountNumber() {
         return currentAccountNumber;
     }
 
-    JPanel mainPanel = new JPanel(new GridBagLayout());
-    JPanel contentPanel = new JPanel();
-    JLabel taskTitle = new JLabel();
-
-    protected static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 40);
-    public static final Font NORMAL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
-    protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
-
     public ATMUI() {
-    }
-
-    public ATMUI(String methodName) {
-
-        mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-
-        taskTitle.setText(methodName);
-        taskTitle.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-        taskTitle.setForeground(StandardColor.Blue.getColorMode());
-        taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
-
-        gbc.weighty = 0.1;
-        mainPanel.add(taskTitle, gbc);
-
-        gbc.gridy = 1;
-        gbc.weighty = 0.9;
-        mainPanel.add(contentPanel, gbc);
     }
 
     public void initializeUI() {
@@ -115,12 +81,7 @@ public class ATMUI extends ATMUIController {
         mainContainer.add(lowerPanel, BorderLayout.SOUTH);
         mainframe.add(mainContainer);
 
-        try {
-            ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
-            mainframe.setIconImage(icon.getImage());
-        } catch (NullPointerException nullPointerException) {
-            System.out.println("Invalid image path");
-        }
+        loadLogal();
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         final double rate = 0.9;
@@ -141,6 +102,15 @@ public class ATMUI extends ATMUIController {
 
         mainframe.setLocationRelativeTo(null);
 
+    }
+
+    private void loadLogal() {
+        try {
+            ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
+            mainframe.setIconImage(icon.getImage());
+        } catch (NullPointerException nullPointerException) {
+            System.out.println("Invalid image path");
+        }
     }
 
     private void createUpperAndLowerPanels() {
@@ -166,14 +136,7 @@ public class ATMUI extends ATMUIController {
         lowerPanel.setPreferredSize(new Dimension(750, 200));
     }
 
-    static public TextFields createInputField(int fontSize) {
-        return new TextFields(200, 30,
-                StandardColor.GreyHighest.getColor(0),
-                StandardColor.Blue.getColor(0),
-                StandardColor.GreyHighest.getColor(1),
-                new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
-    }
-
+    // Panel create function
     private void insertToCenterPanel() {
         JPanel greetingPanel = createGreetingPanel();
         centerPanel.add(greetingPanel, GREETING_PANEL);
@@ -237,6 +200,7 @@ public class ATMUI extends ATMUIController {
         }
     }
 
+    // Method to release resources
     public void disposePanel() {
         mainMenuGUI.getMainPanel().removeAll();
         balanceGUI.getMainPanel().removeAll();
@@ -271,7 +235,6 @@ public class ATMUI extends ATMUIController {
 
     protected JPanel createBalancePanel() {
         balanceGUI = new BalanceInquiryUI(loginGUI.getAccountNumber(),
-                // getLeftButton(), getRightButton(),
                 getController());
         balanceGUI.getMainPanel().setName(BALANCE_PANEL);
         return balanceGUI.getMainPanel();
@@ -279,41 +242,22 @@ public class ATMUI extends ATMUIController {
 
     public JPanel createHistoryPanel() {
         historyGUI = new TransactionHistoryUI(loginGUI.getAccountNumber(), getController());
-        //historyGUI.createTransactionHistoryUI(loginGUI.getAccountNumber());
         historyGUI.getMainPanel().setName(HISTORY_PANEL);
         return historyGUI.getMainPanel();
     }
 
-    public void refreshHistoryPanel() {
-        if (historyGUI != null) {
-            historyGUI.refreshHistory(getCurrentAccountNumber());
-        }
-    }
-
     protected JPanel createWithdrawPanel() {
         withdrawGUI = new WithdrawalUI(loginGUI.getAccountNumber(),
-                // getLeftButton(), getRightButton(),
                 getController());
         withdrawGUI.getMainPanel().setName(WITHDRAW_PANEL);
         return withdrawGUI.getMainPanel();
     }
 
-    // ------------- Waiting for improvement -------------
+    // Things for creating transfer Panel
     Screen screen = new Screen();
     BankDatabase bankDatabase = BankDatabase.getInstance();
     Keypad atmKeypad;
     CashDispenser atmCashDispenser;
-
-    static public RoundedButton createActionButton(String text, Color backgroundColor) {
-        return new RoundedButton(text, text,
-                backgroundColor,
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getColorMode(),
-                StandardColor.GreyHighest.getOppositeColorMode(),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
-                true, 180, 50);
-    }
 
     protected JPanel createTransferPanel() {
         transferGUI = new TransferUI(loginGUI.getAccountNumber(), bankDatabase, getController());
@@ -337,17 +281,7 @@ public class ATMUI extends ATMUIController {
         return keypadPanel;
     }
 
-    // -------------Getter&Setter methods-------------
-
-    public JPanel getPanel(String panelName) {
-        for (int i = 0; i < panelCount; i++) {
-            JPanel panel = allPanels[i];
-            if (panel != null && panelName.equals(panel.getName())) {
-                return panel;
-            }
-        }
-        return null;
-    }
+    // ==================== Useful function =========================
 
     // switch panel by name
     public void switchPanel(String name) {
@@ -365,11 +299,22 @@ public class ATMUI extends ATMUIController {
         }
     }
 
+    // sub method of switchPanel()
+    public JPanel getPanel(String panelName) {
+        for (int i = 0; i < panelCount; i++) {
+            JPanel panel = allPanels[i];
+            if (panel != null && panelName.equals(panel.getName())) {
+                return panel;
+            }
+        }
+        return null;
+    }
+
+    // -------------Getter&Setter methods-------------
     public CardLayout getCenterCardLayout() {
         return centerCardLayout;
     }
 
-    // get main frame
     public JFrame getMainFrame() {
         return mainframe;
     }
@@ -390,13 +335,43 @@ public class ATMUI extends ATMUIController {
         return currentPanelName;
     }
 
-    /*
-     * public JPanel getMainPanel() {
-     * return mainPanel;
-     * }
-     */
+    // ---------- Group menber's method -----------
 
-    // Function
+    public static final String TAKE_OUT_CARD_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1"
+            +
+            "_Group_101A-G03_UML_Showing/refs/heads/main/atm.png";
+    public static final String ATM_MACHINE_IMAGE = "https://raw.githubusercontent.com/infinityMark/SEHH2242-OOP_Group_Project_Part1_"
+            +
+            "Group_101A-G03_UML_Showing/refs/heads/main/atm-machine.png";
+
+    protected static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 45);
+    protected static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
+    protected static final Font FONT_SMALL = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+    protected static final Font FONT_BUTTON = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+
+    public ATMUI(String methodName) {
+
+        mainPanel.setBackground(StandardColor.GreyHighest.getColorMode());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+
+        taskTitle.setText(methodName);
+        taskTitle.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        taskTitle.setForeground(StandardColor.Blue.getColorMode());
+        taskTitle.setHorizontalAlignment(SwingConstants.LEFT);
+
+        gbc.weighty = 0.1;
+        mainPanel.add(taskTitle, gbc);
+
+        gbc.gridy = 1;
+        gbc.weighty = 0.9;
+        mainPanel.add(contentPanel, gbc);
+    }
+
     static public ImageIcon setImageSafety(String imageUrl) {
         try {
             URL url = new URL(imageUrl);
@@ -434,6 +409,17 @@ public class ATMUI extends ATMUIController {
         taskTitle.repaint();
     }
 
+    static public RoundedButton createActionButton(String text, Color backgroundColor) {
+        return new RoundedButton(text, text,
+                backgroundColor,
+                StandardColor.GreyHighest.getColorMode(),
+                StandardColor.GreyHighest.getColorMode(),
+                StandardColor.GreyHighest.getOppositeColorMode(),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                true, 180, 50);
+    }
+
     protected RoundedButton createStyledButton(String content, String changedContent, Color defaultBackgroundColor,
             Color changedBackgroundColor, Color defaultFontColor,
             Color changedFontColor, Font fontDefaultStyle, Font fontChangedSize, boolean roundedStatus, int widths,
@@ -467,4 +453,19 @@ public class ATMUI extends ATMUIController {
         }
     }
 
+    JPanel mainPanel = new JPanel(new GridBagLayout());
+    JPanel contentPanel = new JPanel();
+    JLabel taskTitle = new JLabel();
+
+    protected static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 40);
+    public static final Font NORMAL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
+    protected static final Font SMALL_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+
+    static public TextFields createInputField(int fontSize) {
+        return new TextFields(200, 30,
+                StandardColor.GreyHighest.getColor(0),
+                StandardColor.Blue.getColor(0),
+                StandardColor.GreyHighest.getColor(1),
+                new Font(Font.SANS_SERIF, Font.BOLD, fontSize));
+    }
 }

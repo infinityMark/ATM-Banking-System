@@ -1,5 +1,8 @@
 /**
- * controller class for ATMUI
+ * Controls the ATM's UI flow and business logic coordination.
+ * Handles panel switching, data refresh, and user session management (e.g.,
+ * login).
+ * Acts as a mediator between UI and backend operations.
  */
 public class ATMUIController {
     private ATMUI atmUI;
@@ -26,6 +29,7 @@ public class ATMUIController {
         atmUI.switchPanel(panelName);
     }
 
+    // refresh panel after switch panel
     public void refreshPanel(String name) {
         if (atmUI.balanceGUI == null || atmUI.withdrawGUI == null || atmUI.transferGUI == null
                 || atmUI.historyGUI == null) {
@@ -54,6 +58,7 @@ public class ATMUIController {
         }
     }
 
+    // add listener to buttons
     public void setup() {
         listenerRegistrar.registerAllListeners();
     }
@@ -62,20 +67,17 @@ public class ATMUIController {
         return atmUI.getCurrentPanelName();
     }
 
+    // exit method
     public void exitSystem() {
         switchToPanel(ATMUI.GREETING_PANEL);
         atmUI.disposePanel();
-    }
-
-    public void showInfo() {
-        System.out.println("Unsuccessful Switch !!");
     }
 
     public void loginSuccess(int accountNunber) {
         this.accountNumber = accountNunber;
     }
 
-    public int getAccountNumber() {
+    public int getaccountNunber() {
         return accountNumber;
     }
 }
