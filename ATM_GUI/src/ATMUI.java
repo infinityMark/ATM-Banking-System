@@ -278,8 +278,8 @@ public class ATMUI extends ATMUIController {
     }
 
     public JPanel createHistoryPanel() {
-        historyGUI = new TransactionHistoryUI();
-        historyGUI.createTransactionHistoryUI(loginGUI.getAccountNumber());
+        historyGUI = new TransactionHistoryUI(loginGUI.getAccountNumber(), getController());
+        //historyGUI.createTransactionHistoryUI(loginGUI.getAccountNumber());
         historyGUI.getMainPanel().setName(HISTORY_PANEL);
         return historyGUI.getMainPanel();
     }
