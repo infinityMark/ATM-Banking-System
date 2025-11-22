@@ -162,36 +162,13 @@ public class TransferUI extends JPanel {
         String currentText = amountTextField.getText();
 
         if (input.equals(".")) {
-            // Handle decimal point insertion
-            if (!currentText.contains(".")) {
-                amountTextField.setText(currentText.isEmpty() ? "0." : currentText + input);
-            }
+                amountTextField.setText(currentText + ".");
         } else if (input.equals("00")) {
             // Handle double-zero input with decimal constraints
-            if (currentText.isEmpty() || currentText.equals("0")) {
-                amountTextField.setText("0");
-            } else if (currentText.contains(".")) {
-                String[] parts = currentText.split("\\.");
-                if (parts.length > 1 && parts[1].length() < 2) {
-                    int zerosToAdd = Math.min(2 - parts[1].length(), 2);
-                    amountTextField.setText(currentText + "0".repeat(zerosToAdd));
-                }
-            } else {
                 amountTextField.setText(currentText + "00");
-            }
-        } else if (input.matches("[0-9]")) {
-            // Handle single digit input with decimal constraints
-            if (currentText.equals("0")) {
-                amountTextField.setText(input);
-            } else if (currentText.contains(".")) {
-                String[] parts = currentText.split("\\.");
-                if (parts.length > 1 && parts[1].length() < 2) {
-                    amountTextField.setText(currentText + input);
-                }
-            } else {
+            } else if (input.matches("[0-9]")) {
                 amountTextField.setText(currentText + input);
             }
-        }
     }
 
     /**
