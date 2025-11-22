@@ -268,7 +268,7 @@ public class LoginGUI {
                 currentAccountNumber = Integer.parseInt(accounTF.getText().trim());
                 accountPass = true;
             } catch (NumberFormatException e) {
-                reminderL.setText("Invalid account number format!!!,press Confirm to continue");
+                reminderL.setText("Invalid account number format!!! press Confirm to continue");
                 reminderL.setForeground(StandardColor.Red.getColorMode());
                 System.out.println("Invalid account number format");
                 isinvalidinput();
@@ -345,24 +345,24 @@ public class LoginGUI {
         return false;
     }
 
-    public void delBT() {
-        if (!invalidinput) {
-            if (accounTF.hasFocus()) {
-                String text = accounTF.getText();
-                if (!text.isEmpty())
-                    accounTF.setText(text.substring(0, text.length() - 1));
-                accounTF.requestFocusInWindow();
-            } else {
-                if (accountGot) {
-                    String text = new String(passwordF.getPassword());
-                    if (!text.isEmpty())
-                        passwordF.setText(text.substring(0, text.length() - 1));
-                    passwordF.requestFocusInWindow();
-                }
-            }
-            handleDelete();
-        }
-    }
+    //public void delBT() {
+    //    if (!invalidinput) {
+    //       if (accounTF.hasFocus()) {
+    //            String text = accounTF.getText();
+    //            if (!text.isEmpty())
+    //                accounTF.setText(text.substring(0, text.length() - 1));
+    //            accounTF.requestFocusInWindow();
+    //        } else {
+    //            if (accountGot) {
+    //                String text = new String(passwordF.getPassword());
+    //                if (!text.isEmpty())
+    //                    passwordF.setText(text.substring(0, text.length() - 1));
+    //                passwordF.requestFocusInWindow();
+    //            }
+    //        }
+    //        handleDelete();
+    //    }
+    //}
 
     private String getTime() {
         SimpleDateFormat T = new SimpleDateFormat("yyyy-MM-dd");
