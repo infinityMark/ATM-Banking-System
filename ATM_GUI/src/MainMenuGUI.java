@@ -61,7 +61,7 @@ public class MainMenuGUI {
         leftP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
         String[][]labels = {{ "View","Balance"},
                 {"Withdraw","Cash"},
-                {"Exit","ATM"}};
+                {"Exit",""}};
         String[] targetPanels = {
                 ATMUI.BALANCE_PANEL,
                 ATMUI.WITHDRAW_PANEL,
