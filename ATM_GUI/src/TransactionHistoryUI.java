@@ -7,7 +7,7 @@ public class TransactionHistoryUI {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private int currentAccountNumber;
-    private ATMUIController atmUIController;
+    private ATMUIController controller;
 
     private static final Font FONT_TITLE_LARGE = new Font(Font.SANS_SERIF, Font.BOLD, 40);
     private static final Font FONT_NORMAL = new Font(Font.SANS_SERIF, Font.BOLD, 30);
@@ -15,7 +15,16 @@ public class TransactionHistoryUI {
 
     private static final String CARD_HISTORY = "HISTORY";
 
-    public void createTransactionHistoryUI(int accountNumber) {
+    /*public void createTransactionHistoryUI(int accountNumber) {
+        this.currentAccountNumber = accountNumber;
+        initializeMainPanel();
+        createHistory(accountNumber);
+
+        cardLayout.show(cardPanel, CARD_HISTORY);
+    }*/
+
+    public TransactionHistoryUI(int accountNumber,ATMUIController controller) {
+        this.controller = controller;
         this.currentAccountNumber = accountNumber;
         initializeMainPanel();
         createHistory(accountNumber);
@@ -23,12 +32,8 @@ public class TransactionHistoryUI {
         cardLayout.show(cardPanel, CARD_HISTORY);
     }
 
-    public TransactionHistoryUI() {
-
-    }
-
     public void setATMUIController(ATMUIController controller) {
-        this.atmUIController = controller;
+        this.controller = controller;
     }
 
     private void initializeMainPanel() {
@@ -127,7 +132,7 @@ public class TransactionHistoryUI {
 
     
     public void goBackToMainPanel() {
-        Container parent = mainPanel.getParent();
+        /*Container parent = mainPanel.getParent();
         if (parent != null) {
             Container current = parent;
             while (current != null && !(current.getLayout() instanceof CardLayout)) {
@@ -138,7 +143,8 @@ public class TransactionHistoryUI {
                 CardLayout layout = (CardLayout) current.getLayout();
                 layout.show(current, "mainMenu");
             }
-        }
+        }*/
+        controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
         
 
