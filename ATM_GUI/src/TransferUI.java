@@ -502,7 +502,7 @@ public class TransferUI extends JPanel {
             case CARD_INFO:
                 // Create dynamic info card with current balance
                 JPanel infoCard = createReceiveTransferInformation(
-                        "Current account balance: HKD$" +
+                        "Current account balance: HKD$ %.2f" +
                                 bankDatabase.getAvailableBalance(userAccountNumberInUI));
                 infoCard.setName(CARD_INFO);
                 cardPanel.add(infoCard, CARD_INFO);
@@ -525,7 +525,7 @@ public class TransferUI extends JPanel {
                 String transactionInfo = String.format("Transferred HK$ %.2f to account %d.",
                         transfer.getAmount(), transfer.getReceiverAccounts());
                 JPanel afterTransactionCard = createAfterTransaction(transactionInfo,
-                        new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+                        new Font(Font.SANS_SERIF, Font.PLAIN, 30));
                 afterTransactionCard.setName(CARD_AFTER_TRANSACTION);
                 cardPanel.add(afterTransactionCard, CARD_AFTER_TRANSACTION);
                 break;
@@ -707,6 +707,7 @@ public class TransferUI extends JPanel {
         // Balance display
         JLabel remainAmountTitle = createStyledLabel(remainAmount, ATMUI.FONT_SMALL,
                 StandardColor.GreyHighest.getOppositeColorMode());
+        remainAmountTitle.setFont(ATMUI.NORMAL_FONT);
 
         // Input fields creation
         receiverAccountTextField = ATMUI.createInputField(40);
@@ -730,6 +731,8 @@ public class TransferUI extends JPanel {
         // Amount field with currency symbol
         JPanel amountDisplay = createAmountDisplayPanel(amountTextField);
 
+        RoundedButton cancelButton = createMenuButton("Cancel", StandardColor.Blue.getColorMode(), 30);
+
         // Assemble form layout
         addComponentToPanel(panel, gbc, remainAmountTitle, 0, 0.01);
         addComponentToPanel(panel, gbc, receiverLabel, 1, 0.01);
@@ -744,7 +747,9 @@ public class TransferUI extends JPanel {
         instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         gbc.gridy = 5;
         gbc.weighty = 0.01;
-        panel.add(instructionLabel, gbc);
+//        panel.add(instructionLabel, gbc);
+        panel.add(cancelButton,gbc);
+        cancelButton.addActionListener(e -> showCard(CARD_MENU));
 
         // Initialize field highlighting
         isReceiverFieldActive = true;
@@ -774,6 +779,7 @@ public class TransferUI extends JPanel {
                 transfer.getAmount(), transfer.getReceiverAccounts());
         JLabel confirmationLabel = createStyledLabel(confirmationMessage, ATMUI.FONT_SMALL,
                 StandardColor.GreyHighest.getOppositeColorMode());
+        confirmationLabel.setFont(ATMUI.NORMAL_FONT);
         gbc.gridy = 0;
         gbc.weighty = 0.0;
         panel.add(confirmationLabel, gbc);
@@ -819,6 +825,7 @@ public class TransferUI extends JPanel {
                 StandardColor.GreyHighest.getOppositeColorMode());
         JLabel successLabel = createStyledLabel("Transfer completed successfully.", font,
                 StandardColor.GreyHighest.getOppositeColorMode());
+        successLabel.setFont(ATMUI.NORMAL_FONT);
 
         addComponentToPanel(panel, gbc, transactionInfoLabel, 0, 0.1);
         addComponentToPanel(panel, gbc, successLabel, 1, 0.1);
