@@ -5,15 +5,15 @@ import java.awt.Color;
  * Supports both light and dark mode through a dual-tone system where each color
  * provides variants optimized for different background contexts.
  *
- * <p>Each enum constant contains an array of color variants:
- * <ul>
- *   <li>Index 0: Color variant optimized for light mode backgrounds</li>
- *   <li>Index 1: Color variant optimized for dark mode backgrounds</li>
- *   <li>Additional indices (if present): Special purpose variants</li>
- * </ul>
+ * Each enum constant contains an array of color variants:
  *
- * <p>Usage example:
- * <pre>
+ *   Index 0: Color variant optimized for light mode backgrounds</li>
+ *   Index 1: Color variant optimized for dark mode backgrounds</li>
+ *   Additional indices (if present): Special purpose variants</li>
+ *
+ *
+ * Usage example:
+ *
  * // Set global theme mode
  * StandardColor.setIsLightMode(true);
  *
@@ -25,7 +25,7 @@ import java.awt.Color;
  *
  * // Get specific variant by index
  * Color specialBorder = StandardColor.Blue.getColor(2);
- * </pre>
+ *
  */
 public enum StandardColor {
 
