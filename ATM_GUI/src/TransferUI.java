@@ -5,7 +5,7 @@ import java.awt.event.FocusListener;
 
 /**
  * Transfer User Interface - Handles the GUI for money transfer operations.
- * Provides a multi-step form for transferring funds between accounts with validation and confirmation steps.
+ * Provides a multistep form for transferring funds between accounts with validation and confirmation steps.
  * Supports keypad input integration and dynamic card-based navigation.
  */
 public class TransferUI extends JPanel {
