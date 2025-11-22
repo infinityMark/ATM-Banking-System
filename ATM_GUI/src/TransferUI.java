@@ -310,37 +310,6 @@ public class TransferUI extends JPanel {
     }
 
     /**
-     * Creates a panel combining currency symbol with amount input field.
-     *
-     * @param amountTextField Amount input field component
-     * @return Configured currency display panel
-     */
-    private JPanel createAmountDisplayPanel(TextFields amountTextField) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        // Currency symbol field (disabled)
-        TextFields currencySymbol = ATMUI.createInputField(40);
-        currencySymbol.setText("HK$ ");
-        currencySymbol.setEnabled(false);
-
-        // Layout constraints
-        gbc.gridy = 0;
-        gbc.gridx = 0;
-        gbc.weighty = 1.0;
-        gbc.weightx = 0.001;
-        gbc.insets = new Insets(0, 5, 0, 5);
-        gbc.fill = GridBagConstraints.BOTH;
-        panel.add(currencySymbol, gbc);
-
-        gbc.weightx = 0.9;
-        gbc.gridx = 1;
-        panel.add(amountTextField, gbc);
-
-        return panel;
-    }
-
-    /**
      * Adds component to panel with standardized layout constraints.
      *
      * @param panel      Target panel
@@ -716,51 +685,32 @@ public class TransferUI extends JPanel {
     }
 
     /**
-     * Creates the transfer confirmation screen with transaction details.
+     * Creates a panel combining currency symbol with amount input field.
      *
-     * @param title        Screen title
-     * @param firstSelection Confirm button text
-     * @param secondSelection Cancel button text
-     * @param fontSize     Button font size
-     * @param font         Title font
-     * @return Configured confirmation panel
+     * @param amountTextField Amount input field component
+     * @return Configured currency display panel
      */
-    public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
-                                         int fontSize, Font font) {
+    private JPanel createAmountDisplayPanel(TextFields amountTextField) {
         JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createDefaultGridBagConstraints();
-        gbc.insets = new Insets(10, 15, 10, 15);
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        // Transaction details display
-        String confirmationMessage = String.format("Transfer HK$ %.2f to account: %d",
-                transfer.getAmount(), transfer.getReceiverAccounts());
-        JLabel confirmationLabel = createStyledLabel(confirmationMessage, ATMUI.FONT_SMALL,
-                StandardColor.GreyHighest.getOppositeColorMode());
+        // Currency symbol field (disabled)
+        TextFields currencySymbol = ATMUI.createInputField(40);
+        currencySymbol.setText("HK$ ");
+        currencySymbol.setEnabled(false);
+
+        // Layout constraints
         gbc.gridy = 0;
-        gbc.weighty = 0.0;
-        panel.add(confirmationLabel, gbc);
+        gbc.gridx = 0;
+        gbc.weighty = 1.0;
+        gbc.weightx = 0.001;
+        gbc.insets = new Insets(0, 5, 0, 5);
+        gbc.fill = GridBagConstraints.BOTH;
+        panel.add(currencySymbol, gbc);
 
-        // Action buttons
-        JPanel selectionMenu = createSelectionMenu(title, firstSelection, secondSelection,
-                fontSize, font, CARD_AFTER_TRANSACTION, CARD_MENU, gbc);
-        selectionMenu.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        gbc.gridy = 1;
-        gbc.weighty = 0.4;
-        gbc.insets = new Insets(0, 0, 0, 0);
-        panel.add(selectionMenu, gbc);
-
-        // Configure button actions
-        RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
-        confirmButton.addActionListener(e -> {
-            executeTransfer();
-            updateBalanceInquiry(userAccountNumberInUI);
-        });
-
-        RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);
-        cancelButton.addActionListener(e -> {
-            showCard(CARD_MENU);
-            resetToInitialState();
-        });
+        gbc.weightx = 0.9;
+        gbc.gridx = 1;
+        panel.add(amountTextField, gbc);
 
         return panel;
     }
@@ -826,6 +776,55 @@ public class TransferUI extends JPanel {
         return panel;
     }
 
+    /**
+     * Creates the transfer confirmation screen with transaction details.
+     *
+     * @param title        Screen title
+     * @param firstSelection Confirm button text
+     * @param secondSelection Cancel button text
+     * @param fontSize     Button font size
+     * @param font         Title font
+     * @return Configured confirmation panel
+     */
+    public JPanel createConfirmationStep(String title, String firstSelection, String secondSelection,
+                                         int fontSize, Font font) {
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+        gbc.insets = new Insets(10, 15, 10, 15);
+
+        // Transaction details display
+        String confirmationMessage = String.format("Transfer HK$ %.2f to account: %d",
+                transfer.getAmount(), transfer.getReceiverAccounts());
+        JLabel confirmationLabel = createStyledLabel(confirmationMessage, ATMUI.FONT_SMALL,
+                StandardColor.GreyHighest.getOppositeColorMode());
+        gbc.gridy = 0;
+        gbc.weighty = 0.0;
+        panel.add(confirmationLabel, gbc);
+
+        // Action buttons
+        JPanel selectionMenu = createSelectionMenu(title, firstSelection, secondSelection,
+                fontSize, font, CARD_AFTER_TRANSACTION, CARD_MENU, gbc);
+        selectionMenu.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        gbc.gridy = 1;
+        gbc.weighty = 0.4;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        panel.add(selectionMenu, gbc);
+
+        // Configure button actions
+        RoundedButton confirmButton = getButtonByName(selectionMenu, BUTTON_FIRST);
+        confirmButton.addActionListener(e -> {
+            executeTransfer();
+            updateBalanceInquiry(userAccountNumberInUI);
+        });
+
+        RoundedButton cancelButton = getButtonByName(selectionMenu, BUTTON_SECOND);
+        cancelButton.addActionListener(e -> {
+            showCard(CARD_MENU);
+            resetToInitialState();
+        });
+
+        return panel;
+    }
     /**
      * Creates the post-transaction summary screen.
      *
