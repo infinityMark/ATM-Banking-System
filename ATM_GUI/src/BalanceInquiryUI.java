@@ -88,7 +88,7 @@ public class BalanceInquiryUI extends JPanel {
 
         // Current date
         JLabel dateLabel = createStyledLabel("Date: " + getCurrentDate(),
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
+                ATMUI.FONT_NORMAL,
                 StandardColor.Blue.getColorMode());
         dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -128,10 +128,10 @@ public class BalanceInquiryUI extends JPanel {
 
         // Account Type
         JLabel accountTypeTitle = createStyledLabel("Account Type:",
-                new Font(Font.SANS_SERIF, Font.BOLD, 20),
+                ATMUI.FONT_NORMAL,
                 StandardColor.GreyHighest.getOppositeColorMode());
         accountTypeLabel = createStyledLabel("",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                ATMUI.FONT_NORMAL,
                 StandardColor.Blue.getColorMode());
 
         gbc.gridy = 0;
@@ -148,10 +148,10 @@ public class BalanceInquiryUI extends JPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         JLabel availableBalanceTitle = createStyledLabel("Available Balance:",
-                new Font(Font.SANS_SERIF, Font.BOLD, 20),
+                new Font(Font.SANS_SERIF, Font.BOLD, 30),
                 StandardColor.GreyHighest.getOppositeColorMode());
         availableBalanceLabel = createStyledLabel("",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 30),
                 StandardColor.Green.getColorMode());
 
         panel.add(availableBalanceTitle, gbc);
@@ -165,10 +165,10 @@ public class BalanceInquiryUI extends JPanel {
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         JLabel totalBalanceTitle = createStyledLabel("Total Balance:",
-                new Font(Font.SANS_SERIF, Font.BOLD, 20),
+                new Font(Font.SANS_SERIF, Font.BOLD, 30),
                 StandardColor.GreyHighest.getOppositeColorMode());
         totalBalanceLabel = createStyledLabel("",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 30),
                 StandardColor.Green.getColorMode());
 
         panel.add(totalBalanceTitle, gbc);
@@ -179,7 +179,7 @@ public class BalanceInquiryUI extends JPanel {
 
         // Interest Rate (for Saving Account)
         interestLabel = createStyledLabel("",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
+                ATMUI.FONT_NORMAL,
                 StandardColor.Orange.getColorMode());
         interestLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -192,7 +192,7 @@ public class BalanceInquiryUI extends JPanel {
 
         // Cheque Limit (for Cheque Account)
         chequeLimitLabel = createStyledLabel("",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
+                ATMUI.FONT_NORMAL,
                 StandardColor.Orange.getColorMode());
         chequeLimitLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -228,7 +228,7 @@ public class BalanceInquiryUI extends JPanel {
                         double futureValue = savingAccount.calculateInterest(1, new Screen());
                         JLabel futureValueLabel = createStyledLabel(
                                 String.format("Projected balance after 1 year: HK$ %.2f", futureValue),
-                                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                                ATMUI.FONT_NORMAL,
                                 StandardColor.Mint.getColorMode());
                         futureValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
