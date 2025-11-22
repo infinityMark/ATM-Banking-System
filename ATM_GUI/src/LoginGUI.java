@@ -52,14 +52,14 @@ public class LoginGUI {
         centerPanel = new JPanel(new GridBagLayout());
         passwordF = new Passwords(200, 30,
                 StandardColor.GreyHighest.getColor(0),
-                StandardColor.Green.getColor(0),
-                StandardColor.Green.getColor(1),
+                StandardColor.Orange.getColor(0),
+                StandardColor.Orange.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
         passwordF.setEditable(false); //Make non-editable to force keypad use
         accounTF = new TextFields(200, 30,
                 StandardColor.GreyHighest.getColor(0),
-                StandardColor.Green.getColor(0),
-                StandardColor.Green.getColor(1),
+                StandardColor.Orange.getColor(0),
+                StandardColor.Orange.getColor(1),
                 new Font(Font.SANS_SERIF, Font.BOLD, 30));
         accounTF.setEditable(false);//Make non-editable to force keypad use
         reminderL = new JLabel("Please Enter your Account number and PIN number ", SwingConstants.CENTER);
@@ -178,7 +178,7 @@ public class LoginGUI {
 
     private void mainPanel() {
         mainP.setLayout(new BorderLayout());
-        mainP.setBackground(StandardColor.DarkBlue.getColorMode());
+        mainP.setBackground(StandardColor.Blue.getColorMode());
     }
 
     protected JPanel createMainMenuPanels() {
@@ -203,7 +203,7 @@ public class LoginGUI {
     }
 
     private void Centerpannel() {
-        centerPanel.setBackground(StandardColor.DarkBlue.getColorMode());
+        centerPanel.setBackground(StandardColor.Blue.getColorMode());
 
         GridBagConstraints gap = new GridBagConstraints();
         gap.insets = new Insets(20, 20, 20, 20);// the gap bettwen the field
@@ -376,7 +376,7 @@ public class LoginGUI {
     }
 
     private void backGroudColor(JLabel BGC) {
-        BGC.setBackground(StandardColor.DarkBlue.getColorMode());
+        BGC.setBackground(StandardColor.Blue.getColorMode());
     }
 
     public void resetlogin() {
