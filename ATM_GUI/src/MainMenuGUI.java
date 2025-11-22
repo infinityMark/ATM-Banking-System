@@ -170,19 +170,19 @@ public class MainMenuGUI {
         centerP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
 
         JLabel titleL = new JLabel("Main Menu", SwingConstants.CENTER);
-        font(titleL, 1, StandardColor.White.getColorMode(), 40);
+        font(titleL, 1, StandardColor.White.getColorMode(), 60);
         centerP.add(titleL);
 
         String accountType = bankDatabase.getAccountType(currentAccountNumberMMG);
         double rateOrLimit = bankDatabase.getRateOrLimit(currentAccountNumberMMG);
 
         JLabel accountTypeL = new JLabel("Account Type: " + accountType, SwingConstants.CENTER);
-        font(accountTypeL, 0, StandardColor.White.getColorMode(), 16);
+        font(accountTypeL, 0, StandardColor.White.getColorMode(), 40);
         centerP.add(accountTypeL);
 
         if (accountType.equals("Saving Account")) {
             JLabel interestL = new JLabel("Interest Rate: " + rateOrLimit * 100 + "% per annum", SwingConstants.CENTER);
-            font(interestL, 0, StandardColor.White.getColorMode(), 16);
+            font(interestL, 0, StandardColor.White.getColorMode(), 40);
             centerP.add(interestL);
         }
         mainP.add(centerP, BorderLayout.CENTER);
