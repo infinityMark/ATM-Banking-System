@@ -35,8 +35,9 @@ public class RoundedButton extends JButton{
      * @param widths Button width
      * @param heights Button height
      */
-    public RoundedButton(String content,String changedContent,Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,
-                         Color changedFontColor,Font fontDefaultStyle,Font fontChangedSize,boolean roundedStatus,int widths,int heights) {
+    public RoundedButton(String content,String changedContent,
+        Color defaultBackgroundColor,Color changedBackgroundColor,Color defaultFontColor,Color changedFontColor,
+        Font fontDefaultStyle,Font fontChangedSize,boolean roundedStatus,int widths,int heights) {
 
         super(content);
         setOpaque(false);
@@ -48,7 +49,6 @@ public class RoundedButton extends JButton{
         setForeground(defaultFontColor);
 
         setFont(fontDefaultStyle);
-        //setPreferredSize(new Dimension(widths,heights));
         this.setMaximumSize(new Dimension(widths,heights));
 
         // Add mouse listener for hover effects

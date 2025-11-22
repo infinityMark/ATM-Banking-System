@@ -61,7 +61,9 @@ public class TextFields extends JTextField {
         setborderColor(bordercolor);
 
         setOpaque(false);
-        setForeground(StandardColor.GreyHighest.getColor(1)); // Default text color (black in light mode, white in dark mode)
+        
+        // Default text color (black in light mode, white in dark mode)
+        setForeground(StandardColor.GreyHighest.getColor(1));
         setPreferredSize(new Dimension(widths, heights));
         setFont(font);
 
