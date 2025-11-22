@@ -210,6 +210,7 @@ public class WithdrawalUI extends JPanel {
                 StandardColor.Yellow.getColorMode());
         backButton.addActionListener(e -> {
             showCard(CARD_MENU);
+            customAmountField.setText("");
             deactivateCustomAmountPanel();
         });
 
