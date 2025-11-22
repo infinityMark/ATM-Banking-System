@@ -254,7 +254,7 @@ public class LoginGUI {
 
     private Boolean ifisEmpty(String input) {
         if (input.isEmpty()) {
-            reminderL.setText("Input cannot be empty!!!,press Confirm to continous");
+            reminderL.setText("Input cannot be empty!!! press Confirm to continous");
             reminderL.setForeground(StandardColor.Red.getColorMode());
             isinvalidinput();
             return true;
