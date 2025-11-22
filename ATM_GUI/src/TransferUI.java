@@ -502,8 +502,8 @@ public class TransferUI extends JPanel {
             case CARD_INFO:
                 // Create dynamic info card with current balance
                 JPanel infoCard = createReceiveTransferInformation(
-                        "Current account balance: HKD$ %.2f" +
-                                bankDatabase.getAvailableBalance(userAccountNumberInUI));
+                        String.format("Current account balance: HKD$ %.2f",
+                                bankDatabase.getAvailableBalance(userAccountNumberInUI)));
                 infoCard.setName(CARD_INFO);
                 cardPanel.add(infoCard, CARD_INFO);
                 break;
