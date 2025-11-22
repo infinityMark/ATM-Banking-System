@@ -59,25 +59,34 @@ public class MainMenuGUI {
     private void LeftPanel() {
         leftP.setBackground(StandardColor.Blue.getColorMode());
         leftP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
-        String[] labels = { "<html><center>View</center>Balance</html>",
-                "<html>Withdraw<br><center>Cash</center></html>",
-                "Exit" };
+        String[][]labels = {{ "View","Balance"},
+                {"Withdraw","Cash"},
+                {"Exit","ATM"}};
         String[] targetPanels = {
                 ATMUI.BALANCE_PANEL,
                 ATMUI.WITHDRAW_PANEL,
                 ATMUI.GREETING_PANEL
         };
         for (int i = 0; i < 3; i++) {
-            JLabel LL = new JLabel(labels[i], SwingConstants.CENTER);
+            JPanel cellPanel = new JPanel();
+            cellPanel.setLayout(new BoxLayout(cellPanel, BoxLayout.Y_AXIS));
+            cellPanel.setBackground(StandardColor.Blue.getColorMode());
+            cellPanel.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
+            cellPanel.add(Box.createVerticalGlue()); //left space at the top of the cells
+            for(String line : labels[i])
+            {
+            JLabel LL = new JLabel( line, SwingConstants.CENTER);
             font(LL, 0, StandardColor.White.getColorMode(), 18);
-            LL.setOpaque(true);
+            LL.setOpaque(false);
             LL.setBackground(StandardColor.Blue.getColorMode());
-            LL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
-            leftP.add(LL);
+            LL.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            cellPanel.add(LL);
+            }
 
             // Add mouse listener
             final int index = i;
-            LL.addMouseListener(new MouseAdapter() {
+            cellPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     // Invoke the controller to switch to the target panel
@@ -88,20 +97,20 @@ public class MainMenuGUI {
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    LL.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    cellPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     // Darken the background color to indicate
-                    LL.setBackground(StandardColor.Blue.getColorMode().darker());
+                    cellPanel.setBackground(StandardColor.Blue.getColorMode().darker());
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     // Restore default settings when mouse leaves
-                    LL.setCursor(Cursor.getDefaultCursor());
-                    LL.setBackground(StandardColor.Blue.getColorMode());
+                    cellPanel.setCursor(Cursor.getDefaultCursor());
+                    cellPanel.setBackground(StandardColor.Blue.getColorMode());
                 }
             });
-
-            leftP.add(LL);
+            cellPanel.add(Box.createVerticalGlue()); //left space at the buttom of the cells
+            leftP.add(cellPanel);
         }
 
         leftP.setPreferredSize(new Dimension(100, 0));
@@ -112,8 +121,8 @@ public class MainMenuGUI {
 
         rightP.setBackground(StandardColor.Blue.getColorMode());
         rightP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
-        String[] labels = { "<html>Transfer<br><center>Funds</center></html>",
-                "<html>Transaction<br><center>history</center></html>"
+        String[] []labels = { {"Transfer","Funds"},
+                {"Transaction","history"}
         };
 
         String[] targetPanels = {
@@ -122,15 +131,23 @@ public class MainMenuGUI {
         };
 
         for (int i = 0; i < 2; i++) {
-            JLabel RL = new JLabel(labels[i], SwingConstants.CENTER);
+            JPanel cellPanel = new JPanel();
+            cellPanel.setLayout(new BoxLayout(cellPanel, BoxLayout.Y_AXIS));
+            cellPanel.setBackground(StandardColor.Blue.getColorMode());
+            cellPanel.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
+            cellPanel.add(Box.createVerticalGlue()); 
+            for(String line : labels[i])
+            {
+            JLabel RL = new JLabel(line, SwingConstants.CENTER);
             font(RL, 0, StandardColor.White.getColorMode(), 18);
-            RL.setOpaque(true);
+            RL.setOpaque(false);
             RL.setBackground(StandardColor.Blue.getColorMode());
-            RL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
-            rightP.add(RL);
+            RL.setAlignmentX(Component.CENTER_ALIGNMENT);
+            cellPanel.add(RL);
+            }
 
             final int index = i;
-            RL.addMouseListener(new MouseAdapter() {
+            cellPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     // Invoke the controller to switch to the target panel
@@ -141,18 +158,18 @@ public class MainMenuGUI {
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    RL.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    RL.setBackground(StandardColor.Blue.getColorMode().darker());
+                    cellPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    cellPanel.setBackground(StandardColor.Blue.getColorMode().darker());
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    RL.setCursor(Cursor.getDefaultCursor());
-                    RL.setBackground(StandardColor.Blue.getColorMode());
+                    cellPanel.setCursor(Cursor.getDefaultCursor());
+                    cellPanel.setBackground(StandardColor.Blue.getColorMode());
                 }
             });
-
-            rightP.add(RL);
+            cellPanel.add(Box.createVerticalGlue()); 
+            rightP.add(cellPanel);
 
         }
         JLabel emptyLabel = new JLabel("", SwingConstants.CENTER);
