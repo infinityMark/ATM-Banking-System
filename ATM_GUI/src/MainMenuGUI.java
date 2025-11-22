@@ -45,19 +45,19 @@ public class MainMenuGUI {
 
     private void mainPanel() {
         mainP.setLayout(new BorderLayout());
-        mainP.setBackground(StandardColor.DarkBlue.getColorMode());
+        mainP.setBackground(StandardColor.Blue.getColorMode());
     }
 
     private void TopPanel() {
         font(timeL, 1, StandardColor.White.getColorMode(), 18);
-        timeL.setBackground(StandardColor.DarkBlue.getColorMode());
+        timeL.setBackground(StandardColor.Blue.getColorMode());
         timeL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
         mainP.add(timeL, BorderLayout.NORTH);
 
     }
 
     private void LeftPanel() {
-        leftP.setBackground(StandardColor.DarkBlue.getColorMode());
+        leftP.setBackground(StandardColor.Blue.getColorMode());
         leftP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
         String[] labels = { "<html><center>View</center>Balance</html>",
                 "<html>Withdraw<br><center>Cash</center></html>",
@@ -71,7 +71,7 @@ public class MainMenuGUI {
             JLabel LL = new JLabel(labels[i], SwingConstants.CENTER);
             font(LL, 0, StandardColor.White.getColorMode(), 18);
             LL.setOpaque(true);
-            LL.setBackground(StandardColor.DarkBlue.getColorMode());
+            LL.setBackground(StandardColor.Blue.getColorMode());
             LL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
             leftP.add(LL);
 
@@ -97,7 +97,7 @@ public class MainMenuGUI {
                 public void mouseExited(MouseEvent e) {
                     // Restore default settings when mouse leaves
                     LL.setCursor(Cursor.getDefaultCursor());
-                    LL.setBackground(StandardColor.DarkBlue.getColorMode());
+                    LL.setBackground(StandardColor.Blue.getColorMode());
                 }
             });
 
@@ -110,7 +110,7 @@ public class MainMenuGUI {
 
     private void RightPanel() {
 
-        rightP.setBackground(StandardColor.DarkBlue.getColorMode());
+        rightP.setBackground(StandardColor.Blue.getColorMode());
         rightP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
         String[] labels = { "<html>Transfer<br><center>Funds</center></html>",
                 "<html>Transaction<br><center>history</center></html>"
@@ -125,7 +125,7 @@ public class MainMenuGUI {
             JLabel RL = new JLabel(labels[i], SwingConstants.CENTER);
             font(RL, 0, StandardColor.White.getColorMode(), 18);
             RL.setOpaque(true);
-            RL.setBackground(StandardColor.DarkBlue.getColorMode());
+            RL.setBackground(StandardColor.Blue.getColorMode());
             RL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
             rightP.add(RL);
 
@@ -148,7 +148,7 @@ public class MainMenuGUI {
                 @Override
                 public void mouseExited(MouseEvent e) {
                     RL.setCursor(Cursor.getDefaultCursor());
-                    RL.setBackground(StandardColor.DarkBlue.getColorMode());
+                    RL.setBackground(StandardColor.Blue.getColorMode());
                 }
             });
 
@@ -157,7 +157,7 @@ public class MainMenuGUI {
         }
         JLabel emptyLabel = new JLabel("", SwingConstants.CENTER);
         emptyLabel.setOpaque(true);
-        emptyLabel.setBackground(StandardColor.DarkBlue.getColorMode());
+        emptyLabel.setBackground(StandardColor.Blue.getColorMode());
         emptyLabel.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
         rightP.add(emptyLabel);
 
@@ -166,7 +166,7 @@ public class MainMenuGUI {
     }
 
     private void CenterPanel() {
-        centerP.setBackground(StandardColor.DarkBlue.getColorMode());
+        centerP.setBackground(StandardColor.Blue.getColorMode());
         centerP.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
 
         JLabel titleL = new JLabel("Main Menu", SwingConstants.CENTER);
@@ -190,7 +190,7 @@ public class MainMenuGUI {
 
     private void BottomPanel() {
         font(bottomL, 1, StandardColor.Yellow.getColorMode(), 16);
-        bottomL.setBackground(StandardColor.DarkBlue.getColorMode());
+        bottomL.setBackground(StandardColor.Blue.getColorMode());
         bottomL.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
         mainP.add(bottomL, BorderLayout.SOUTH);
     }

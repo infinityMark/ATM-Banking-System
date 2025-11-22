@@ -566,8 +566,8 @@ public class TransferUI extends JPanel {
                 // Create confirmation card with transfer details
                 JPanel confirmationCard = createConfirmationStep(
                         "Transfer Confirmation",
-                        "1- Confirm transfer",
-                        "2-Cancel transfer",
+                        "Confirm transfer",
+                        "Cancel transfer",
                         40,
                         new Font(Font.SANS_SERIF, Font.PLAIN, 30));
                 confirmationCard.setName(CARD_CONFIRMATION);
@@ -637,9 +637,9 @@ public class TransferUI extends JPanel {
         // Create initial menu card
         gbc.insets = new Insets(10, 15, 10, 15);
         JPanel menuCard = createSelectionMenu("Transfer Menu",
-                "1 - Enter receiver details",
-                "2 - Exit",
-                30,
+                "Enter receiver details",
+                "Exit",
+                40,
                 new Font(Font.SANS_SERIF, Font.PLAIN, 35),
                 CARD_INFO,
                 "mainMenu",
