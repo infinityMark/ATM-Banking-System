@@ -106,7 +106,7 @@ public class ATMUI {
 
     private void loadLogal() {
         try {
-            ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("resources/atm-machine.png"));
+            ImageIcon icon = setImageSafety(ATM_MACHINE_IMAGE);
             mainframe.setIconImage(icon.getImage());
         } catch (NullPointerException nullPointerException) {
             System.out.println("Invalid image path");
