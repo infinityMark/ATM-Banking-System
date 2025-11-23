@@ -740,14 +740,8 @@ public class TransferUI extends JPanel {
         addComponentToPanel(panel, gbc, amountLabel, 3, 0.01);
         addComponentToPanel(panel, gbc, amountDisplay, 4, 0.01);
 
-        // Keypad instructions
-        JLabel instructionLabel = createStyledLabel("Use keypad to input numbers. Press Confirm to proceed.",
-                new Font(Font.SANS_SERIF, Font.PLAIN, 16),
-                StandardColor.Blue.getColorMode());
-        instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         gbc.gridy = 5;
         gbc.weighty = 0.01;
-//        panel.add(instructionLabel, gbc);
         panel.add(cancelButton,gbc);
         cancelButton.addActionListener(e -> showCard(CARD_MENU));
 
