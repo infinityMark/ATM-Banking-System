@@ -93,6 +93,7 @@ public class LoginGUI {
                         accounTF.requestFocusInWindow();
                         reminderL.setText("Please confirm account number first before entering PIN");
                         reminderL.setForeground(StandardColor.Red.getColorMode());
+                        
                     });
                 } else {
                     accountFieldFocused = false;
