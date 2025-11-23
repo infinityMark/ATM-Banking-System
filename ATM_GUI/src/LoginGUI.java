@@ -1,24 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
-//import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 public class LoginGUI {
     private JTextField accounTF;
     private JPanel centerPanel;
     private JPasswordField passwordF;
     private JButton confirmButton, delButton, cancelButton;
-    //private String savedAccount;
+
     private boolean accountGot, accountPass, pwPass, invalidinput;
     private int currentAccountNumber, currentPin;
     private BankDatabase bankDatabase;
     private JLabel reminderL;
     private JPanel mainP;
     private static int passedAccount;
-           //passedPIN
-    
-
     // Track which field is currently focused
     private boolean accountFieldFocused = true;
 
@@ -345,25 +340,6 @@ public class LoginGUI {
         }
         return false;
     }
-
-    //public void delBT() {
-    //    if (!invalidinput) {
-    //       if (accounTF.hasFocus()) {
-    //            String text = accounTF.getText();
-    //            if (!text.isEmpty())
-    //                accounTF.setText(text.substring(0, text.length() - 1));
-    //            accounTF.requestFocusInWindow();
-    //        } else {
-    //            if (accountGot) {
-    //                String text = new String(passwordF.getPassword());
-    //                if (!text.isEmpty())
-    //                    passwordF.setText(text.substring(0, text.length() - 1));
-    //                passwordF.requestFocusInWindow();
-    //            }
-    //        }
-    //        handleDelete();
-    //    }
-    //}
 
     private String getTime() {
         SimpleDateFormat T = new SimpleDateFormat("yyyy-MM-dd");
