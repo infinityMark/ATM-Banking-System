@@ -577,13 +577,6 @@ import java.awt.*;
                 return;
             }
 
-            // Check if amount is positive
-            if (amount <= 0) {
-                statusLabel.setText("Amount must be greater than 0");
-                statusLabel.setForeground(StandardColor.Red.getColorMode());
-                return;
-            }
-
             // Check account balance
             double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
             if (amount > availableBalance) {
