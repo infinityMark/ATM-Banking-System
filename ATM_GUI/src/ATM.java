@@ -1,9 +1,8 @@
 // ATM.java
 // Represents an automated teller machine
-import javax.swing.*;
-import java.awt.*;
 
-public class ATM {
+public class ATM
+{
    private boolean userAuthenticated; // whether user is authenticated
    private int currentAccountNumber; // current user's account number
    private Screen screen; // ATM's screen
@@ -30,10 +29,6 @@ public class ATM {
       cashDispenser = new CashDispenser(); // create cash dispenser
       // depositSlot = new DepositSlot(); // create deposit slot
       bankDatabase = BankDatabase.getInstance(); // create acct info database
-
-      // mainFrame = new JFrame("ATM GUI implement");
-      // ATM GUI implements to initial the mainFrame setting.
-      // initializeGUI();
    } // end no-argument ATM constructor
 
    // start ATM
@@ -52,14 +47,6 @@ public class ATM {
          screen.displayMessageLine("\nThank you! Goodbye!");
       } // end while
    } // end method run
-
-   // public synchronized void setCurrentAccountNumber(int currentAccountNumbers){
-   // this.currentAccountNumber = currentAccountNumbers;
-   // }
-
-   // public int getCurrentAccountNumber(){
-   // return currentAccountNumber;
-   // }
 
    // attempts to authenticate user against database
    private void authenticateUser() {
@@ -99,7 +86,6 @@ public class ATM {
                // initialize as new object of chosen type
                currentTransaction = createTransaction(mainMenuSelection);
                currentTransaction.execute();
-               // functionPanel = currentTransaction.getPanelUI(); // execute transaction
                break;
             case RECORD:
                TransactionHistory.checkHistory(currentAccountNumber);
