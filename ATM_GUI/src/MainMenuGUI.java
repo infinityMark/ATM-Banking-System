@@ -172,12 +172,7 @@ public class MainMenuGUI {
             rightP.add(cellPanel);
 
         }
-        JLabel emptyLabel = new JLabel("", SwingConstants.CENTER);
-        emptyLabel.setOpaque(true);
-        emptyLabel.setBackground(StandardColor.Blue.getColorMode());
-        emptyLabel.setBorder(BorderFactory.createLineBorder(StandardColor.White.getColorMode(), 1));
-        rightP.add(emptyLabel);
-
+       
         rightP.setPreferredSize(new Dimension(100, 0));
         mainP.add(rightP, BorderLayout.EAST);
     }
