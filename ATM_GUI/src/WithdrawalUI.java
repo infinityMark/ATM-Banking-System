@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class WithdrawalUI extends JPanel {
+    public class WithdrawalUI extends JPanel {
     // Card names
     private static final String CARD_MENU = "MENU";
     private static final String CARD_CONFIRMATION = "CONFIRMATION";
@@ -234,131 +234,131 @@ public class WithdrawalUI extends JPanel {
         return panel;
     }
 
-    private JPanel createConfirmationCard() {
-    JPanel panel = new JPanel(new GridBagLayout());
-    panel.setBackground(StandardColor.GreyHighest.getColorMode());
-    GridBagConstraints gbc = createDefaultGridBagConstraints();
-    gbc.insets = new Insets(10, 15, 10, 15);
+       private JPanel createConfirmationCard() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(StandardColor.GreyHighest.getColorMode());
+        GridBagConstraints gbc = createDefaultGridBagConstraints();
+        gbc.insets = new Insets(10, 15, 10, 15);
 
-    // Title
-    JLabel titleLabel = createStyledLabel("Confirm Withdrawal",
-            new Font(Font.SANS_SERIF, Font.BOLD, 36),
-            StandardColor.GreyHighest.getOppositeColorMode());
-    titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // Title
+        JLabel titleLabel = createStyledLabel("Confirm Withdrawal",
+                new Font(Font.SANS_SERIF, Font.BOLD, 36),
+                StandardColor.GreyHighest.getOppositeColorMode());
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    gbc.gridy = 0;
-    gbc.weighty = 0.1;
-    panel.add(titleLabel, gbc);
+        gbc.gridy = 0;
+        gbc.weighty = 0.1;
+        panel.add(titleLabel, gbc);
 
-    // Amount confirmation
-    JLabel amountLabel = createStyledLabel(
-            String.format("Amount: HK$ %d", selectedAmount),
-            new Font(Font.SANS_SERIF, Font.BOLD, 28),
-            StandardColor.Green.getColorMode());
-    amountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // Amount confirmation
+        JLabel amountLabel = createStyledLabel(
+                String.format("Amount: HK$ %d", selectedAmount),
+                new Font(Font.SANS_SERIF, Font.BOLD, 28),
+                StandardColor.Green.getColorMode());
+        amountLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    gbc.gridy = 1;
-    gbc.weighty = 0.1;
-    panel.add(amountLabel, gbc);
+        gbc.gridy = 1;
+        gbc.weighty = 0.1;
+        panel.add(amountLabel, gbc);
 
-    // Calculate banknote breakdown
-    cashDispenser.precheckNumberOfAmountType(selectedAmount);
-    int thousands = cashDispenser.getNumberOfOneThousand();
-    int fiveHundreds = cashDispenser.getNumberOfFiveHundred();
-    int hundreds = cashDispenser.getNumberOfOneHundred();
+        // Calculate banknote breakdown
+        cashDispenser.precheckNumberOfAmountType(selectedAmount);
+        int thousands = cashDispenser.getNumberOfOneThousand();
+        int fiveHundreds = cashDispenser.getNumberOfFiveHundred();
+        int hundreds = cashDispenser.getNumberOfOneHundred();
 
-    // Note breakdown
-    JLabel notesLabel = createStyledLabel(
-            String.format("You will receive:\n   %d x HK$1000\n   %d x HK$500\n   %d x HK$100",
-                    thousands, fiveHundreds, hundreds),
-            new Font(Font.SANS_SERIF, Font.PLAIN, 22),
-            StandardColor.Blue.getColorMode());
-    notesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // Note breakdown
+        JLabel notesLabel = createStyledLabel(
+                String.format("You will receive:\n   %d x HK$1000\n   %d x HK$500\n   %d x HK$100",
+                        thousands, fiveHundreds, hundreds),
+                new Font(Font.SANS_SERIF, Font.PLAIN, 22),
+                StandardColor.Blue.getColorMode());
+        notesLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    gbc.gridy = 2;
-    gbc.weighty = 0.2;
-    panel.add(notesLabel, gbc);
+        gbc.gridy = 2;
+        gbc.weighty = 0.2;
+        panel.add(notesLabel, gbc);
 
-    // Status label for error messages
-    JLabel errorLabel = createStyledLabel("",
-            new Font(Font.SANS_SERIF, Font.PLAIN, 20),
-            StandardColor.Red.getColorMode());
-    errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // Status label for error messages
+        JLabel errorLabel = createStyledLabel("",
+                new Font(Font.SANS_SERIF, Font.PLAIN, 20),
+                StandardColor.Red.getColorMode());
+        errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-    gbc.gridy = 3;
-    gbc.weighty = 0.05;
-    panel.add(errorLabel, gbc);
+        gbc.gridy = 3;
+        gbc.weighty = 0.05;
+        panel.add(errorLabel, gbc);
 
-    // Buttons
-    JPanel buttonPanel = new JPanel(new FlowLayout());
-    buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
+        // Buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.setBackground(StandardColor.GreyHighest.getColorMode());
 
-    RoundedButton confirmButton = ATMUI.createActionButton("Confirm Withdrawal",
-            StandardColor.Green.getColorMode());
-    confirmButton.addActionListener(e -> {
-        // Check account balance
-        double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
-        if (selectedAmount > availableBalance) {
-            errorLabel.setText("Insufficient funds in your account");
-            // Show error in custom amount card after a brief delay
-            Timer timer = new Timer(2000, ev -> {
-                showCard(CARD_CUSTOM);
-                statusLabel.setText("Insufficient funds in your account - Please choose a smaller amount");
-                statusLabel.setForeground(StandardColor.Red.getColorMode());
-            });
-            timer.setRepeats(false);
-            timer.start();
-            return;
-        }
+        RoundedButton confirmButton = ATMUI.createActionButton("Confirm Withdrawal",
+                StandardColor.Green.getColorMode());
+        confirmButton.addActionListener(e -> {
+            // Check account balance
+            double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+            if (selectedAmount > availableBalance) {
+                errorLabel.setText("Insufficient funds in your account");
+                // Show error in custom amount card after a brief delay
+                Timer timer = new Timer(2000, ev -> {
+                    showCard(CARD_CUSTOM);
+                    statusLabel.setText("Insufficient funds in your account - Please choose a smaller amount");
+                    statusLabel.setForeground(StandardColor.Red.getColorMode());
+                });
+                timer.setRepeats(false);
+                timer.start();
+                return;
+            }
 
-        // Check cash dispenser
-        if (!cashDispenser.isSufficientCashAvailable(selectedAmount)) {
-            errorLabel.setText("Insufficient cash available in ATM");
-            // Show error in custom amount card after a brief delay
-            Timer timer = new Timer(2000, ev -> {
-                showCard(CARD_CUSTOM);
-                statusLabel.setText("Insufficient cash available in ATM - Please choose a smaller amount");
-                statusLabel.setForeground(StandardColor.Red.getColorMode());
-            });
-            timer.setRepeats(false);
-            timer.start();
-            return;
-        }
+            // Check cash dispenser
+            if (!cashDispenser.isSufficientCashAvailable(selectedAmount)) {
+                errorLabel.setText("Insufficient cash available in ATM");
+                // Show error in custom amount card after a brief delay
+                Timer timer = new Timer(2000, ev -> {
+                    showCard(CARD_CUSTOM);
+                    statusLabel.setText("Insufficient cash available in ATM - Please choose a smaller amount");
+                    statusLabel.setForeground(StandardColor.Red.getColorMode());
+                });
+                timer.setRepeats(false);
+                timer.start();
+                return;
+            }
 
-        // Check account limit
-        if (withdrawal.isLimitAccountConditionCheckerHappen(selectedAmount, "withdrawal")) {
-            errorLabel.setText("Transaction exceeds account limit");
-            // Show error in custom amount card after a brief delay
-            Timer timer = new Timer(2000, ev -> {
-                showCard(CARD_CUSTOM);
-                statusLabel.setText("Transaction exceeds account limit - Please choose a smaller amount");
-                statusLabel.setForeground(StandardColor.Red.getColorMode());
-            });
-            timer.setRepeats(false);
-            timer.start();
-            return;
-        }
+            // Check account limit
+            if (withdrawal.isLimitAccountConditionCheckerHappen(selectedAmount, "withdrawal")) {
+                errorLabel.setText("Transaction exceeds account limit");
+                // Show error in custom amount card after a brief delay
+                Timer timer = new Timer(2000, ev -> {
+                    showCard(CARD_CUSTOM);
+                    statusLabel.setText("Transaction exceeds account limit - Please choose a smaller amount");
+                    statusLabel.setForeground(StandardColor.Red.getColorMode());
+                });
+                timer.setRepeats(false);
+                timer.start();
+                return;
+            }
 
-        // All checks passed, execute withdrawal
-        executeWithdrawal();
-    });
+            // All checks passed, execute withdrawal
+            executeWithdrawal();
+        });
 
-    RoundedButton cancelButton = ATMUI.createActionButton("Cancel",
-            StandardColor.Red.getColorMode());
-    cancelButton.addActionListener(e -> {
-        showCard(CARD_MENU);
-        deactivateCustomAmountPanel();
-    });
+        RoundedButton cancelButton = ATMUI.createActionButton("Cancel",
+             StandardColor.Red.getColorMode());
+        cancelButton.addActionListener(e -> {
+            showCard(CARD_MENU);
+            deactivateCustomAmountPanel();
+        });
 
-    buttonPanel.add(confirmButton);
-    buttonPanel.add(cancelButton);
+        buttonPanel.add(confirmButton);
+        buttonPanel.add(cancelButton);
 
-    gbc.gridy = 4;
-    gbc.weighty = 0.2;
-    panel.add(buttonPanel, gbc);
+        gbc.gridy = 4;
+        gbc.weighty = 0.2;
+        panel.add(buttonPanel, gbc);
 
-    return panel;
-}
+        return panel;
+    }
 
     private JPanel createResultCard() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -490,73 +490,73 @@ public class WithdrawalUI extends JPanel {
     }
 
     private RoundedButton createAmountButton(String text, int amount) {
-    RoundedButton button = new RoundedButton(text, text,
-            StandardColor.GreyHighest.getColorMode(),
-            StandardColor.Blue.getColorMode(),
-            StandardColor.GreyHighest.getOppositeColorMode(),
-            StandardColor.GreyHighest.getColorMode(),
-            new Font(Font.SANS_SERIF, Font.BOLD, 22),
-            new Font(Font.SANS_SERIF, Font.BOLD, 22),
-            true, 180, 60);
+        RoundedButton button = new RoundedButton(text, text,
+               StandardColor.GreyHighest.getColorMode(),
+               StandardColor.Blue.getColorMode(),
+               StandardColor.GreyHighest.getOppositeColorMode(),
+               StandardColor.GreyHighest.getColorMode(),
+               new Font(Font.SANS_SERIF, Font.BOLD, 22),
+               new Font(Font.SANS_SERIF, Font.BOLD, 22),
+               true, 180, 60);
 
-    button.addActionListener(e -> {
-        // Check if amount is valid before proceeding to confirmation
-        double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+        button.addActionListener(e -> {
+            // Check if amount is valid before proceeding to confirmation
+            double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
         
-        if (amount > availableBalance) {
-            // Show error in menu card
-            balanceLabel.setForeground(StandardColor.Red.getColorMode());
-            balanceLabel.setText(String.format("Insufficient funds! Available: HK$ %.2f", availableBalance));
+            if (amount > availableBalance) {
+               // Show error in menu card
+               balanceLabel.setForeground(StandardColor.Red.getColorMode());
+               balanceLabel.setText(String.format("Insufficient funds! Available: HK$ %.2f", availableBalance));
             
-            // Reset color after 3 seconds
-            Timer timer = new Timer(3000, ev -> {
-                balanceLabel.setForeground(StandardColor.Green.getColorMode());
-                balanceLabel.setText(String.format("Available Balance: HK$ %.2f", availableBalance));
-            });
-            timer.setRepeats(false);
-            timer.start();
-            return;
-        }
+               // Reset color after 3 seconds
+               Timer timer = new Timer(3000, ev -> {
+                   balanceLabel.setForeground(StandardColor.Green.getColorMode());
+                   balanceLabel.setText(String.format("Available Balance: HK$ %.2f", availableBalance));
+               });
+               timer.setRepeats(false);
+               timer.start();
+               return;
+            }
 
-        if (!cashDispenser.isSufficientCashAvailable(amount)) {
-            // Show error in menu card
-            balanceLabel.setForeground(StandardColor.Red.getColorMode());
-            balanceLabel.setText("ATM has insufficient cash - Please choose smaller amount");
+            if (!cashDispenser.isSufficientCashAvailable(amount)) {
+               // Show error in menu card
+               balanceLabel.setForeground(StandardColor.Red.getColorMode());
+               balanceLabel.setText("ATM has insufficient cash - Please choose smaller amount");
             
-            // Reset after 3 seconds
-            Timer timer = new Timer(3000, ev -> {
-                balanceLabel.setForeground(StandardColor.Green.getColorMode());
-                double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
-                balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
-            });
-            timer.setRepeats(false);
-            timer.start();
-            return;
-        }
+               // Reset after 3 seconds
+               Timer timer = new Timer(3000, ev -> {
+                   balanceLabel.setForeground(StandardColor.Green.getColorMode());
+                   double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+                   balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
+               });
+               timer.setRepeats(false);
+               timer.start();
+               return;
+            }
 
-        if (withdrawal.isLimitAccountConditionCheckerHappen(amount, "withdrawal")) {
-            // Show error in menu card
-            balanceLabel.setForeground(StandardColor.Red.getColorMode());
-            balanceLabel.setText("Transaction exceeds account limit");
+            if (withdrawal.isLimitAccountConditionCheckerHappen(amount, "withdrawal")) {
+               // Show error in menu card
+               balanceLabel.setForeground(StandardColor.Red.getColorMode());
+               balanceLabel.setText("Transaction exceeds account limit");
             
-            // Reset after 3 seconds
-            Timer timer = new Timer(3000, ev -> {
-                balanceLabel.setForeground(StandardColor.Green.getColorMode());
-                double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
-                balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
-            });
-            timer.setRepeats(false);
-            timer.start();
-            return;
-        }
+               // Reset after 3 seconds
+               Timer timer = new Timer(3000, ev -> {
+                   balanceLabel.setForeground(StandardColor.Green.getColorMode());
+                   double currentBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
+                   balanceLabel.setText(String.format("Available Balance: HK$ %.2f", currentBalance));
+               });
+               timer.setRepeats(false);
+               timer.start();
+               return;
+            }
 
-        // All checks passed, proceed to confirmation
-        selectedAmount = amount;
-        showConfirmationCard();
-    });
+            // All checks passed, proceed to confirmation
+            selectedAmount = amount;
+            showConfirmationCard();
+        });
 
-    return button;
-}
+        return button;
+    }
 
     private void processCustomAmount() {
         try {
