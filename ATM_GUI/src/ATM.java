@@ -1,9 +1,8 @@
 // ATM.java
 // Represents an automated teller machine
-import javax.swing.*;
-import java.awt.*;
 
-public class ATM {
+public class ATM
+{
    private boolean userAuthenticated; // whether user is authenticated
    private int currentAccountNumber; // current user's account number
    private Screen screen; // ATM's screen
@@ -155,6 +154,8 @@ public class ATM {
       return temp; // return the newly created object
    } // end method createTransaction
 } // end class ATM
+
+
 
 /**************************************************************************
  * (C) Copyright 1992-2007 by Deitel & Associates, Inc. and *
