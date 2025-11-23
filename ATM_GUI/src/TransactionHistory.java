@@ -227,7 +227,12 @@ public class TransactionHistory {
     public double getAmount() {
         return amount;
     }
-
+    
+    /**
+     * Get transaction history as a formatted string for a specific account.
+     * @param accountNumber
+     * @return
+     */
     public static String getHistoryAsString(int accountNumber) {
         StringBuilder sb = new StringBuilder();
         boolean f = false;

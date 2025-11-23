@@ -15,14 +15,6 @@ public class TransactionHistoryUI {
 
     private static final String CARD_HISTORY = "HISTORY";
 
-    /*public void createTransactionHistoryUI(int accountNumber) {
-        this.currentAccountNumber = accountNumber;
-        initializeMainPanel();
-        createHistory(accountNumber);
-
-        cardLayout.show(cardPanel, CARD_HISTORY);
-    }*/
-
     public TransactionHistoryUI(int accountNumber,ATMUIController controller) {
         this.controller = controller;
         this.currentAccountNumber = accountNumber;
@@ -69,7 +61,7 @@ public class TransactionHistoryUI {
 
         GridBagConstraints gbc = createDefaultGridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-
+        // title label
         JLabel titleLabel = createStyledLabel("Transaction History for Account: " + accountNumber,
                 FONT_NORMAL, StandardColor.GreyHighest.getOppositeColorMode());
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -106,7 +98,8 @@ public class TransactionHistoryUI {
         gbc.weighty = 0.7;
         gbc.insets = new Insets(20, 20, 20, 20);
         historyPanel.add(scrollPane, gbc);
-        
+
+        // back button
         RoundedButton backButton = new RoundedButton("Main Menu");
         gbc.gridy = 2;
         gbc.weighty = 0.1;
@@ -116,6 +109,7 @@ public class TransactionHistoryUI {
         cardPanel.add(historyPanel, CARD_HISTORY);
     }
 
+    // Refresh the transaction history display
     public void refreshHistory() {
         if (history != null) {
             String historyText = TransactionHistory.getHistoryAsString(currentAccountNumber);
@@ -125,6 +119,7 @@ public class TransactionHistoryUI {
         }
     }
 
+    // Refresh with account number
     public void refreshHistory(int accountNumber) {
         this.currentAccountNumber = accountNumber;
         refreshHistory();
@@ -132,22 +127,10 @@ public class TransactionHistoryUI {
 
     
     public void goBackToMainPanel() {
-        /*Container parent = mainPanel.getParent();
-        if (parent != null) {
-            Container current = parent;
-            while (current != null && !(current.getLayout() instanceof CardLayout)) {
-                current = current.getParent();
-            }
-
-            if (current != null) {
-                CardLayout layout = (CardLayout) current.getLayout();
-                layout.show(current, "mainMenu");
-            }
-        }*/
         controller.switchToPanel(ATMUI.MAIN_MENU_PANEL);
     }
         
-
+    // Helper methods for UI
     private GridBagConstraints createDefaultGridBagConstraints() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
