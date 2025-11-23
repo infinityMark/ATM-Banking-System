@@ -87,7 +87,6 @@ public class ATM {
                // initialize as new object of chosen type
                currentTransaction = createTransaction(mainMenuSelection);
                currentTransaction.execute();
-               // functionPanel = currentTransaction.getPanelUI(); // execute transaction
                break;
             case RECORD:
                TransactionHistory.checkHistory(currentAccountNumber);
