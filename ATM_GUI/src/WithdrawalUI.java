@@ -570,13 +570,20 @@ import java.awt.*;
 
             int amount = Integer.parseInt(amountText);
 
+            // Check if amount is positive
+            if (amount <= 0) {
+                statusLabel.setText("Amount must be greater than 0");
+                statusLabel.setForeground(StandardColor.Red.getColorMode());
+                return;
+            }
+            
             // Check if amount is multiples of 100, 500, or 1000
             if (!isMultiplesCondition(amount)) {
                 statusLabel.setText("Amount must be multiples of HK$ 100, 500, or 1000 - WITHDRAWAL FAILED");
                 statusLabel.setForeground(StandardColor.Red.getColorMode());
                 return;
             }
-
+            
             // Check account balance
             double availableBalance = bankDatabase.getAvailableBalance(currentAccountNumber);
             if (amount > availableBalance) {
