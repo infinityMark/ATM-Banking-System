@@ -32,7 +32,7 @@ public class LoginGUI {
                 current.revalidate();
                 current.repaint();
             } else {
-                System.err.println("CardLayout miss,Unable to switch nels");
+                System.err.println("CardLayout miss,Unable to switch panels");
             }
         } else {
             System.err.println("mainP = null,Unable to switch panels");
