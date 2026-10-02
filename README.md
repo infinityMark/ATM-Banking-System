@@ -1,2 +1,2 @@
-# SEHH2242-OOP_Group_Project_Part2
+# ATM-Banking-System
 GUI Design By Java
